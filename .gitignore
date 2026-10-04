@@ -1,0 +1,12 @@
+# بيانات حساسة (عميلات، مبيعات، حسابات)
+data/
+backups/
+public/uploads/
+
+# ملف يحتوي بيانات الدخول المحلية
+README.txt
+
+# إعدادات المحرر
+.claude/
+node_modules/
+*.log

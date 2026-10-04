@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Beauty House Design System</title>
+</head>
+<body>
+<style>
+  :root {
+    --font-body: "Segoe UI", Tahoma, "Segoe UI Arabic", Arial, sans-serif;
+    --font-mono: ui-monospace, "Cascadia Mono", Consolas, "SFMono-Regular", monospace;
+
+    --color-primary: #261A66;
+    --color-primary-hover: #1B1249;
+    --color-primary-tint: #EEEBFA;
+    --color-primary-tint-strong: #DAD2F4;
+
+    --color-accent: #EF5F18;
+    --color-accent-hover: #D14E0E;
+    --color-accent-tint: #FCE9DE;
+
+    --color-gold: #AB7400;
+    --color-gold-tint: #F6ECD8;
+
+    --color-bg-page: #F8F8FA;
+    --color-surface: #FFFFFF;
+    --color-surface-2: #FBFAFD;
+    --color-border: #E7E4F1;
+    --color-border-strong: #D3CDE6;
+
+    --color-text: #1E1E2D;
+    --color-text-secondary: #6B7280;
+    --color-text-muted: #9B98AC;
+    --color-on-primary: #FFFFFF;
+    --color-on-accent: #FFFFFF;
+
+    --color-success: #16A34A;
+    --color-success-tint: #E3F7E9;
+    --color-warning: #9A5B0C;
+    --color-warning-tint: #FBEEDC;
+    --color-danger: #C0362C;
+    --color-danger-tint: #FCE8E6;
+    --color-info: #1D5FC2;
+    --color-info-tint: #E6EEFC;
+
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-full: 999px;
+
+    --shadow-sm: 0 1px 2px rgba(38,26,102,.07), 0 1px 1px rgba(38,26,102,.05);
+    --shadow-md: 0 6px 16px rgba(38,26,102,.10), 0 2px 4px rgba(38,26,102,.06);
+    --shadow-lg: 0 16px 40px rgba(38,26,102,.16), 0 4px 10px rgba(38,26,102,.08);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --color-primary: #9385F0;
+      --color-primary-hover: #A99DF5;
+      --color-primary-tint: #29234A;
+      --color-primary-tint-strong: #382F63;
+
+      --color-accent: #FF7D42;
+      --color-accent-hover: #FF9666;
+      --color-accent-tint: #3A2313;
+
+      --color-gold: #E0B23D;
+      --color-gold-tint: #3A2E12;
+
+      --color-bg-page: #14101F;
+      --color-surface: #1D1830;
+      --color-surface-2: #221C39;
+      --color-border: #342A54;
+      --color-border-strong: #453768;
+
+      --color-text: #F2F0FB;
+      --color-text-secondary: #B7B0D4;
+      --color-text-muted: #837CA0;
+      --color-on-primary: #1A1430;
+      --color-on-accent: #2B1200;
+
+      --color-success: #4ADE80;
+      --color-success-tint: #123322;
+      --color-warning: #F0B429;
+      --color-warning-tint: #3A2A0C;
+      --color-danger: #F1786D;
+      --color-danger-tint: #3A1512;
+      --color-info: #6FA8F5;
+      --color-info-tint: #132A4A;
+
+      --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+      --shadow-md: 0 6px 16px rgba(0,0,0,.45);
+      --shadow-lg: 0 16px 40px rgba(0,0,0,.55);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --color-primary: #9385F0;
+    --color-primary-hover: #A99DF5;
+    --color-primary-tint: #29234A;
+    --color-primary-tint-strong: #382F63;
+
+    --color-accent: #FF7D42;
+    --color-accent-hover: #FF9666;
+    --color-accent-tint: #3A2313;
+
+    --color-gold: #E0B23D;
+    --color-gold-tint: #3A2E12;
+
+    --color-bg-page: #14101F;
+    --color-surface: #1D1830;
+    --color-surface-2: #221C39;
+    --color-border: #342A54;
+    --color-border-strong: #453768;
+
+    --color-text: #F2F0FB;
+    --color-text-secondary: #B7B0D4;
+    --color-text-muted: #837CA0;
+    --color-on-primary: #1A1430;
+    --color-on-accent: #2B1200;
+
+    --color-success: #4ADE80;
+    --color-success-tint: #123322;
+    --color-warning: #F0B429;
+    --color-warning-tint: #3A2A0C;
+    --color-danger: #F1786D;
+    --color-danger-tint: #3A1512;
+    --color-info: #6FA8F5;
+    --color-info-tint: #132A4A;
+
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+    --shadow-md: 0 6px 16px rgba(0,0,0,.45);
+    --shadow-lg: 0 16px 40px rgba(0,0,0,.55);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--color-bg-page);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    direction: rtl;
+    text-align: right;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+  }
+  h1, h2, h3, h4 { text-wrap: balance; margin: 0; }
+  p { margin: 0; }
+  ::selection { background: var(--color-primary-tint-strong); }
+
+  a { color: var(--color-primary); }
+  :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; border-radius: 4px; }
+
+  .page { max-width: 1240px; margin: 0 auto; padding: 28px 24px 96px; }
+
+  /* ---------- Header ---------- */
+  .masthead {
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+    flex-wrap: wrap;
+    padding-bottom: 28px; margin-bottom: 32px;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .brand-mark { width: 46px; height: 46px; flex: none; }
+  .brand-word { display: flex; flex-direction: column; gap: 2px; }
+  .brand-word .en {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 21px; font-weight: 700; letter-spacing: .5px;
+    direction: ltr; text-align: right;
+  }
+  .brand-word .en b { color: var(--color-gold); font-weight: 700; }
+  .brand-word .ar { font-size: 13px; color: var(--color-text-secondary); }
+
+  .meta-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .meta-chip {
+    font-size: 12.5px; color: var(--color-text-secondary);
+    background: var(--color-surface); border: 1px solid var(--color-border);
+    padding: 6px 12px; border-radius: var(--radius-full);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .intro { max-width: 68ch; margin-bottom: 40px; }
+  .intro .eyebrow { display: block; margin-bottom: 10px; }
+  .intro h1 { font-size: 32px; font-weight: 700; margin-bottom: 12px; }
+  .intro p { color: var(--color-text-secondary); font-size: 16px; }
+
+  .eyebrow {
+    direction: ltr; text-align: right; unicode-bidi: bidi-override;
+    font-family: Georgia, serif; font-size: 12px; font-weight: 700;
+    letter-spacing: 2.2px; text-transform: uppercase; color: var(--color-gold);
+  }
+
+  /* ---------- Layout: nav + content ---------- */
+  .layout { display: flex; gap: 40px; align-items: flex-start; }
+  .side-nav {
+    position: sticky; top: 24px; flex: none; width: 200px;
+    display: flex; flex-direction: column; gap: 2px;
+    padding-inline-start: 14px; border-inline-start: 1px solid var(--color-border);
+  }
+  .side-nav a {
+    color: var(--color-text-secondary); text-decoration: none; font-size: 13.5px;
+    padding: 7px 10px; border-radius: var(--radius-sm); transition: background .15s, color .15s;
+  }
+  .side-nav a:hover { background: var(--color-surface-2); color: var(--color-text); }
+  .side-nav a.active { color: var(--color-primary); background: var(--color-primary-tint); font-weight: 600; }
+  .content { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 64px; }
+
+  section { scroll-margin-top: 20px; }
+  .section-head { margin-bottom: 20px; }
+  .section-head h2 { font-size: 22px; font-weight: 700; margin-top: 6px; }
+  .section-head p { color: var(--color-text-secondary); font-size: 14.5px; margin-top: 6px; max-width: 62ch; }
+
+  .card {
+    background: var(--color-surface); border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);
+  }
+
+  /* ---------- Colors ---------- */
+  .swatch-group { margin-bottom: 22px; }
+  .swatch-group > .label { font-size: 13px; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 10px; }
+  .swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+  .swatch { border: 1px solid var(--color-border); border-radius: var(--radius-md); overflow: hidden; background: var(--color-surface); }
+  .swatch-fill { height: 64px; }
+  .swatch-info { padding: 10px 12px; }
+  .swatch-info .name { font-size: 13.5px; font-weight: 600; }
+  .swatch-info .hex { font-family: var(--font-mono); font-size: 12px; color: var(--color-text-secondary); direction: ltr; text-align: right; font-variant-numeric: tabular-nums; }
+  .swatch-info .use { font-size: 11.5px; color: var(--color-text-muted); margin-top: 4px; }
+
+  /* ---------- Typography ---------- */
+  .type-row { display: flex; align-items: baseline; gap: 24px; padding: 18px 0; border-bottom: 1px solid var(--color-border); flex-wrap: wrap; }
+  .type-row:last-child { border-bottom: none; }
+  .type-tag { flex: none; width: 120px; font-family: var(--font-mono); font-size: 11.5px; color: var(--color-text-muted); direction: ltr; text-align: right; padding-top: 4px; }
+  .type-sample { flex: 1; min-width: 240px; }
+  .t-h1 { font-size: 34px; font-weight: 700; }
+  .t-h2 { font-size: 24px; font-weight: 700; }
+  .t-h3 { font-size: 18px; font-weight: 700; }
+  .t-body { font-size: 15.5px; color: var(--color-text); max-width: 60ch; }
+  .t-caption { font-size: 12.5px; color: var(--color-text-secondary); }
+  .t-data { font-family: var(--font-mono); font-size: 20px; font-weight: 600; direction: ltr; text-align: right; font-variant-numeric: tabular-nums; }
+
+  /* ---------- Spacing / radius / shadow ---------- */
+  .scale-row { display: flex; align-items: center; gap: 16px; margin-bottom: 10px; }
+  .scale-row .tag { width: 56px; font-family: var(--font-mono); font-size: 12px; color: var(--color-text-secondary); flex: none; }
+  .scale-bar { height: 14px; background: var(--color-primary); border-radius: 4px; }
+  .demo-row { display: flex; gap: 18px; flex-wrap: wrap; }
+  .demo-box { width: 84px; height: 84px; background: var(--color-primary-tint); border: 1px solid var(--color-border-strong); display: flex; align-items: flex-end; justify-content: center; padding-bottom: 8px; font-size: 11.5px; color: var(--color-text-secondary); font-family: var(--font-mono); }
+  .shadow-demo { width: 140px; height: 90px; background: var(--color-surface); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--color-text-secondary); font-family: var(--font-mono); }
+
+  /* ---------- Buttons ---------- */
+  .btn-grid { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-body);
+    font-weight: 600; border-radius: var(--radius-sm); border: 1px solid transparent;
+    cursor: pointer; transition: background .15s, border-color .15s, color .15s, transform .1s;
+    font-size: 14.5px; padding: 10px 18px;
+  }
+  .btn:active { transform: translateY(1px); }
+  .btn.sm { font-size: 13px; padding: 6px 12px; }
+  .btn.lg { font-size: 16px; padding: 13px 24px; }
+  .btn-primary { background: var(--color-primary); color: var(--color-on-primary); }
+  .btn-primary:hover { background: var(--color-primary-hover); }
+  .btn-accent { background: var(--color-accent); color: var(--color-on-accent); }
+  .btn-accent:hover { background: var(--color-accent-hover); }
+  .btn-outline { background: transparent; border-color: var(--color-border-strong); color: var(--color-text); }
+  .btn-outline:hover { border-color: var(--color-primary); color: var(--color-primary); }
+  .btn-ghost { background: transparent; color: var(--color-text-secondary); }
+  .btn-ghost:hover { background: var(--color-surface-2); color: var(--color-text); }
+  .btn-danger { background: var(--color-danger); color: #fff; }
+  .btn-danger:hover { filter: brightness(1.08); }
+  .btn[disabled] { opacity: .45; cursor: not-allowed; }
+  .btn svg { width: 16px; height: 16px; flex: none; }
+
+  /* ---------- Form controls ---------- */
+  .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+  .field label { display: block; font-size: 13.5px; font-weight: 600; margin-bottom: 6px; }
+  .field .helper { font-size: 12px; color: var(--color-text-secondary); margin-top: 5px; }
+  .field .helper.error { color: var(--color-danger); }
+  .input, select.input {
+    width: 100%; font-family: var(--font-body); font-size: 14.5px; color: var(--color-text);
+    background: var(--color-surface); border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-sm); padding: 10px 12px; transition: border-color .15s, box-shadow .15s;
+  }
+  .input:focus, select.input:focus { border-color: var(--color-primary); box-shadow: 0 0 0 3px var(--color-primary-tint); outline: none; }
+  .input.error { border-color: var(--color-danger); }
+  .input.error:focus { box-shadow: 0 0 0 3px var(--color-danger-tint); }
+  .search-wrap { position: relative; }
+  .search-wrap svg { position: absolute; inset-inline-start: 12px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--color-text-muted); }
+  .search-wrap .input { padding-inline-start: 36px; }
+
+  .check-row { display: flex; align-items: center; gap: 9px; font-size: 14px; }
+  .check-row input[type="checkbox"], .check-row input[type="radio"] { width: 17px; height: 17px; accent-color: var(--color-primary); }
+
+  .switch { position: relative; display: inline-block; width: 42px; height: 24px; flex: none; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch .track { position: absolute; inset: 0; background: var(--color-border-strong); border-radius: var(--radius-full); transition: background .15s; }
+  .switch .track::before { content: ""; position: absolute; width: 18px; height: 18px; left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: transform .15s; box-shadow: var(--shadow-sm); }
+  .switch input:checked + .track { background: var(--color-primary); }
+  html[dir="rtl"] .switch input:checked + .track::before,
+  .switch input:checked + .track::before { transform: translateX(-18px); }
+
+  /* ---------- Badges ---------- */
+  .badge-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600;
+    padding: 5px 12px; border-radius: var(--radius-full); border: 1px solid transparent;
+  }
+  .badge .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex: none; }
+  .badge-success { background: var(--color-success-tint); color: var(--color-success); }
+  .badge-warning { background: var(--color-warning-tint); color: var(--color-warning); }
+  .badge-danger { background: var(--color-danger-tint); color: var(--color-danger); }
+  .badge-info { background: var(--color-info-tint); color: var(--color-info); }
+  .badge-neutral { background: var(--color-surface-2); color: var(--color-text-secondary); border-color: var(--color-border); }
+  .badge-gold { background: var(--color-gold-tint); color: var(--color-gold); }
+
+  /* ---------- Cards showcase ---------- */
+  .showcase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+  .stat-card { padding: 18px; display: flex; flex-direction: column; gap: 6px; }
+  .stat-card .stat-label { font-size: 13px; color: var(--color-text-secondary); }
+  .stat-card .stat-value { font-family: var(--font-mono); font-size: 25px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .stat-card .stat-delta { font-size: 12.5px; display: inline-flex; align-items: center; gap: 4px; width: fit-content; }
+  .stat-delta.up { color: var(--color-success); }
+  .stat-delta.warn { color: var(--color-warning); }
+
+  .product-card, .service-card { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .thumb { height: 96px; border-radius: var(--radius-md); background: linear-gradient(135deg, var(--color-primary-tint), var(--color-accent-tint)); display: flex; align-items: center; justify-content: center; }
+  .thumb svg { width: 34px; height: 34px; color: var(--color-primary); opacity: .55; }
+  .product-card .title, .service-card .title { font-size: 15px; font-weight: 700; }
+  .product-card .sub, .service-card .sub { font-size: 12.5px; color: var(--color-text-secondary); }
+  .card-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; }
+  .price { font-family: var(--font-mono); font-weight: 700; font-size: 15px; direction: ltr; text-align: right; }
+
+  /* ---------- Table ---------- */
+  .table-wrap { overflow-x: auto; border: 1px solid var(--color-border); border-radius: var(--radius-lg); }
+  table { width: 100%; border-collapse: collapse; min-width: 640px; font-size: 14px; }
+  thead th { text-align: right; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); background: var(--color-surface-2); padding: 11px 16px; border-bottom: 1px solid var(--color-border); white-space: nowrap; }
+  tbody td { padding: 12px 16px; border-bottom: 1px solid var(--color-border); vertical-align: middle; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: var(--color-surface-2); }
+  td.num, th.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; direction: ltr; text-align: right; }
+  .cell-person { display: flex; align-items: center; gap: 10px; }
+  .avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--color-primary-tint); color: var(--color-primary); font-size: 12.5px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex: none; }
+
+  /* ---------- Sidebar nav mock ---------- */
+  .nav-mock-frame { display: flex; border: 1px solid var(--color-border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); }
+  .nav-mock { width: 232px; background: var(--color-surface); border-inline-start: 1px solid var(--color-border); padding: 16px 12px; display: flex; flex-direction: column; gap: 3px; flex: none; }
+  .nav-mock .nav-brand { display: flex; align-items: center; gap: 9px; padding: 6px 8px 16px; font-weight: 700; font-size: 14px; }
+  .nav-mock .nav-brand svg { width: 24px; height: 24px; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: var(--radius-sm); font-size: 13.5px; color: var(--color-text-secondary); }
+  .nav-item svg { width: 18px; height: 18px; flex: none; }
+  .nav-item.active { background: var(--color-primary-tint); color: var(--color-primary); font-weight: 600; }
+  .nav-item .count { margin-inline-start: auto; background: var(--color-accent); color: #fff; font-size: 10.5px; font-weight: 700; padding: 1px 6px; border-radius: var(--radius-full); }
+  .nav-mock-body { flex: 1; background: var(--color-bg-page); padding: 26px; display: flex; align-items: center; justify-content: center; color: var(--color-text-muted); font-size: 13px; min-height: 260px; }
+
+  /* ---------- Alerts ---------- */
+  .alert { display: flex; gap: 12px; padding: 13px 16px; border-radius: var(--radius-md); border-inline-start: 3px solid; font-size: 13.5px; }
+  .alert svg { width: 18px; height: 18px; flex: none; margin-top: 1px; }
+  .alert .t { font-weight: 700; margin-bottom: 2px; }
+  .alert-success { background: var(--color-success-tint); color: var(--color-success); border-color: var(--color-success); }
+  .alert-warning { background: var(--color-warning-tint); color: var(--color-warning); border-color: var(--color-warning); }
+  .alert-danger { background: var(--color-danger-tint); color: var(--color-danger); border-color: var(--color-danger); }
+  .alert-info { background: var(--color-info-tint); color: var(--color-info); border-color: var(--color-info); }
+  .alert-stack { display: flex; flex-direction: column; gap: 10px; }
+
+  /* ---------- Modal demo ---------- */
+  .modal-backdrop { position: fixed; inset: 0; background: rgba(20,16,31,.55); display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity .18s; z-index: 50; }
+  .modal-backdrop.open { opacity: 1; pointer-events: auto; }
+  .modal { background: var(--color-surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); width: 100%; max-width: 420px; padding: 22px; transform: translateY(8px) scale(.98); transition: transform .18s; }
+  .modal-backdrop.open .modal { transform: translateY(0) scale(1); }
+  .modal h3 { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+  .modal .sub { font-size: 13px; color: var(--color-text-secondary); margin-bottom: 18px; }
+  .modal .fields { display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px; }
+  .modal .actions { display: flex; gap: 10px; justify-content: flex-end; }
+
+  footer.credits { margin-top: 72px; padding-top: 24px; border-top: 1px solid var(--color-border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: 12.5px; color: var(--color-text-muted); }
+
+  @media (max-width: 880px) {
+    .layout { flex-direction: column; }
+    .side-nav { position: static; width: 100%; flex-direction: row; overflow-x: auto; border-inline-start: none; border-bottom: 1px solid var(--color-border); padding-bottom: 12px; }
+  }
+</style>
+
+<div class="page">
+
+  <header class="masthead">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true">
+        <defs>
+          <linearGradient id="petalGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#261A66"/>
+            <stop offset="1" stop-color="#EF5F18"/>
+          </linearGradient>
+        </defs>
+        <g transform="translate(24,24)">
+          <g><ellipse cx="0" cy="-13" rx="7" ry="11" fill="url(#petalGrad)"/></g>
+          <g transform="rotate(72)"><ellipse cx="0" cy="-13" rx="7" ry="11" fill="url(#petalGrad)" opacity=".92"/></g>
+          <g transform="rotate(144)"><ellipse cx="0" cy="-13" rx="7" ry="11" fill="url(#petalGrad)" opacity=".84"/></g>
+          <g transform="rotate(216)"><ellipse cx="0" cy="-13" rx="7" ry="11" fill="url(#petalGrad)" opacity=".76"/></g>
+          <g transform="rotate(288)"><ellipse cx="0" cy="-13" rx="7" ry="11" fill="url(#petalGrad)" opacity=".68"/></g>
+          <circle cx="0" cy="0" r="6" fill="#AB7400"/>
+        </g>
+      </svg>
+      <div class="brand-word">
+        <div class="en"><b>Beauty</b> House</div>
+        <div class="ar">نظام إدارة محلات التجميل والكوزماتيك</div>
+      </div>
+    </div>
+    <div class="meta-chips">
+      <span class="meta-chip">نظام تصميم — نسخة 1.0</span>
+      <span class="meta-chip">تطبيق ويب</span>
+      <span class="meta-chip">فرع واحد</span>
+      <span class="meta-chip">آخر تحديث: 21 سبتمبر 2026</span>
+    </div>
+  </header>
+
+  <div class="intro">
+    <span class="eyebrow">Foundations</span>
+    <h1>دليل الهوية والمكونات</h1>
+    <p>
+      هذا الدليل يجمع الألوان والخطوط والمكونات الأساسية التي سيُبنى عليها نظام Beauty House —
+      نقطة البيع والمخزون، الحجوزات والخدمات، ولوحة التقارير. الهدف أن تبدو كل شاشة قادمة
+      وكأنها من نفس النظام: نفس الألوان، نفس المسافات، ونفس سلوك المكونات.
+    </p>
+  </div>
+
+  <div class="layout">
+    <nav class="side-nav" id="sideNav">
+      <a href="#colors">الألوان</a>
+      <a href="#type">الخطوط</a>
+      <a href="#spacing">المسافات والظلال</a>
+      <a href="#buttons">الأزرار</a>
+      <a href="#forms">حقول الإدخال</a>
+      <a href="#badges">الشارات</a>
+      <a href="#cards">البطاقات</a>
+      <a href="#table">الجدول</a>
+      <a href="#nav-sample">التنقل الجانبي</a>
+      <a href="#alerts">التنبيهات</a>
+      <a href="#modal">نافذة منبثقة</a>
+    </nav>
+
+    <main class="content">
+
+      <!-- COLORS -->
+      <section id="colors">
+        <div class="section-head">
+          <span class="eyebrow">Color</span>
+          <h2>نظام الألوان</h2>
+          <p>الأرجواني هو لون الثقة والهوية، البرتقالي هو لون الفعل والدعوة لاتخاذ إجراء، والذهبي يُستخدم بحرص للمس اللمسات المميزة فقط.</p>
+        </div>
+
+        <div class="swatch-group">
+          <div class="label">الأساسي — للعناوين، التنقل، والعناصر المهيمنة</div>
+          <div class="swatch-grid">
+            <div class="swatch"><div class="swatch-fill" style="background:var(--color-primary)"></div><div class="swatch-info"><div class="name">Primary</div><div class="hex">#261A66</div><div class="use">أزرار رئيسية، شريط تنقل، عناوين</div></div></div>
+            <div class="swatch"><div class="swatch-fill" style="background:var(--color-primary-hover)"></div><div class="swatch-info"><div class="name">Primary Hover</div><div class="hex">#1B1249</div><div class="use">حالة التمرير على العناصر الأساسية</div></div></div>
+            <div class="swatch"><div class="swatch-fill" style="background:var(--color-primary-tint)"></div><div class="swatch-info"><div class="name">Primary Tint</div><div class="hex">#EEEBFA</div><div class="use">خلفيات محددة، عنصر تنقل نشط</div></div></div>
+          </div>
+        </div>
+
+        <div class="swatch-group">
+          <div class="label">التفاعلي — للدعوات لاتخاذ إجراء والتمييز</div>
+          <div class="swatch-grid">
+            <div class="swatch"><div class="swatch-fill" style="background:var(--color-accent)"></div><div class="swatch-info"><div class="name">Accent</div><div class="hex">#EF5F18</div><div class="use">زر الحجز، إضافة عنصر، تنبيه انتباه</div></div></div>
+            <div class="swatch"><div class="swatch-fill" style="background:var(--color-accent-hover)"></div><div class="swatch-info"><div class="name">Accent Hover</div><div class="hex">#D14E0E</div><div class="use">حالة التمرير على الأزرار البرتقالية</div></div></div>
+            <div class="swatch"><div class="swatch-fill" style="background:var(--color-gold)"></div><div class="swatch-info"><div class="name">Gold</div><div class="hex">#AB7400</div><div class="use">شعار، لمسات فاخرة — بلا إفراط</div></div></div>
+          </div>
+        </div>
+
+        <div class="swatch-group">
+          <div class="label">المحايدة — للخلفيات والنصوص</div>
+          <div class="swatch-grid">
+            <div class="swatch"><div class="swatch-fill" style="background:var(--color-bg-page); border-bottom:1px solid var(--color-border)"></div><div class="swatch-info"><div class="name">Page Background</div><div class="hex">#F8F8FA</div><div class="use">خلفية الصفحة العامة</div></div></div>
+            <div class="swatch"><div class="swatch-fill" style="background:var(--color-surface); border-bottom:1px solid var(--color-border)"></div><div class="swatch-info"><div class="name">Surface</div><div class="hex">#FFFFFF</div><div class="use">البطاقات والجداول والنوافذ</div></div></div>
+            <div class="swatch"><div class="swatch-fill" style="background:var(--color-text)"></div><div class="swatch-info"><div class="name">Text Primary</div><div class="hex">#1E1E2D</div><div class="use">النصوص الأساسية</div></div></div>
+            <div class="swatch"><div class="swatch-fill" style="background:var(--color-text-secondary)"></div><div class="swatch-info"><div class="name">Text Secondary</div><div class="hex">#6B7280</div><div class="use">أوصاف، تسميات ثانوية</div></div></div>
+          </div>
+        </div>
+
+        <div class="swatch-group">
+          <div class="label">الدلالية — لحالة العناصر والتنبيهات</div>
+          <div class="swatch-grid">
+            <div class="swatch"><div class="swatch-fill" style="background:var(--color-success)"></div><div class="swatch-info"><div class="name">Success</div><div class="hex">#16A34A</div><div class="use">تم التأكيد، متوفر بالمخزون</div></div></div>
+            <div class="swatch"><div class="swatch-fill" style="background:var(--color-warning)"></div><div class="swatch-info"><div class="name">Warning</div><div class="hex">#9A5B0C</div><div class="use">مخزون منخفض، قيد الانتظار</div></div></div>
+            <div class="swatch"><div class="swatch-fill" style="background:var(--color-danger)"></div><div class="swatch-info"><div class="name">Danger</div><div class="hex">#C0362C</div><div class="use">إلغاء، نفذ من المخزون</div></div></div>
+            <div class="swatch"><div class="swatch-fill" style="background:var(--color-info)"></div><div class="swatch-info"><div class="name">Info</div><div class="hex">#1D5FC2</div><div class="use">إشعارات عامة، ملاحظات</div></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TYPE -->
+      <section id="type">
+        <div class="section-head">
+          <span class="eyebrow">Typography</span>
+          <h2>الخطوط والتدرج النصي</h2>
+          <p>خط النظام (Segoe UI) لدعم عربي موثوق على كل الأجهزة، مع خط أحادي المسافة للأرقام والأسعار كي تصطف بدقة في الجداول.</p>
+        </div>
+        <div class="card" style="padding: 8px 22px;">
+          <div class="type-row"><div class="type-tag">H1 / 34</div><div class="type-sample t-h1">إدارة محلك بذكاء وسهولة</div></div>
+          <div class="type-row"><div class="type-tag">H2 / 24</div><div class="type-sample t-h2">حجوزات اليوم</div></div>
+          <div class="type-row"><div class="type-tag">H3 / 18</div><div class="type-sample t-h3">تفاصيل المنتج</div></div>
+          <div class="type-row"><div class="type-tag">Body / 15.5</div><div class="type-sample t-body">تُستخدم هذه الفقرة في الأوصاف الطويلة مثل ملاحظات العميلة أو تفاصيل الخدمة، بعرض قراءة مريح لا يتجاوز طول السطر المعتاد.</div></div>
+          <div class="type-row"><div class="type-tag">Caption / 12.5</div><div class="type-sample t-caption">آخر تحديث للمخزون: قبل 4 دقائق</div></div>
+          <div class="type-row"><div class="type-tag">Data / mono</div><div class="type-sample t-data">3,240.00 ر.س</div></div>
+          <div class="type-row"><div class="type-tag">Eyebrow</div><div class="type-sample"><span class="eyebrow">Inventory</span></div></div>
+        </div>
+      </section>
+
+      <!-- SPACING -->
+      <section id="spacing">
+        <div class="section-head">
+          <span class="eyebrow">Layout</span>
+          <h2>المسافات، الزوايا، والظلال</h2>
+          <p>مقياس مسافات ثابت بمضاعفات 4px يحافظ على إيقاع بصري متسق بين كل الشاشات.</p>
+        </div>
+        <div class="card" style="padding:22px; display:flex; flex-direction:column; gap:28px;">
+          <div>
+            <div class="t-caption" style="margin-bottom:10px;">مقياس المسافة</div>
+            <div class="scale-row"><span class="tag">4</span><div class="scale-bar" style="width:4px"></div></div>
+            <div class="scale-row"><span class="tag">8</span><div class="scale-bar" style="width:8px"></div></div>
+            <div class="scale-row"><span class="tag">12</span><div class="scale-bar" style="width:12px"></div></div>
+            <div class="scale-row"><span class="tag">16</span><div class="scale-bar" style="width:16px"></div></div>
+            <div class="scale-row"><span class="tag">24</span><div class="scale-bar" style="width:24px"></div></div>
+            <div class="scale-row"><span class="tag">32</span><div class="scale-bar" style="width:32px"></div></div>
+            <div class="scale-row"><span class="tag">48</span><div class="scale-bar" style="width:48px"></div></div>
+            <div class="scale-row"><span class="tag">64</span><div class="scale-bar" style="width:64px"></div></div>
+          </div>
+          <div>
+            <div class="t-caption" style="margin-bottom:10px;">الزوايا</div>
+            <div class="demo-row">
+              <div class="demo-box" style="border-radius:6px">sm / 6</div>
+              <div class="demo-box" style="border-radius:10px">md / 10</div>
+              <div class="demo-box" style="border-radius:16px">lg / 16</div>
+              <div class="demo-box" style="border-radius:999px">full</div>
+            </div>
+          </div>
+          <div>
+            <div class="t-caption" style="margin-bottom:10px;">الظلال</div>
+            <div class="demo-row">
+              <div class="shadow-demo" style="box-shadow:var(--shadow-sm)">shadow-sm</div>
+              <div class="shadow-demo" style="box-shadow:var(--shadow-md)">shadow-md</div>
+              <div class="shadow-demo" style="box-shadow:var(--shadow-lg)">shadow-lg</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BUTTONS -->
+      <section id="buttons">
+        <div class="section-head">
+          <span class="eyebrow">Components</span>
+          <h2>الأزرار</h2>
+          <p>البرتقالي محجوز لفعل واحد رئيسي في كل شاشة — الحجز، الإضافة، الدفع. البنفسجي للأفعال الثانوية المهمة.</p>
+        </div>
+        <div class="card" style="padding:22px; display:flex; flex-direction:column; gap:18px;">
+          <div class="btn-grid">
+            <button class="btn btn-primary">حفظ التغييرات</button>
+            <button class="btn btn-accent">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+              حجز موعد جديد
+            </button>
+            <button class="btn btn-outline">إلغاء</button>
+            <button class="btn btn-ghost">عرض التفاصيل</button>
+            <button class="btn btn-danger">حذف المنتج</button>
+            <button class="btn btn-primary" disabled>غير متاح</button>
+          </div>
+          <div class="btn-grid">
+            <button class="btn btn-primary sm">صغير</button>
+            <button class="btn btn-primary">متوسط</button>
+            <button class="btn btn-primary lg">كبير</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- FORMS -->
+      <section id="forms">
+        <div class="section-head">
+          <span class="eyebrow">Components</span>
+          <h2>حقول الإدخال</h2>
+          <p>حدود واضحة، حالة تركيز بلون العلامة، ورسائل مساعدة قصيرة تشرح ما هو متوقع.</p>
+        </div>
+        <div class="card" style="padding:22px;">
+          <div class="form-grid">
+            <div class="field">
+              <label>اسم العميلة</label>
+              <input class="input" placeholder="مثال: سارة أحمد" />
+              <div class="helper">كما سيظهر في سجل الحجوزات</div>
+            </div>
+            <div class="field">
+              <label>رقم الجوال</label>
+              <input class="input error" value="05" />
+              <div class="helper error">أدخلي رقم جوال صحيح مكوّن من 10 أرقام</div>
+            </div>
+            <div class="field">
+              <label>الخدمة</label>
+              <select class="input">
+                <option>قص وتصفيف شعر</option>
+                <option>مكياج سهرة</option>
+                <option>تنظيف بشرة عميق</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>بحث في المخزون</label>
+              <div class="search-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                <input class="input" placeholder="اسم المنتج أو الباركود" />
+              </div>
+            </div>
+          </div>
+          <div style="display:flex; gap:28px; margin-top:22px; flex-wrap:wrap;">
+            <label class="check-row"><input type="checkbox" checked /> إرسال تذكير قبل الموعد بساعة</label>
+            <label class="check-row"><input type="radio" name="pay" checked /> نقداً</label>
+            <label class="check-row"><input type="radio" name="pay" /> شبكة</label>
+            <label class="check-row"><span class="switch"><input type="checkbox" checked /><span class="track"></span></span> إشعارات المخزون المنخفض</label>
+          </div>
+        </div>
+      </section>
+
+      <!-- BADGES -->
+      <section id="badges">
+        <div class="section-head">
+          <span class="eyebrow">Components</span>
+          <h2>الشارات وحالات العناصر</h2>
+          <p>خلفية فاتحة ونص بلون الحالة نفسه — تمييز واضح دون صخب بصري، مع نقطة دالة لتمييز الشكل أيضاً لا اللون وحده.</p>
+        </div>
+        <div class="card" style="padding:22px; display:flex; flex-direction:column; gap:16px;">
+          <div>
+            <div class="t-caption" style="margin-bottom:8px;">حالة الحجز</div>
+            <div class="badge-grid">
+              <span class="badge badge-success"><span class="dot"></span> مؤكد</span>
+              <span class="badge badge-warning"><span class="dot"></span> قيد الانتظار</span>
+              <span class="badge badge-info"><span class="dot"></span> مكتمل</span>
+              <span class="badge badge-danger"><span class="dot"></span> ملغى</span>
+            </div>
+          </div>
+          <div>
+            <div class="t-caption" style="margin-bottom:8px;">حالة المخزون</div>
+            <div class="badge-grid">
+              <span class="badge badge-success"><span class="dot"></span> متوفر</span>
+              <span class="badge badge-warning"><span class="dot"></span> منخفض</span>
+              <span class="badge badge-danger"><span class="dot"></span> نفذ من المخزون</span>
+              <span class="badge badge-gold">★ الأكثر مبيعاً</span>
+              <span class="badge badge-neutral">موسمي</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CARDS -->
+      <section id="cards">
+        <div class="section-head">
+          <span class="eyebrow">Components</span>
+          <h2>البطاقات</h2>
+          <p>بطاقات المؤشرات لملخص لوحة التحكم، وبطاقات المنتج/الخدمة لواجهة نقطة البيع والحجوزات.</p>
+        </div>
+
+        <div class="showcase-grid" style="margin-bottom:16px;">
+          <div class="card stat-card">
+            <span class="stat-label">مبيعات اليوم</span>
+            <span class="stat-value">3,240 ر.س</span>
+            <span class="stat-delta up">▲ 12% عن أمس</span>
+          </div>
+          <div class="card stat-card">
+            <span class="stat-label">حجوزات اليوم</span>
+            <span class="stat-value">12</span>
+            <span class="stat-delta up">▲ حجزان جديدان</span>
+          </div>
+          <div class="card stat-card">
+            <span class="stat-label">عملاء جدد</span>
+            <span class="stat-value">5</span>
+            <span class="stat-delta up">▲ هذا الأسبوع</span>
+          </div>
+          <div class="card stat-card">
+            <span class="stat-label">تنبيهات المخزون</span>
+            <span class="stat-value">3</span>
+            <span class="stat-delta warn">● تحتاج إعادة طلب</span>
+          </div>
+        </div>
+
+        <div class="showcase-grid">
+          <div class="card service-card">
+            <div class="thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3v18M18 3v18M6 8h4M6 16h4M14 8h4M14 16h4"/></svg></div>
+            <div class="title">مكياج سهرة</div>
+            <div class="sub">45 دقيقة · مع رنا</div>
+            <div class="card-foot"><span class="price">180 ر.س</span><button class="btn btn-accent sm">حجز</button></div>
+          </div>
+          <div class="card product-card">
+            <div class="thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 3h6l1 4H8l1-4Z"/><path d="M6 7h12l-1 14H7L6 7Z"/></svg></div>
+            <div class="title">سيروم فيتامين سي</div>
+            <div class="sub">العناية بالبشرة · <span class="badge badge-warning" style="padding:2px 8px;">منخفض</span></div>
+            <div class="card-foot"><span class="price">129 ر.س</span><button class="btn btn-outline sm">أضف للفاتورة</button></div>
+          </div>
+          <div class="card product-card">
+            <div class="thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg></div>
+            <div class="title">كريم أساس طويل الثبات</div>
+            <div class="sub">مكياج · <span class="badge badge-success" style="padding:2px 8px;">متوفر</span></div>
+            <div class="card-foot"><span class="price">96 ر.س</span><button class="btn btn-outline sm">أضف للفاتورة</button></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TABLE -->
+      <section id="table">
+        <div class="section-head">
+          <span class="eyebrow">Components</span>
+          <h2>جدول الحجوزات</h2>
+          <p>محاذاة الأرقام والأوقات بخط أحادي المسافة لتسهيل المقارنة السريعة عند التمرير عبر القائمة.</p>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>العميلة</th>
+                <th>الخدمة</th>
+                <th>الموظفة</th>
+                <th class="num">الوقت</th>
+                <th>الحالة</th>
+                <th class="num">السعر</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div class="cell-person"><span class="avatar">سأ</span> سارة أحمد</div></td>
+                <td>قص وتصفيف شعر</td>
+                <td>منى</td>
+                <td class="num">10:30 ص</td>
+                <td><span class="badge badge-success"><span class="dot"></span> مؤكد</span></td>
+                <td class="num">120 ر.س</td>
+              </tr>
+              <tr>
+                <td><div class="cell-person"><span class="avatar">لع</span> لينا عبدالله</div></td>
+                <td>مكياج سهرة</td>
+                <td>رنا</td>
+                <td class="num">12:00 م</td>
+                <td><span class="badge badge-warning"><span class="dot"></span> قيد الانتظار</span></td>
+                <td class="num">180 ر.س</td>
+              </tr>
+              <tr>
+                <td><div class="cell-person"><span class="avatar">هم</span> هند مطر</div></td>
+                <td>تنظيف بشرة عميق</td>
+                <td>منى</td>
+                <td class="num">01:15 م</td>
+                <td><span class="badge badge-info"><span class="dot"></span> مكتمل</span></td>
+                <td class="num">220 ر.س</td>
+              </tr>
+              <tr>
+                <td><div class="cell-person"><span class="avatar">نخ</span> نورة خالد</div></td>
+                <td>صبغة وهايلايت</td>
+                <td>رنا</td>
+                <td class="num">03:45 م</td>
+                <td><span class="badge badge-danger"><span class="dot"></span> ملغى</span></td>
+                <td class="num">350 ر.س</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- NAV SAMPLE -->
+      <section id="nav-sample">
+        <div class="section-head">
+          <span class="eyebrow">Components</span>
+          <h2>نموذج التنقل الجانبي</h2>
+          <p>نموذج مصغّر لكيفية استخدام هذه المكونات معاً — سيكون القالب الأساسي لكل شاشات النظام القادمة.</p>
+        </div>
+        <div class="nav-mock-frame">
+          <nav class="nav-mock">
+            <div class="nav-brand">
+              <svg viewBox="0 0 48 48"><g transform="translate(24,24)"><g><ellipse cx="0" cy="-13" rx="7" ry="11" fill="#261A66"/></g><g transform="rotate(72)"><ellipse cx="0" cy="-13" rx="7" ry="11" fill="#EF5F18" opacity=".85"/></g><g transform="rotate(216)"><ellipse cx="0" cy="-13" rx="7" ry="11" fill="#261A66" opacity=".7"/></g><circle r="6" fill="#AB7400"/></g></svg>
+              Beauty House
+            </div>
+            <div class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg> لوحة التحكم</div>
+            <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="7" width="18" height="13" rx="1.5"/><path d="M8 7V5a4 4 0 0 1 8 0v2"/></svg> نقطة البيع</div>
+            <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 8h16M4 8l1 12h14l1-12M9 8V5h6v3"/></svg> المخزون</div>
+            <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="1.5"/><path d="M3 10h18M8 3v4M16 3v4"/></svg> الحجوزات <span class="count">3</span></div>
+            <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.2"/><path d="M5 20c1-4 4-6 7-6s6 2 7 6"/></svg> العميلات</div>
+            <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V9M11 19V5M18 19v-7"/></svg> التقارير</div>
+            <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14.3 3H9.7l-.3 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5a7 7 0 0 0 0 2.4l-2 1.5 2 3.4 2.3-.9a7 7 0 0 0 2 1.2l.3 2.6h4.6l.3-2.6a7 7 0 0 0 2-1.2l2.3.9 2-3.4-2-1.5c.07-.4.1-.8.1-1.2Z"/></svg> الإعدادات</div>
+          </nav>
+          <div class="nav-mock-body">منطقة محتوى الشاشة</div>
+        </div>
+      </section>
+
+      <!-- ALERTS -->
+      <section id="alerts">
+        <div class="section-head">
+          <span class="eyebrow">Components</span>
+          <h2>التنبيهات</h2>
+          <p>رسائل قصيرة ومباشرة — عنوان الحالة ثم جملة واحدة توضح الإجراء المطلوب إن وجد.</p>
+        </div>
+        <div class="alert-stack">
+          <div class="alert alert-success"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg><div><div class="t">تم تأكيد الحجز</div>سيصل تذكير للعميلة قبل الموعد بساعة.</div></div>
+          <div class="alert alert-warning"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3 2 20h20L12 3Z"/><path d="M12 10v4M12 17h.01"/></svg><div><div class="t">مخزون منخفض</div>سيروم فيتامين سي — تبقّت 4 قطع فقط.</div></div>
+          <div class="alert alert-danger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg><div><div class="t">تعذّر إتمام الدفع</div>تحققي من طريقة الدفع وأعيدي المحاولة.</div></div>
+          <div class="alert alert-info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M12 11v5"/></svg><div><div class="t">تحديث جديد</div>أُضيفت خاصية تقارير الأداء الأسبوعي.</div></div>
+        </div>
+      </section>
+
+      <!-- MODAL -->
+      <section id="modal">
+        <div class="section-head">
+          <span class="eyebrow">Components</span>
+          <h2>نافذة منبثقة — حجز جديد</h2>
+          <p>مثال تفاعلي فعلي، لتجربة الظل والحركة وسلوك الإغلاق (اضغطي خارج النافذة أو Esc).</p>
+        </div>
+        <button class="btn btn-accent" id="openModalBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+          فتح نافذة الحجز
+        </button>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="credits">
+    <span>Beauty House — نظام التصميم، أساس مشترك لكل شاشات لوحة التحكم، نقطة البيع، والحجوزات.</span>
+    <span>v1.0 · 2026</span>
+  </footer>
+</div>
+
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <h3 id="modalTitle">حجز موعد جديد</h3>
+    <div class="sub">أدخلي بيانات الحجز الأساسية</div>
+    <div class="fields">
+      <div class="field"><label>اسم العميلة</label><input class="input" placeholder="مثال: نورة خالد" /></div>
+      <div class="field"><label>الخدمة</label>
+        <select class="input">
+          <option>قص وتصفيف شعر</option>
+          <option>مكياج سهرة</option>
+          <option>تنظيف بشرة عميق</option>
+          <option>صبغة وهايلايت</option>
+        </select>
+      </div>
+      <div class="field"><label>التاريخ والوقت</label><input class="input" placeholder="اليوم، 04:30 م" /></div>
+    </div>
+    <div class="actions">
+      <button class="btn btn-ghost" id="closeModalBtn">إلغاء</button>
+      <button class="btn btn-accent">تأكيد الحجز</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var backdrop = document.getElementById('modalBackdrop');
+    var openBtn = document.getElementById('openModalBtn');
+    var closeBtn = document.getElementById('closeModalBtn');
+    function open() { backdrop.classList.add('open'); var f = backdrop.querySelector('.input'); if (f) f.focus(); }
+    function close() { backdrop.classList.remove('open'); }
+    openBtn.addEventListener('click', open);
+    closeBtn.addEventListener('click', close);
+    backdrop.addEventListener('click', function (e) { if (e.target === backdrop) close(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+
+    var links = Array.prototype.slice.call(document.querySelectorAll('#sideNav a'));
+    var sections = links.map(function (l) { return document.querySelector(l.getAttribute('href')); });
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          var i = sections.indexOf(entry.target);
+          if (i === -1) return;
+          if (entry.isIntersecting) {
+            links.forEach(function (l) { l.classList.remove('active'); });
+            links[i].classList.add('active');
+          }
+        });
+      }, { rootMargin: '-20% 0px -70% 0px' });
+      sections.forEach(function (s) { if (s) io.observe(s); });
+    }
+  })();
+</script>
+
+</body>
+</html>

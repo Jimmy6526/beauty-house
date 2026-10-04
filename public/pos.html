@@ -1,0 +1,928 @@
+<title>Beauty House Point of Sale</title>
+<style>
+  :root {
+    --font-body: "Segoe UI", Tahoma, "Segoe UI Arabic", Arial, sans-serif;
+    --font-mono: ui-monospace, "Cascadia Mono", Consolas, "SFMono-Regular", monospace;
+
+    --color-primary: #261A66;
+    --color-primary-hover: #1B1249;
+    --color-primary-tint: #EEEBFA;
+    --color-primary-tint-strong: #DAD2F4;
+
+    --color-accent: #EF5F18;
+    --color-accent-hover: #D14E0E;
+    --color-accent-tint: #FCE9DE;
+
+    --color-gold: #AB7400;
+    --color-gold-tint: #F6ECD8;
+
+    --color-bg-page: #F8F8FA;
+    --color-surface: #FFFFFF;
+    --color-surface-2: #FBFAFD;
+    --color-border: #E7E4F1;
+    --color-border-strong: #D3CDE6;
+
+    --color-text: #1E1E2D;
+    --color-text-secondary: #6B7280;
+    --color-text-muted: #9B98AC;
+    --color-on-primary: #FFFFFF;
+    --color-on-accent: #FFFFFF;
+
+    --color-success: #16A34A;
+    --color-success-tint: #E3F7E9;
+    --color-warning: #9A5B0C;
+    --color-warning-tint: #FBEEDC;
+    --color-danger: #C0362C;
+    --color-danger-tint: #FCE8E6;
+    --color-info: #1D5FC2;
+    --color-info-tint: #E6EEFC;
+
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-full: 999px;
+
+    --shadow-sm: 0 1px 2px rgba(38,26,102,.07), 0 1px 1px rgba(38,26,102,.05);
+    --shadow-md: 0 6px 16px rgba(38,26,102,.10), 0 2px 4px rgba(38,26,102,.06);
+    --shadow-lg: 0 16px 40px rgba(38,26,102,.16), 0 4px 10px rgba(38,26,102,.08);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --color-primary: #9385F0;
+      --color-primary-hover: #A99DF5;
+      --color-primary-tint: #29234A;
+      --color-primary-tint-strong: #382F63;
+
+      --color-accent: #FF7D42;
+      --color-accent-hover: #FF9666;
+      --color-accent-tint: #3A2313;
+
+      --color-gold: #E0B23D;
+      --color-gold-tint: #3A2E12;
+
+      --color-bg-page: #14101F;
+      --color-surface: #1D1830;
+      --color-surface-2: #221C39;
+      --color-border: #342A54;
+      --color-border-strong: #453768;
+
+      --color-text: #F2F0FB;
+      --color-text-secondary: #B7B0D4;
+      --color-text-muted: #837CA0;
+      --color-on-primary: #1A1430;
+      --color-on-accent: #2B1200;
+
+      --color-success: #4ADE80;
+      --color-success-tint: #123322;
+      --color-warning: #F0B429;
+      --color-warning-tint: #3A2A0C;
+      --color-danger: #F1786D;
+      --color-danger-tint: #3A1512;
+      --color-info: #6FA8F5;
+      --color-info-tint: #132A4A;
+
+      --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+      --shadow-md: 0 6px 16px rgba(0,0,0,.45);
+      --shadow-lg: 0 16px 40px rgba(0,0,0,.55);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --color-primary: #9385F0;
+    --color-primary-hover: #A99DF5;
+    --color-primary-tint: #29234A;
+    --color-primary-tint-strong: #382F63;
+
+    --color-accent: #FF7D42;
+    --color-accent-hover: #FF9666;
+    --color-accent-tint: #3A2313;
+
+    --color-gold: #E0B23D;
+    --color-gold-tint: #3A2E12;
+
+    --color-bg-page: #14101F;
+    --color-surface: #1D1830;
+    --color-surface-2: #221C39;
+    --color-border: #342A54;
+    --color-border-strong: #453768;
+
+    --color-text: #F2F0FB;
+    --color-text-secondary: #B7B0D4;
+    --color-text-muted: #837CA0;
+    --color-on-primary: #1A1430;
+    --color-on-accent: #2B1200;
+
+    --color-success: #4ADE80;
+    --color-success-tint: #123322;
+    --color-warning: #F0B429;
+    --color-warning-tint: #3A2A0C;
+    --color-danger: #F1786D;
+    --color-danger-tint: #3A1512;
+    --color-info: #6FA8F5;
+    --color-info-tint: #132A4A;
+
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+    --shadow-md: 0 6px 16px rgba(0,0,0,.45);
+    --shadow-lg: 0 16px 40px rgba(0,0,0,.55);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    background: var(--color-bg-page);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    direction: rtl;
+    text-align: right;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,h2,h3,h4 { margin: 0; text-wrap: balance; }
+  p { margin: 0; }
+  button, input, select { font-family: var(--font-body); }
+  :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; border-radius: 4px; }
+  ::selection { background: var(--color-primary-tint-strong); }
+
+  .card {
+    background: var(--color-surface); border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);
+  }
+
+  /* ---------------- App shell ---------------- */
+  .app-shell { display: flex; height: 100vh; overflow: hidden; }
+
+  .sidebar {
+    width: 236px; flex: none; height: 100vh;
+    background: var(--color-surface); border-inline-start: 1px solid var(--color-border);
+    display: flex; flex-direction: column; padding: 20px 14px;
+  }
+  .sb-brand { display: flex; align-items: center; gap: 10px; padding: 6px 10px 4px; text-decoration: none; color: inherit; }
+  .sb-brand svg, .sb-brand img { width: 28px; height: 28px; flex: none; }
+  .sb-brand .name { font-family: Georgia, serif; font-weight: 700; font-size: 15px; direction: ltr; text-align: right; }
+  .sb-brand .name b { color: var(--color-gold); }
+  .sb-branch { margin: 8px 10px 20px; font-size: 11.5px; color: var(--color-text-secondary); display: flex; align-items: center; gap: 6px; }
+  .sb-branch .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--color-success); }
+
+  .nav-item {
+    display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: var(--radius-sm);
+    font-size: 13.5px; color: var(--color-text-secondary); text-decoration: none; position: relative;
+    transition: background .15s, color .15s;
+  }
+  .nav-item svg { width: 18px; height: 18px; flex: none; }
+  .nav-item:hover { background: var(--color-surface-2); color: var(--color-text); }
+  .nav-item.active { background: var(--color-primary-tint); color: var(--color-primary); font-weight: 600; }
+  .nav-item.disabled { opacity: .5; cursor: not-allowed; }
+  .nav-item.disabled:hover { background: none; color: var(--color-text-secondary); }
+  .nav-item .count { margin-inline-start: auto; background: var(--color-accent); color: #fff; font-size: 10.5px; font-weight: 700; padding: 1px 6px; border-radius: var(--radius-full); }
+
+  .sb-footer { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--color-border); display: flex; align-items: center; gap: 10px; }
+  .sb-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--color-primary-tint); color: var(--color-primary); font-weight: 700; font-size: 13px; display: flex; align-items: center; justify-content: center; flex: none; }
+  .sb-user { min-width: 0; }
+  .sb-user .n { font-size: 13px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .sb-user .r { font-size: 11.5px; color: var(--color-text-secondary); }
+
+  .icon-btn {
+    width: 34px; height: 34px; border-radius: var(--radius-sm); border: 1px solid var(--color-border);
+    background: var(--color-surface); color: var(--color-text-secondary); display: flex; align-items: center; justify-content: center;
+    cursor: pointer; flex: none; position: relative;
+  }
+  .icon-btn svg { width: 16px; height: 16px; }
+  .icon-btn:hover { background: var(--color-surface-2); color: var(--color-text); }
+  .icon-btn .count-dot { position: absolute; top: -5px; left: -5px; background: var(--color-accent); color: #fff; font-size: 10px; font-weight: 700; min-width: 16px; height: 16px; border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; padding: 0 3px; border: 2px solid var(--color-surface); }
+
+  /* ---------------- Main / Topbar ---------------- */
+  .main { flex: 1; min-width: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+  .topbar {
+    flex: none; background: var(--color-surface); border-bottom: 1px solid var(--color-border);
+    display: flex; align-items: center; gap: 12px; padding: 14px 26px;
+  }
+  .topbar-title h1 { font-size: 17px; font-weight: 700; }
+  .topbar-title .sub { font-size: 12px; color: var(--color-text-secondary); margin-top: 2px; display: flex; align-items: center; gap: 6px; }
+  .topbar-title .sub .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--color-success); }
+  .topbar-spacer { flex: 1; }
+  .topbar-clock { display: flex; align-items: center; gap: 9px; padding: 7px 14px; border-radius: var(--radius-full); background: var(--color-surface-2); border: 1px solid var(--color-border); flex: none; }
+  .topbar-clock .ic { color: var(--color-primary); display: flex; flex: none; }
+  .topbar-clock .ic svg { width: 16px; height: 16px; }
+  .topbar-clock .txt { display: flex; flex-direction: column; line-height: 1.25; }
+  .topbar-clock .time { font-family: var(--font-mono); font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; direction: ltr; text-align: right; }
+  .topbar-clock .date { font-size: 10px; color: var(--color-text-secondary); white-space: nowrap; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; font-weight: 600;
+    border-radius: var(--radius-sm); border: 1px solid transparent; cursor: pointer;
+    transition: background .15s, border-color .15s, color .15s, transform .1s;
+    font-size: 14px; padding: 9px 16px; white-space: nowrap;
+  }
+  .btn:active { transform: translateY(1px); }
+  .btn svg { width: 16px; height: 16px; flex: none; }
+  .btn-primary { background: var(--color-primary); color: var(--color-on-primary); }
+  .btn-primary:hover { background: var(--color-primary-hover); }
+  .btn-accent { background: var(--color-accent); color: var(--color-on-accent); }
+  .btn-accent:hover { background: var(--color-accent-hover); }
+  .btn-accent[disabled] { opacity: .45; cursor: not-allowed; }
+  .btn-outline { background: transparent; border-color: var(--color-border-strong); color: var(--color-text); }
+  .btn-outline:hover { border-color: var(--color-primary); color: var(--color-primary); }
+  .btn-ghost { background: transparent; color: var(--color-text-secondary); }
+  .btn-ghost:hover { background: var(--color-surface-2); color: var(--color-text); }
+  .btn-danger-ghost { background: transparent; color: var(--color-danger); border-color: var(--color-danger-tint); }
+  .btn-danger-ghost:hover { background: var(--color-danger-tint); }
+  .btn-block { width: 100%; justify-content: center; }
+  .btn-sm { padding: 6px 11px; font-size: 12px; }
+
+  .input {
+    width: 100%; font-size: 13.5px; padding: 9px 12px; border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-sm); background: var(--color-surface); color: var(--color-text);
+  }
+  .input:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 3px var(--color-primary-tint); }
+
+  /* ---------------- POS layout ---------------- */
+  .pos-layout { flex: 1; display: flex; min-height: 0; }
+
+  /* ----- Catalog ----- */
+  .catalog-panel { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  .catalog-filters { flex: none; padding: 16px 24px 12px; background: var(--color-bg-page); display: flex; flex-direction: column; gap: 12px; border-bottom: 1px solid var(--color-border); }
+  .search-row { display: flex; gap: 10px; }
+  .search-wrap { position: relative; flex: 1; }
+  .search-wrap svg { position: absolute; inset-inline-start: 12px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--color-text-muted); }
+  .search-input {
+    width: 100%; font-size: 14px; padding: 10px 12px; padding-inline-start: 36px;
+    border: 1px solid var(--color-border-strong); border-radius: var(--radius-sm); background: var(--color-surface);
+    color: var(--color-text);
+  }
+  .search-input:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 3px var(--color-primary-tint); }
+
+  .chip-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; }
+  .chip {
+    flex: none; padding: 7px 16px; border-radius: var(--radius-full); font-size: 12.5px; font-weight: 600;
+    border: 1px solid var(--color-border-strong); color: var(--color-text-secondary); background: var(--color-surface);
+    cursor: pointer; white-space: nowrap; transition: background .15s, color .15s, border-color .15s;
+  }
+  .chip:hover { border-color: var(--color-primary); color: var(--color-primary); }
+  .chip.active { background: var(--color-primary); color: var(--color-on-primary); border-color: var(--color-primary); }
+
+  .catalog-grid-wrap { flex: 1; overflow-y: auto; padding: 18px 24px 32px; }
+  .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 14px; }
+
+  .tile {
+    position: relative; text-align: right; background: var(--color-surface); border: 1px solid var(--color-border);
+    border-radius: var(--radius-md); overflow: hidden; cursor: pointer; display: flex; flex-direction: column;
+    transition: box-shadow .15s, border-color .15s, transform .1s;
+  }
+  .tile:hover { box-shadow: var(--shadow-md); border-color: var(--color-border-strong); transform: translateY(-2px); }
+  .tile:active { transform: translateY(0); }
+  .tile-thumb { height: 92px; background: linear-gradient(135deg, var(--color-primary-tint), var(--color-accent-tint)); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .tile-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .tile-thumb svg { width: 30px; height: 30px; color: var(--color-primary); opacity: .5; }
+  .tile-body { padding: 10px 10px 12px; display: flex; flex-direction: column; gap: 6px; }
+  .tile .name { font-size: 12.5px; font-weight: 700; line-height: 1.35; min-height: 2.2em; }
+  .tile .foot { display: flex; align-items: center; justify-content: space-between; margin-top: 2px; gap: 6px; }
+  .tile .price { font-family: var(--font-mono); font-weight: 700; font-size: 13px; direction: ltr; text-align: right; font-variant-numeric: tabular-nums; }
+  .tile .stock-tag { font-size: 9.5px; font-weight: 700; padding: 2px 6px; border-radius: var(--radius-full); flex: none; }
+  .tile .stock-tag.low { background: var(--color-warning-tint); color: var(--color-warning); }
+  .tile .stock-tag.ok { background: var(--color-success-tint); color: var(--color-success); }
+  .tile .stock-tag.out { background: var(--color-danger-tint); color: var(--color-danger); }
+  .tile .in-cart-flag { position: absolute; top: 8px; left: 8px; background: var(--color-accent); color: #fff; font-size: 11px; font-weight: 700; min-width: 22px; height: 22px; border-radius: 50%; display: none; align-items: center; justify-content: center; box-shadow: var(--shadow-sm); font-variant-numeric: tabular-nums; z-index: 2; }
+  .tile.in-cart { border-color: var(--color-accent); }
+  .tile.in-cart .in-cart-flag { display: flex; }
+  .tile.out-of-stock { opacity: .5; cursor: not-allowed; }
+
+  .empty-catalog { grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--color-text-muted); }
+  .empty-catalog svg { width: 40px; height: 40px; opacity: .5; margin-bottom: 10px; }
+
+  /* ----- Cart panel ----- */
+  .cart-panel { width: 390px; flex: none; background: var(--color-surface); border-inline-start: 1px solid var(--color-border); display: flex; flex-direction: column; min-height: 0; }
+  .cart-head { flex: none; padding: 16px 18px; border-bottom: 1px solid var(--color-border); display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .cart-head h2 { font-size: 14.5px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+  .cart-head .badge-count { background: var(--color-primary-tint); color: var(--color-primary); font-size: 11.5px; font-weight: 700; padding: 2px 9px; border-radius: var(--radius-full); font-variant-numeric: tabular-nums; }
+
+  .customer-row { flex: none; padding: 12px 18px; border-bottom: 1px solid var(--color-border); display: flex; flex-direction: column; gap: 8px; }
+  .customer-row .row2 { display: flex; gap: 8px; }
+  .customer-row input { font-size: 13px; }
+
+  .cart-list { flex: 1; overflow-y: auto; padding: 4px 14px; min-height: 60px; }
+  .cart-item { display: flex; align-items: center; gap: 10px; padding: 11px 4px; border-bottom: 1px solid var(--color-border); }
+  .cart-item .thumb { width: 38px; height: 38px; border-radius: var(--radius-sm); background: var(--color-primary-tint); flex: none; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .cart-item .thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .cart-item .info { flex: 1; min-width: 0; }
+  .cart-item .info .n { font-size: 13px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cart-item .info .u { font-size: 11px; color: var(--color-text-secondary); font-family: var(--font-mono); direction: ltr; text-align: right; font-variant-numeric: tabular-nums; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .qty-stepper { display: flex; align-items: center; gap: 6px; flex: none; }
+  .qty-stepper button { width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--color-border-strong); background: var(--color-surface); color: var(--color-text); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px; line-height: 1; }
+  .qty-stepper button:hover { background: var(--color-surface-2); }
+  .qty-stepper .q { width: 18px; text-align: center; font-family: var(--font-mono); font-size: 13px; font-variant-numeric: tabular-nums; }
+  .cart-item .line-total { width: 62px; flex: none; text-align: left; font-family: var(--font-mono); font-weight: 700; font-size: 12.5px; direction: ltr; font-variant-numeric: tabular-nums; }
+  .cart-item .remove-btn { flex: none; width: 22px; height: 22px; border: none; background: none; color: var(--color-text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+  .cart-item .remove-btn:hover { background: var(--color-danger-tint); color: var(--color-danger); }
+  .cart-item .remove-btn svg { width: 14px; height: 14px; }
+
+  .cart-empty { padding: 40px 20px; text-align: center; color: var(--color-text-muted); font-size: 13px; display: none; flex-direction: column; align-items: center; gap: 10px; }
+  .cart-empty svg { width: 34px; height: 34px; opacity: .5; }
+
+  .cart-summary { flex: none; padding: 14px 18px; border-top: 1px solid var(--color-border); display: flex; flex-direction: column; gap: 7px; background: var(--color-surface-2); }
+  .sum-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--color-text-secondary); }
+  .sum-row .amt { font-family: var(--font-mono); direction: ltr; font-variant-numeric: tabular-nums; }
+  .sum-row.discount .amt { color: var(--color-success); }
+  .sum-row.total { font-size: 16.5px; font-weight: 700; color: var(--color-text); padding-top: 8px; border-top: 1px dashed var(--color-border-strong); margin-top: 2px; }
+  .sum-row.total .amt { font-size: 18.5px; }
+  .discount-input-wrap { width: 60px; padding: 3px 6px; font-size: 12px; direction: ltr; text-align: center; }
+
+  .pay-methods { flex: none; padding: 12px 18px 4px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .pay-btn { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 11px 4px; border-radius: var(--radius-md); border: 1.5px solid var(--color-border-strong); background: var(--color-surface); color: var(--color-text-secondary); cursor: pointer; font-size: 11px; font-weight: 700; transition: all .15s; }
+  .pay-btn svg { width: 19px; height: 19px; }
+  .pay-btn.active { border-color: var(--color-primary); background: var(--color-primary-tint); color: var(--color-primary); }
+
+  .cart-actions { flex: none; padding: 12px 18px 18px; display: flex; flex-direction: column; gap: 8px; }
+
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--color-success); color: #fff; padding: 12px 22px; border-radius: var(--radius-md); font-size: 13.5px; font-weight: 600; box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 8px; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; z-index: 60; }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .toast svg { width: 16px; height: 16px; }
+
+  /* ----- Invoice drawer ----- */
+  .drawer-backdrop { position: fixed; inset: 0; background: rgba(20,16,31,.5); opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 50; }
+  .drawer-backdrop.open { opacity: 1; pointer-events: auto; }
+  .drawer { position: fixed; top: 0; bottom: 0; left: 0; width: 460px; max-width: 92vw; background: var(--color-surface); box-shadow: var(--shadow-lg); transform: translateX(-100%); transition: transform .22s ease; display: flex; flex-direction: column; }
+  .drawer-backdrop.open .drawer { transform: translateX(0); }
+  .drawer-head { padding: 18px 20px; border-bottom: 1px solid var(--color-border); display: flex; align-items: center; justify-content: space-between; flex: none; }
+  .drawer-head h3 { font-size: 16px; font-weight: 700; }
+  .drawer-body { padding: 0; overflow-y: auto; flex: 1; }
+
+  .inv-row { padding: 13px 20px; border-bottom: 1px solid var(--color-border); display: flex; flex-direction: column; gap: 6px; }
+  .inv-row .top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .inv-row .num { font-family: var(--font-mono); font-weight: 700; font-size: 13px; }
+  .inv-row .cust { font-size: 12.5px; color: var(--color-text-secondary); }
+  .inv-row .amt { font-family: var(--font-mono); font-weight: 700; font-size: 14px; direction: ltr; }
+  .inv-row .meta { font-size: 11px; color: var(--color-text-muted); display: flex; gap: 10px; }
+  .inv-row .actions { display: flex; gap: 6px; margin-top: 4px; }
+  .badge { display: inline-flex; align-items: center; gap: 5px; font-size: 10.5px; font-weight: 700; padding: 3px 9px; border-radius: var(--radius-full); }
+  .badge .dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+  .badge-success { background: var(--color-success-tint); color: var(--color-success); }
+  .badge-danger { background: var(--color-danger-tint); color: var(--color-danger); }
+
+  @media (max-width: 1080px) {
+    .cart-panel { width: 330px; }
+  }
+</style>
+
+<div class="app-shell">
+
+  <aside class="sidebar">
+    <a class="sb-brand" href="dashboard.html">
+      <svg viewBox="0 0 48 48" aria-hidden="true">
+        <defs><linearGradient id="pgSb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#261A66"/><stop offset="1" stop-color="#EF5F18"/></linearGradient></defs>
+        <g transform="translate(24,24)">
+          <g><ellipse cx="0" cy="-13" rx="7" ry="11" fill="url(#pgSb)"/></g>
+          <g transform="rotate(72)"><ellipse cx="0" cy="-13" rx="7" ry="11" fill="url(#pgSb)" opacity=".9"/></g>
+          <g transform="rotate(144)"><ellipse cx="0" cy="-13" rx="7" ry="11" fill="url(#pgSb)" opacity=".82"/></g>
+          <g transform="rotate(216)"><ellipse cx="0" cy="-13" rx="7" ry="11" fill="url(#pgSb)" opacity=".74"/></g>
+          <g transform="rotate(288)"><ellipse cx="0" cy="-13" rx="7" ry="11" fill="url(#pgSb)" opacity=".66"/></g>
+          <circle r="6" fill="#AB7400"/>
+        </g>
+      </svg>
+      <span class="name"><b>Beauty</b> House</span>
+    </a>
+    <div class="sb-branch"><span class="dot"></span> الفرع الرئيسي — متصل</div>
+
+    <nav style="display:flex; flex-direction:column; gap:2px;">
+      <a class="nav-item" href="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg> لوحة التحكم</a>
+      <div class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="7" width="18" height="13" rx="1.5"/><path d="M8 7V5a4 4 0 0 1 8 0v2"/></svg> نقطة البيع</div>
+      <a class="nav-item" href="inventory.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 8h16M4 8l1 12h14l1-12M9 8V5h6v3"/></svg> المخزون</a>
+      <a class="nav-item" href="bookings.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="1.5"/><path d="M3 10h18M8 3v4M16 3v4"/></svg> الحجوزات</a>
+      <a class="nav-item" href="customers.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.2"/><path d="M5 20c1-4 4-6 7-6s6 2 7 6"/></svg> العميلات</a>
+      <a class="nav-item" href="reports.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V9M11 19V5M18 19v-7"/></svg> التقارير</a>
+      <a class="nav-item" href="settings.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14.3 3H9.7l-.3 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5a7 7 0 0 0 0 2.4l-2 1.5 2 3.4 2.3-.9a7 7 0 0 0 2 1.2l.3 2.6h4.6l.3-2.6a7 7 0 0 0 2-1.2l2.3.9 2-3.4-2-1.5c.07-.4.1-.8.1-1.2Z"/></svg> الإعدادات</a>
+    </nav>
+
+    <div class="sb-footer">
+      <div class="sb-avatar" id="sbAvatar">—</div>
+      <div class="sb-user">
+        <div class="n" id="sbUserName">—</div>
+        <div class="r">كاشير</div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title">
+        <h1>نقطة البيع</h1>
+        <div class="sub"><span class="dot"></span> فاتورة جديدة</div>
+      </div>
+      <div class="topbar-spacer"></div>
+      <div class="topbar-clock">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+        <div class="txt"><span class="time" id="clockTime">--:--:--</span><span class="date" id="clockDate"></span></div>
+      </div>
+      <button class="icon-btn" id="themeToggleBtn" title="تبديل المظهر" aria-label="تبديل المظهر"></button>
+      <button class="icon-btn" id="openInvoicesBtn" title="سجل الفواتير" aria-label="سجل الفواتير">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3Z"/><path d="M9 8h6M9 12h6"/></svg>
+        <span class="count-dot" id="invoiceCountDot" style="display:none;">0</span>
+      </button>
+    </div>
+
+    <div class="pos-layout">
+
+      <!-- CATALOG -->
+      <div class="catalog-panel">
+        <div class="catalog-filters">
+          <div class="search-row">
+            <div class="search-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+              <input class="search-input" id="productSearch" placeholder="ابحثي عن منتج بالاسم" />
+            </div>
+          </div>
+          <div class="chip-row" id="chipRow">
+            <button class="chip active" data-cat="الكل">الكل</button>
+          </div>
+        </div>
+
+        <div class="catalog-grid-wrap">
+          <div class="catalog-grid" id="catalogGrid"></div>
+        </div>
+      </div>
+
+      <!-- CART -->
+      <div class="cart-panel">
+        <div class="cart-head">
+          <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:17px;height:17px;"><rect x="3" y="7" width="18" height="13" rx="1.5"/><path d="M8 7V5a4 4 0 0 1 8 0v2"/></svg> سلة البيع</h2>
+          <span class="badge-count" id="cartCountBadge">0 صنف</span>
+        </div>
+
+        <div class="customer-row">
+          <input class="input" id="custName" placeholder="اسم العميلة (اختياري — عميلة نقدية)" list="knownCustomers" />
+          <datalist id="knownCustomers"></datalist>
+          <div class="row2">
+            <input class="input" id="custPhone" placeholder="رقم الجوال (اختياري)" style="direction:ltr; text-align:right;" />
+          </div>
+        </div>
+
+        <div class="cart-list" id="cartList"></div>
+        <div class="cart-empty" id="cartEmpty">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="7" width="18" height="13" rx="1.5"/><path d="M8 7V5a4 4 0 0 1 8 0v2"/></svg>
+          السلة فارغة — اضغطي على منتج لإضافته
+        </div>
+
+        <div class="cart-summary">
+          <div class="sum-row"><span>المجموع الفرعي</span><span class="amt" id="sumSubtotal">0.00</span></div>
+          <div class="sum-row discount"><span>نسبة الخصم ٪</span><input class="input discount-input-wrap" id="discountInput" type="number" min="0" max="100" value="0" /></div>
+          <div class="sum-row discount"><span>مبلغ الخصم</span><span class="amt" id="sumDiscount">-0.00</span></div>
+          <div class="sum-row" id="vatRow"><span id="vatLabel">الضريبة</span><span class="amt" id="sumVat">0.00</span></div>
+          <div class="sum-row total"><span>الإجمالي</span><span class="amt" id="sumTotal">0.00</span></div>
+        </div>
+
+        <div class="pay-methods" id="payMethods">
+          <button class="pay-btn active" data-pay="cash"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12h20M6 16h4"/><rect x="2" y="6" width="20" height="13" rx="2"/></svg> نقداً</button>
+          <button class="pay-btn" data-pay="bankak"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M8 15h3"/></svg> بنكك</button>
+          <button class="pay-btn" data-pay="ocash"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M9 18h6"/></svg> أوكاش</button>
+        </div>
+
+        <div class="cart-actions">
+          <button class="btn btn-accent btn-block" id="checkoutBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m8 12 3 3 5-6"/><circle cx="12" cy="12" r="9"/></svg>
+            <span id="checkoutBtnLabel">إتمام الدفع</span>
+          </button>
+          <button class="btn btn-ghost btn-block" id="cancelEditBtn" style="display:none;">إلغاء التعديل</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- INVOICES DRAWER -->
+<div class="drawer-backdrop" id="invoiceDrawerBackdrop">
+  <div class="drawer">
+    <div class="drawer-head">
+      <h3>سجل الفواتير</h3>
+      <button class="icon-btn" id="closeInvoicesBtn" aria-label="إغلاق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    </div>
+    <div class="drawer-body" id="invoiceListBody"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg><span id="toastMsg">تم إتمام العملية بنجاح</span></div>
+
+<script src="shared.js"></script>
+<script>
+  (function () {
+    var FALLBACK_ICON = {
+      'مشروبات باردة': '<path d="M6 3h12l-1.5 14a2 2 0 0 1-2 1.8H9.5a2 2 0 0 1-2-1.8L6 3Z"/><path d="M6 8h12"/>',
+      'عصائر': '<path d="M7 4h10l-1 15a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2L7 4Z"/><path d="M12 2v4"/>',
+      'سناكس': '<rect x="4" y="9" width="16" height="9" rx="2"/><path d="M4 9c0-3 3-5 8-5s8 2 8 5"/>',
+      'default': '<circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/>'
+    };
+
+    var items = [];
+    var cart = {};
+    var payMethod = 'cash';
+    var editingSaleId = null;
+
+    var cartList = document.getElementById('cartList');
+    var cartEmpty = document.getElementById('cartEmpty');
+    var checkoutBtn = document.getElementById('checkoutBtn');
+    var catalogGrid = document.getElementById('catalogGrid');
+
+    function fmt(n) { return BH.money(n); }
+
+    function thumbHtml(it) {
+      if (it.image_url) return '<img src="' + it.image_url + '" alt="" />';
+      return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">' + (FALLBACK_ICON[it.category] || FALLBACK_ICON.default) + '</svg>';
+    }
+
+    function stockTag(it) {
+      if (it.source !== 'product') return '';
+      if (it.quantity <= 0) return '<span class="stock-tag out">نفد</span>';
+      if (it.quantity <= it.reorder_threshold) return '<span class="stock-tag low">منخفض</span>';
+      return '<span class="stock-tag ok">متوفر</span>';
+    }
+
+    function renderCategoryChips() {
+      var cats = [];
+      items.forEach(function (it) { if (cats.indexOf(it.category) === -1) cats.push(it.category); });
+      var wrap = document.getElementById('chipRow');
+      wrap.innerHTML = '<button class="chip active" data-cat="الكل">الكل</button>';
+      cats.forEach(function (c) {
+        var b = document.createElement('button');
+        b.className = 'chip'; b.setAttribute('data-cat', c); b.textContent = c;
+        wrap.appendChild(b);
+      });
+    }
+
+    function renderCatalog() {
+      catalogGrid.innerHTML = '';
+      if (!items.length) {
+        catalogGrid.innerHTML =
+          '<div class="empty-catalog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="7" width="18" height="13" rx="1.5"/><path d="M8 7V5a4 4 0 0 1 8 0v2"/></svg>' +
+          '<div>لا توجد منتجات بعد — أضيفي أصناف الكافيه من الإعدادات، أو منتجات من المخزون</div></div>';
+        return;
+      }
+      items.forEach(function (it) {
+        var outOfStock = it.source === 'product' && it.quantity <= 0;
+        var tile = document.createElement('div');
+        tile.className = 'tile' + (outOfStock ? ' out-of-stock' : '');
+        tile.setAttribute('data-cat', it.category);
+        tile.setAttribute('data-id', it.uid);
+        tile.setAttribute('data-name', it.name);
+        tile.innerHTML =
+          '<span class="in-cart-flag">0</span>' +
+          '<div class="tile-thumb">' + thumbHtml(it) + '</div>' +
+          '<div class="tile-body"><div class="name">' + BH.esc(it.name) + '</div>' +
+          '<div class="foot"><span class="price">' + fmt(it.price) + '</span>' + stockTag(it) + '</div></div>';
+        catalogGrid.appendChild(tile);
+      });
+    }
+
+    function render() {
+      cartList.innerHTML = '';
+      var ids = Object.keys(cart);
+      cartEmpty.style.display = ids.length ? 'none' : 'flex';
+      document.getElementById('cartCountBadge').textContent = ids.reduce(function (s, id) { return s + cart[id].qty; }, 0) + ' صنف';
+
+      var subtotal = 0;
+      ids.forEach(function (id) {
+        var item = cart[id];
+        var lineTotal = item.price * item.qty;
+        subtotal += lineTotal;
+
+        var row = document.createElement('div');
+        row.className = 'cart-item';
+        row.innerHTML =
+          '<div class="thumb">' + (item.image_url ? '<img src="' + item.image_url + '" alt="" />' : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" style="width:18px;height:18px;color:var(--color-primary);"><circle cx="12" cy="12" r="8"/></svg>') + '</div>' +
+          '<div class="info"><div class="n">' + BH.esc(item.name) + '</div><div class="u">' + fmt(item.price) + ' / وحدة</div></div>' +
+          '<div class="qty-stepper">' +
+            '<button type="button" data-act="dec" data-id="' + id + '" aria-label="إنقاص الكمية">−</button>' +
+            '<span class="q">' + item.qty + '</span>' +
+            '<button type="button" data-act="inc" data-id="' + id + '" aria-label="زيادة الكمية">+</button>' +
+          '</div>' +
+          '<div class="line-total">' + lineTotal.toLocaleString('en-US') + '</div>' +
+          '<button type="button" class="remove-btn" data-act="remove" data-id="' + id + '" aria-label="حذف من السلة">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6 6 18"/></svg>' +
+          '</button>';
+        cartList.appendChild(row);
+      });
+
+      var discountPct = Number(document.getElementById('discountInput').value) || 0;
+      var vatRate = Number(window.__vatRate) || 0;
+      var discount = subtotal * (discountPct / 100);
+      var taxable = subtotal - discount;
+      var vat = taxable * (vatRate / 100);
+      var total = taxable + vat;
+
+      document.getElementById('sumSubtotal').textContent = fmt(subtotal);
+      document.getElementById('sumDiscount').textContent = '-' + fmt(discount);
+      document.getElementById('sumVat').textContent = fmt(vat);
+      document.getElementById('sumTotal').textContent = fmt(total);
+      document.getElementById('vatLabel').textContent = 'الضريبة (' + vatRate + '٪)';
+      document.getElementById('vatRow').style.display = vatRate > 0 ? 'flex' : 'none';
+      checkoutBtn.toggleAttribute('disabled', ids.length === 0);
+
+      document.querySelectorAll('.tile').forEach(function (tile) {
+        var id = tile.getAttribute('data-id');
+        var flag = tile.querySelector('.in-cart-flag');
+        if (cart[id]) {
+          tile.classList.add('in-cart');
+          flag.textContent = cart[id].qty;
+        } else {
+          tile.classList.remove('in-cart');
+          flag.textContent = '0';
+        }
+      });
+    }
+
+    catalogGrid.addEventListener('click', function (e) {
+      var tile = e.target.closest('.tile');
+      if (!tile || tile.classList.contains('out-of-stock')) return;
+      var id = tile.getAttribute('data-id');
+      var it = items.find(function (x) { return x.uid === id; });
+      if (!it) return;
+      if (cart[id]) { cart[id].qty += 1; }
+      else {
+        cart[id] = {
+          uid: id, name: it.name, price: it.price, qty: 1, image_url: it.image_url,
+          catalog_item_id: it.source === 'cafe' ? it.id : null,
+          product_id: it.source === 'product' ? it.id : null
+        };
+      }
+      render();
+    });
+
+    cartList.addEventListener('click', function (e) {
+      var btn = e.target.closest('button');
+      if (!btn) return;
+      var id = btn.getAttribute('data-id');
+      var act = btn.getAttribute('data-act');
+      if (!cart[id]) return;
+      if (act === 'inc') cart[id].qty += 1;
+      if (act === 'dec') { cart[id].qty -= 1; if (cart[id].qty <= 0) delete cart[id]; }
+      if (act === 'remove') delete cart[id];
+      render();
+    });
+
+    document.getElementById('discountInput').addEventListener('input', render);
+
+    document.getElementById('chipRow').addEventListener('click', function (e) {
+      var chip = e.target.closest('.chip');
+      if (!chip) return;
+      document.querySelectorAll('.chip').forEach(function (c) { c.classList.remove('active'); });
+      chip.classList.add('active');
+      var cat = chip.getAttribute('data-cat');
+      document.querySelectorAll('.tile').forEach(function (tile) {
+        tile.style.display = (cat === 'الكل' || tile.getAttribute('data-cat') === cat) ? '' : 'none';
+      });
+    });
+
+    document.getElementById('productSearch').addEventListener('input', function (e) {
+      var q = e.target.value.trim();
+      document.querySelectorAll('.chip').forEach(function (c) { c.classList.remove('active'); });
+      document.querySelector('.chip[data-cat="الكل"]').classList.add('active');
+      document.querySelectorAll('.tile').forEach(function (tile) {
+        var name = tile.getAttribute('data-name');
+        tile.style.display = (!q || name.indexOf(q) !== -1) ? '' : 'none';
+      });
+    });
+
+    document.querySelectorAll('.pay-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('.pay-btn').forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        payMethod = btn.getAttribute('data-pay');
+      });
+    });
+
+    function resetCartState() {
+      cart = {};
+      editingSaleId = null;
+      document.getElementById('custName').value = '';
+      document.getElementById('custPhone').value = '';
+      document.getElementById('discountInput').value = 0;
+      document.getElementById('checkoutBtnLabel').textContent = 'إتمام الدفع';
+      document.getElementById('cancelEditBtn').style.display = 'none';
+      render();
+    }
+    document.getElementById('cancelEditBtn').addEventListener('click', resetCartState);
+
+    checkoutBtn.addEventListener('click', async function () {
+      if (checkoutBtn.hasAttribute('disabled')) return;
+      var receiptWin = BH.openPrintWindow();
+      checkoutBtn.setAttribute('disabled', 'true');
+      var payload = {
+        customer_name: document.getElementById('custName').value.trim() || 'عميلة نقدية',
+        customer_phone: document.getElementById('custPhone').value.trim(),
+        save_customer: !!document.getElementById('custName').value.trim(),
+        payment_method: payMethod,
+        discount_pct: Number(document.getElementById('discountInput').value) || 0,
+        tax_pct: Number(window.__vatRate) || 0,
+        items: Object.keys(cart).map(function (id) {
+          var it = cart[id];
+          return { catalog_item_id: it.catalog_item_id, product_id: it.product_id, name: it.name, unit_price: it.price, qty: it.qty };
+        })
+      };
+      try {
+        var sale;
+        if (editingSaleId) sale = await BH.api('/api/sales/' + editingSaleId, { method: 'PUT', body: payload });
+        else sale = await BH.api('/api/sales', { method: 'POST', body: payload });
+
+        var wasEdit = !!editingSaleId;
+        showToast(wasEdit ? 'تم حفظ تعديلات الفاتورة' : 'تم إتمام العملية بنجاح');
+        printReceipt(sale, payload.items, receiptWin);
+        resetCartState();
+        loadItems();
+        loadInvoiceBadge();
+      } catch (err) {
+        if (receiptWin) receiptWin.close();
+        alert(err.message);
+      } finally {
+        checkoutBtn.removeAttribute('disabled');
+      }
+    });
+
+    /* ---------------- Receipt printing (80mm thermal) ---------------- */
+    var PAY_LABELS = { cash: 'نقداً', bankak: 'بنكك', ocash: 'أوكاش' };
+    function printReceipt(sale, saleItems, win) {
+      var s = BH.__settingsCache || {};
+      var rowsHtml = saleItems.map(function (it) {
+        return '<tr><td>' + BH.esc(it.name) + '</td><td class="c">' + it.qty + '</td><td class="c">' + it.unit_price.toLocaleString('en-US') + '</td><td class="c">' + (it.unit_price * it.qty).toLocaleString('en-US') + '</td></tr>';
+      }).join('');
+      var now = new Date();
+      var dateStr = now.toLocaleDateString('en-GB') + ' ' + now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+      var body =
+        '<div class="receipt">' +
+        (s.logo ? '<img class="logo" src="' + BH.esc(s.logo) + '" />' : '') +
+        '<div class="shop">' + BH.esc(s.shop_name || '') + '</div>' +
+        (s.branch_name ? '<div class="line1">' + BH.esc(s.branch_name) + '</div>' : '') +
+        (s.phone ? '<div class="line1">' + BH.esc(s.phone) + '</div>' : '') +
+        (s.address ? '<div class="line1">' + BH.esc(s.address) + '</div>' : '') +
+        '<div class="dash"></div>' +
+        '<div class="line1">فاتورة رقم #' + (1000 + sale.id) + '</div>' +
+        '<div class="line1">' + dateStr + '</div>' +
+        (BH.user ? '<div class="line1">الكاشير: ' + BH.esc(BH.user.name) + '</div>' : '') +
+        (sale.customer_name ? '<div class="line1">العميلة: ' + BH.esc(sale.customer_name) + '</div>' : '') +
+        '<div class="dash"></div>' +
+        '<table><thead><tr><th>الصنف</th><th class="c">كمية</th><th class="c">سعر</th><th class="c">إجمالي</th></tr></thead><tbody>' + rowsHtml + '</tbody></table>' +
+        '<div class="dash"></div>' +
+        '<div class="row"><span>المجموع الفرعي</span><span>' + Number(sale.subtotal).toLocaleString('en-US') + '</span></div>' +
+        (sale.discount ? '<div class="row"><span>الخصم</span><span>-' + Number(sale.discount).toLocaleString('en-US') + '</span></div>' : '') +
+        (sale.tax ? '<div class="row"><span>الضريبة</span><span>' + Number(sale.tax).toLocaleString('en-US') + '</span></div>' : '') +
+        '<div class="row total"><span>الإجمالي</span><span>' + Number(sale.total).toLocaleString('en-US') + ' ' + (s.currency_label || '') + '</span></div>' +
+        '<div class="dash"></div>' +
+        '<div class="line1">طريقة الدفع: ' + (PAY_LABELS[sale.payment_method] || sale.payment_method) + '</div>' +
+        '<div class="thanks">شكراً لزيارتكم</div>' +
+        '</div>';
+      var style =
+        '@page { size: 72.1mm 210mm; margin: 0; } ' +
+        'html { background: #ddd; } ' +
+        'body { width: 72.1mm; margin: 0 auto; font-family: Tahoma, "Segoe UI", sans-serif; font-size: 11.5px; direction: rtl; color: #000; } ' +
+        '.receipt { text-align: center; padding: 2mm 2.5mm; background: #fff; } ' +
+        '.logo { max-width: 34mm; max-height: 34mm; display: block; margin: 0 auto 6px; object-fit: contain; } ' +
+        '.shop { font-weight: 700; font-size: 15px; word-break: break-word; } .line1 { font-size: 11px; margin-top: 2px; word-break: break-word; } ' +
+        '.dash { border-top: 1px dashed #000; margin: 7px 0; } ' +
+        'table { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: 10.5px; text-align: right; } ' +
+        'th, td { padding: 2px 1px; overflow-wrap: break-word; word-break: break-word; } td:first-child, th:first-child { text-align: right; width: 40%; } .c { text-align: center; width: 20%; } ' +
+        '.row { display: flex; justify-content: space-between; gap: 6px; font-size: 11px; padding: 1px 0; } .row span:first-child { overflow-wrap: break-word; word-break: break-word; } ' +
+        '.row.total { font-weight: 700; font-size: 13px; border-top: 1px solid #000; margin-top: 4px; padding-top: 4px; } ' +
+        '.thanks { margin-top: 10px; font-size: 12px; font-weight: 600; } ' +
+        '@media print { html { background: #fff; } .receipt { padding: 1.5mm 2mm; } }';
+      BH.printHTML(body, style, win);
+    }
+
+    /* ---------------- Invoices drawer ---------------- */
+    var invBackdrop = document.getElementById('invoiceDrawerBackdrop');
+    function openInvoices() { invBackdrop.classList.add('open'); loadInvoices(); }
+    function closeInvoices() { invBackdrop.classList.remove('open'); }
+    document.getElementById('openInvoicesBtn').addEventListener('click', openInvoices);
+    document.getElementById('closeInvoicesBtn').addEventListener('click', closeInvoices);
+    invBackdrop.addEventListener('click', function (e) { if (e.target === invBackdrop) closeInvoices(); });
+
+    var invoicesCache = [];
+    async function loadInvoices() {
+      invoicesCache = await BH.api('/api/sales?limit=40');
+      var wrap = document.getElementById('invoiceListBody');
+      wrap.innerHTML = '';
+      if (!invoicesCache.length) {
+        wrap.innerHTML = '<div style="padding:30px 20px;color:var(--color-text-muted);font-size:13px;text-align:center;">لا توجد فواتير بعد</div>';
+        return;
+      }
+      invoicesCache.forEach(function (s) {
+        var cancelled = s.status === 'ملغاة';
+        var d = new Date(s.created_at.replace(' ', 'T') + 'Z');
+        var timeStr = d.toLocaleDateString('en-GB') + ' ' + d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+        var row = document.createElement('div');
+        row.className = 'inv-row';
+        row.innerHTML =
+          '<div class="top"><span class="num">فاتورة #' + (1000 + s.id) + '</span><span class="amt">' + fmt(s.total) + '</span></div>' +
+          '<div class="cust">' + BH.esc(s.customer_name || 'عميلة نقدية') + ' · ' + BH.esc(PAY_LABELS[s.payment_method] || s.payment_method) + '</div>' +
+          '<div class="meta"><span>' + timeStr + '</span><span class="badge ' + (cancelled ? 'badge-danger' : 'badge-success') + '"><span class="dot"></span>' + s.status + '</span></div>' +
+          '<div class="actions">' +
+            '<button class="btn btn-outline btn-sm" data-act="print" data-id="' + s.id + '">طباعة</button>' +
+            (!cancelled ? '<button class="btn btn-outline btn-sm" data-act="edit" data-id="' + s.id + '">تعديل</button>' : '') +
+            (!cancelled ? '<button class="btn btn-danger-ghost btn-sm" data-act="cancel" data-id="' + s.id + '">إلغاء</button>' : '') +
+            (cancelled && BH.isOwner() ? '<button class="btn btn-danger-ghost btn-sm" data-act="delete" data-id="' + s.id + '">حذف نهائي</button>' : '') +
+          '</div>';
+        wrap.appendChild(row);
+      });
+    }
+
+    document.getElementById('invoiceListBody').addEventListener('click', async function (e) {
+      var btn = e.target.closest('button');
+      if (!btn) return;
+      var id = btn.getAttribute('data-id');
+      var act = btn.getAttribute('data-act');
+
+      if (act === 'print') {
+        var printWin = BH.openPrintWindow();
+        var full = await BH.api('/api/sales/' + id);
+        printReceipt(full, full.items, printWin);
+        return;
+      }
+      if (act === 'edit') {
+        var full2 = await BH.api('/api/sales/' + id);
+        cart = {};
+        full2.items.forEach(function (it, idx) {
+          var uid = (it.catalog_item_id ? 'c' + it.catalog_item_id : 'p' + it.product_id) || ('x' + idx);
+          cart[uid] = { uid: uid, name: it.name, price: it.unit_price, qty: it.qty, image_url: null, catalog_item_id: it.catalog_item_id, product_id: it.product_id };
+        });
+        document.getElementById('custName').value = full2.customer_name && full2.customer_name !== 'عميلة نقدية' ? full2.customer_name : '';
+        document.getElementById('discountInput').value = full2.subtotal ? Math.round((full2.discount / full2.subtotal) * 100) : 0;
+        editingSaleId = full2.id;
+        document.getElementById('checkoutBtnLabel').textContent = 'حفظ تعديلات الفاتورة #' + (1000 + full2.id);
+        document.getElementById('cancelEditBtn').style.display = '';
+        render();
+        closeInvoices();
+        return;
+      }
+      if (act === 'cancel') {
+        if (!confirm('إلغاء هذه الفاتورة؟ سيتم إرجاع كميات المنتجات للمخزون.')) return;
+        await BH.api('/api/sales/' + id, { method: 'PUT', body: { status: 'ملغاة' } });
+        showToast('تم إلغاء الفاتورة', 'danger');
+        loadInvoices();
+        loadInvoiceBadge();
+        loadItems();
+        return;
+      }
+      if (act === 'delete') {
+        if (!confirm('حذف هذه الفاتورة نهائياً؟ لا يمكن التراجع.')) return;
+        await BH.api('/api/sales/' + id, { method: 'DELETE' });
+        showToast('تم حذف الفاتورة نهائياً', 'danger');
+        loadInvoices();
+        loadInvoiceBadge();
+        return;
+      }
+    });
+
+    async function loadInvoiceBadge() {
+      var list = await BH.api('/api/sales?limit=100');
+      var today = new Date().toISOString().slice(0, 10);
+      var count = list.filter(function (s) { return s.created_at.slice(0, 10) === today; }).length;
+      var dot = document.getElementById('invoiceCountDot');
+      if (count > 0) { dot.style.display = 'flex'; dot.textContent = count; } else { dot.style.display = 'none'; }
+    }
+
+    /* ---------------- Toast ---------------- */
+    var toast = document.getElementById('toast');
+    function showToast(msg, kind) {
+      document.getElementById('toastMsg').textContent = msg;
+      toast.style.background = kind === 'danger' ? 'var(--color-danger)' : 'var(--color-success)';
+      toast.classList.add('show');
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(function () { toast.classList.remove('show'); }, 2600);
+    }
+
+    /* ---------------- Load catalog (cafe items + retail products) ---------------- */
+    async function loadItems() {
+      var cafeItems = await BH.api('/api/items?type=cafe');
+      var products = await BH.api('/api/products');
+      var mapped = cafeItems.filter(function (i) { return i.active; }).map(function (i) {
+        return { uid: 'c' + i.id, id: i.id, source: 'cafe', name: i.name, category: i.category, price: i.price, image_url: i.image_url };
+      });
+      var mappedProducts = products.filter(function (p) { return p.active; }).map(function (p) {
+        return { uid: 'p' + p.id, id: p.id, source: 'product', name: p.name, category: p.category || 'أخرى', price: p.sell_price, image_url: p.image_url, quantity: p.quantity, reorder_threshold: p.reorder_threshold };
+      });
+      items = mapped.concat(mappedProducts);
+      renderCategoryChips();
+      renderCatalog();
+      render();
+    }
+
+    async function loadKnownCustomers() {
+      try {
+        var customers = await BH.api('/api/customers');
+        var dl = document.getElementById('knownCustomers');
+        dl.innerHTML = customers.map(function (c) { return '<option value="' + c.name + '">'; }).join('');
+      } catch (e) {}
+    }
+
+    (async function init() {
+      var user = await BH.requireAuth();
+      BH.initThemeToggle('themeToggleBtn');
+      BH.startClock('clockTime', 'clockDate');
+      document.getElementById('sbUserName').textContent = user.name;
+      document.getElementById('sbAvatar').textContent = BH.initials(user.name);
+      var settings = await BH.getSettings();
+      BH.__settingsCache = settings;
+      window.__vatRate = settings.vat_rate || '0';
+      await loadItems();
+      await loadKnownCustomers();
+      await loadInvoiceBadge();
+    })();
+  })();
+</script>

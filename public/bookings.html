@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Beauty House Bookings</title>
+</head>
+<body>
+<style>
+  :root {
+    --font-body: "Segoe UI", Tahoma, "Segoe UI Arabic", Arial, sans-serif;
+    --font-mono: ui-monospace, "Cascadia Mono", Consolas, "SFMono-Regular", monospace;
+
+    --color-primary: #261A66;
+    --color-primary-hover: #1B1249;
+    --color-primary-tint: #EEEBFA;
+    --color-primary-tint-strong: #DAD2F4;
+
+    --color-accent: #EF5F18;
+    --color-accent-hover: #D14E0E;
+    --color-accent-tint: #FCE9DE;
+
+    --color-gold: #AB7400;
+    --color-gold-tint: #F6ECD8;
+
+    --color-bg-page: #F8F8FA;
+    --color-surface: #FFFFFF;
+    --color-surface-2: #FBFAFD;
+    --color-border: #E7E4F1;
+    --color-border-strong: #D3CDE6;
+
+    --color-text: #1E1E2D;
+    --color-text-secondary: #6B7280;
+    --color-text-muted: #9B98AC;
+    --color-on-primary: #FFFFFF;
+    --color-on-accent: #FFFFFF;
+
+    --color-success: #16A34A;
+    --color-success-tint: #E3F7E9;
+    --color-warning: #9A5B0C;
+    --color-warning-tint: #FBEEDC;
+    --color-danger: #C0362C;
+    --color-danger-tint: #FCE8E6;
+    --color-info: #1D5FC2;
+    --color-info-tint: #E6EEFC;
+
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-full: 999px;
+
+    --shadow-sm: 0 1px 2px rgba(38,26,102,.07), 0 1px 1px rgba(38,26,102,.05);
+    --shadow-md: 0 6px 16px rgba(38,26,102,.10), 0 2px 4px rgba(38,26,102,.06);
+    --shadow-lg: 0 16px 40px rgba(38,26,102,.16), 0 4px 10px rgba(38,26,102,.08);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --color-primary: #9385F0;
+      --color-primary-hover: #A99DF5;
+      --color-primary-tint: #29234A;
+      --color-primary-tint-strong: #382F63;
+
+      --color-accent: #FF7D42;
+      --color-accent-hover: #FF9666;
+      --color-accent-tint: #3A2313;
+
+      --color-gold: #E0B23D;
+      --color-gold-tint: #3A2E12;
+
+      --color-bg-page: #14101F;
+      --color-surface: #1D1830;
+      --color-surface-2: #221C39;
+      --color-border: #342A54;
+      --color-border-strong: #453768;
+
+      --color-text: #F2F0FB;
+      --color-text-secondary: #B7B0D4;
+      --color-text-muted: #837CA0;
+      --color-on-primary: #1A1430;
+      --color-on-accent: #2B1200;
+
+      --color-success: #4ADE80;
+      --color-success-tint: #123322;
+      --color-warning: #F0B429;
+      --color-warning-tint: #3A2A0C;
+      --color-danger: #F1786D;
+      --color-danger-tint: #3A1512;
+      --color-info: #6FA8F5;
+      --color-info-tint: #132A4A;
+
+      --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+      --shadow-md: 0 6px 16px rgba(0,0,0,.45);
+      --shadow-lg: 0 16px 40px rgba(0,0,0,.55);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --color-primary: #9385F0;
+    --color-primary-hover: #A99DF5;
+    --color-primary-tint: #29234A;
+    --color-primary-tint-strong: #382F63;
+
+    --color-accent: #FF7D42;
+    --color-accent-hover: #FF9666;
+    --color-accent-tint: #3A2313;
+
+    --color-gold: #E0B23D;
+    --color-gold-tint: #3A2E12;
+
+    --color-bg-page: #14101F;
+    --color-surface: #1D1830;
+    --color-surface-2: #221C39;
+    --color-border: #342A54;
+    --color-border-strong: #453768;
+
+    --color-text: #F2F0FB;
+    --color-text-secondary: #B7B0D4;
+    --color-text-muted: #837CA0;
+    --color-on-primary: #1A1430;
+    --color-on-accent: #2B1200;
+
+    --color-success: #4ADE80;
+    --color-success-tint: #123322;
+    --color-warning: #F0B429;
+    --color-warning-tint: #3A2A0C;
+    --color-danger: #F1786D;
+    --color-danger-tint: #3A1512;
+    --color-info: #6FA8F5;
+    --color-info-tint: #132A4A;
+
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+    --shadow-md: 0 6px 16px rgba(0,0,0,.45);
+    --shadow-lg: 0 16px 40px rgba(0,0,0,.55);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    background: var(--color-bg-page);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    direction: rtl;
+    text-align: right;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,h2,h3,h4 { margin: 0; text-wrap: balance; }
+  p { margin: 0; }
+  button, select, input, textarea { font-family: var(--font-body); }
+  :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; border-radius: 4px; }
+  ::selection { background: var(--color-primary-tint-strong); }
+
+  /* ---------------- App shell ---------------- */
+  .app-shell { display: flex; height: 100vh; overflow: hidden; }
+
+  .sidebar {
+    width: 236px; flex: none; height: 100vh;
+    background: var(--color-surface); border-inline-start: 1px solid var(--color-border);
+    display: flex; flex-direction: column; padding: 20px 14px;
+  }
+  .sb-brand { display: flex; align-items: center; gap: 10px; padding: 6px 10px 4px; text-decoration: none; color: inherit; }
+  .sb-brand svg { width: 28px; height: 28px; flex: none; }
+  .sb-brand .name { font-family: Georgia, serif; font-weight: 700; font-size: 15px; direction: ltr; text-align: right; }
+  .sb-brand .name b { color: var(--color-gold); }
+  .sb-branch { margin: 8px 10px 20px; font-size: 11.5px; color: var(--color-text-secondary); display: flex; align-items: center; gap: 6px; }
+  .sb-branch .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--color-success); }
+
+  .nav-item {
+    display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: var(--radius-sm);
+    font-size: 13.5px; color: var(--color-text-secondary); text-decoration: none; position: relative;
+    transition: background .15s, color .15s;
+  }
+  .nav-item svg { width: 18px; height: 18px; flex: none; }
+  .nav-item:hover { background: var(--color-surface-2); color: var(--color-text); }
+  .nav-item.active { background: var(--color-primary-tint); color: var(--color-primary); font-weight: 600; }
+  .nav-item.disabled { opacity: .5; cursor: not-allowed; }
+  .nav-item.disabled:hover { background: none; color: var(--color-text-secondary); }
+  .nav-item .count { margin-inline-start: auto; background: var(--color-accent); color: #fff; font-size: 10.5px; font-weight: 700; padding: 1px 6px; border-radius: var(--radius-full); }
+
+  .sb-footer { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--color-border); display: flex; align-items: center; gap: 10px; }
+  .sb-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--color-primary-tint); color: var(--color-primary); font-weight: 700; font-size: 13px; display: flex; align-items: center; justify-content: center; flex: none; }
+  .sb-user { min-width: 0; }
+  .sb-user .n { font-size: 13px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .sb-user .r { font-size: 11.5px; color: var(--color-text-secondary); }
+
+  .icon-btn {
+    width: 32px; height: 32px; border-radius: var(--radius-sm); border: 1px solid var(--color-border);
+    background: var(--color-surface); color: var(--color-text-secondary); display: flex; align-items: center; justify-content: center;
+    cursor: pointer; flex: none;
+  }
+  .icon-btn svg { width: 15px; height: 15px; }
+  .icon-btn:hover { background: var(--color-surface-2); color: var(--color-text); }
+
+  /* ---------------- Main / Topbar ---------------- */
+  .main { flex: 1; min-width: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+  .topbar {
+    flex: none; background: var(--color-surface); border-bottom: 1px solid var(--color-border);
+    display: flex; align-items: center; gap: 10px 14px; padding: 14px 26px; flex-wrap: wrap;
+  }
+  .topbar-title { min-width: 0; }
+  .topbar-title h1 { font-size: 17px; font-weight: 700; }
+  @media (max-width: 1100px) { .topbar-clock { display: none; } }
+  @media (max-width: 720px) { .topbar { padding: 12px 14px; } .cards-view { padding: 14px; } .cal-toolbar { padding: 10px 14px; } .legend { display: none; } }
+  .topbar-title .sub { font-size: 12px; color: var(--color-text-secondary); margin-top: 2px; }
+  .topbar-title .sub b { color: var(--color-warning); font-weight: 700; }
+  .topbar-spacer { flex: 1; }
+  .topbar-clock { display: flex; align-items: center; gap: 9px; padding: 7px 14px; border-radius: var(--radius-full); background: var(--color-surface-2); border: 1px solid var(--color-border); flex: none; }
+  .topbar-clock .ic { color: var(--color-primary); display: flex; flex: none; }
+  .topbar-clock .ic svg { width: 16px; height: 16px; }
+  .topbar-clock .txt { display: flex; flex-direction: column; line-height: 1.25; }
+  .topbar-clock .time { font-family: var(--font-mono); font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; direction: ltr; text-align: right; }
+  .topbar-clock .date { font-size: 10px; color: var(--color-text-secondary); white-space: nowrap; }
+
+  .segmented { display: inline-flex; background: var(--color-surface-2); border: 1px solid var(--color-border); border-radius: var(--radius-full); padding: 3px; }
+  .segmented button { border: none; background: transparent; font-size: 12.5px; padding: 6px 15px; border-radius: var(--radius-full); color: var(--color-text-secondary); cursor: pointer; font-weight: 600; }
+  .segmented button.active { background: var(--color-surface); color: var(--color-primary); box-shadow: var(--shadow-sm); }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; font-weight: 600;
+    border-radius: var(--radius-sm); border: 1px solid transparent; cursor: pointer;
+    transition: background .15s, border-color .15s, color .15s, transform .1s;
+    font-size: 14px; padding: 9px 16px; white-space: nowrap;
+  }
+  .btn:active { transform: translateY(1px); }
+  .btn svg { width: 16px; height: 16px; flex: none; }
+  .btn-primary { background: var(--color-primary); color: var(--color-on-primary); }
+  .btn-primary:hover { background: var(--color-primary-hover); }
+  .btn-accent { background: var(--color-accent); color: var(--color-on-accent); }
+  .btn-accent:hover { background: var(--color-accent-hover); }
+  .btn-outline { background: transparent; border-color: var(--color-border-strong); color: var(--color-text); }
+  .btn-outline:hover { border-color: var(--color-primary); color: var(--color-primary); }
+  .btn-ghost { background: transparent; color: var(--color-text-secondary); }
+  .btn-ghost:hover { background: var(--color-surface-2); color: var(--color-text); }
+  .btn-danger-ghost { background: transparent; color: var(--color-danger); border-color: var(--color-danger-tint); }
+  .btn-danger-ghost:hover { background: var(--color-danger-tint); }
+
+  .input, select.input, textarea.input {
+    width: 100%; font-size: 13.5px; padding: 9px 12px; border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-sm); background: var(--color-surface); color: var(--color-text);
+  }
+  .input:focus, select.input:focus, textarea.input:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 3px var(--color-primary-tint); }
+
+  /* ---------------- Calendar toolbar ---------------- */
+  .cal-toolbar { flex: none; display: flex; align-items: center; gap: 16px; padding: 12px 26px; border-bottom: 1px solid var(--color-border); flex-wrap: wrap; background: var(--color-bg-page); }
+  .week-nav { display: flex; align-items: center; gap: 8px; }
+  .week-nav .range { font-size: 13.5px; font-weight: 700; min-width: 150px; text-align: center; font-variant-numeric: tabular-nums; }
+
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 6px 13px; border-radius: var(--radius-full); font-size: 12px; font-weight: 600; border: 1px solid var(--color-border-strong); color: var(--color-text-secondary); background: var(--color-surface); cursor: pointer; white-space: nowrap; }
+  .chip .sw { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+  .chip.active { background: var(--color-primary-tint); color: var(--color-primary); border-color: var(--color-primary-tint-strong); }
+  .staff-chips { display: flex; gap: 8px; }
+
+  .legend { display: flex; gap: 14px; font-size: 11.5px; color: var(--color-text-secondary); margin-inline-start: auto; }
+  .legend span { display: inline-flex; align-items: center; gap: 5px; }
+  .legend .sw { width: 8px; height: 8px; border-radius: 50%; }
+
+  /* ---------------- Calendar grid ---------------- */
+  .cal-scroll { flex: 1; overflow: auto; }
+  .cal-inner { min-width: 1080px; }
+  .cal-row { display: grid; grid-template-columns: 60px repeat(7, 1fr); }
+  .cal-header-row { position: sticky; top: 0; z-index: 15; background: var(--color-surface); border-bottom: 1px solid var(--color-border); }
+  .gutter-head { border-inline-start: 1px solid var(--color-border); }
+  .day-head { padding: 9px 6px; text-align: center; border-inline-start: 1px solid var(--color-border); }
+  .day-head .dname { font-size: 11.5px; color: var(--color-text-secondary); font-weight: 600; }
+  .day-head .ddate { font-family: var(--font-mono); font-size: 15px; font-weight: 700; margin-top: 2px; font-variant-numeric: tabular-nums; }
+  .day-head.today { background: var(--color-primary-tint); }
+  .day-head.today .ddate, .day-head.today .dname { color: var(--color-primary); }
+
+  .time-gutter { position: relative; }
+  .time-gutter .hour-label { position: absolute; inset-inline-end: 8px; transform: translateY(-7px); font-size: 10.5px; color: var(--color-text-muted); font-family: var(--font-mono); }
+
+  .day-col {
+    position: relative; border-inline-start: 1px solid var(--color-border);
+    background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 59px, var(--color-border) 60px);
+  }
+  .day-col.today { background-color: color-mix(in srgb, var(--color-primary) 4%, transparent); }
+  .day-col.weekend { background-color: color-mix(in srgb, var(--color-gold) 4%, transparent); }
+
+  .now-line { position: absolute; right: 0; left: 0; height: 0; border-top: 2px solid var(--color-danger); z-index: 4; }
+  .now-line::before { content: ''; position: absolute; inset-inline-start: -4px; top: -4px; width: 8px; height: 8px; border-radius: 50%; background: var(--color-danger); }
+
+  .appt {
+    position: absolute; inset-inline: 3px; border-radius: 8px; padding: 5px 8px; overflow: hidden;
+    cursor: pointer; border-inline-start: 3px solid; box-shadow: var(--shadow-sm);
+    transition: box-shadow .15s, transform .1s; z-index: 2;
+  }
+  .appt:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); z-index: 6; }
+  .appt .time { font-family: var(--font-mono); font-size: 10px; font-weight: 700; opacity: .8; font-variant-numeric: tabular-nums; }
+  .appt .cust { font-size: 12px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .appt .svc { font-size: 10.5px; opacity: .85; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .appt.st-pending { border-inline-start-style: dashed; }
+  .appt.st-cancelled { opacity: .55; }
+  .appt.st-cancelled .cust { text-decoration: line-through; }
+  .appt.st-completed { opacity: .6; }
+  .appt.hidden-filter { display: none; }
+
+  /* ---------------- Drawer ---------------- */
+  .drawer-backdrop { position: fixed; inset: 0; background: rgba(20,16,31,.5); opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 50; }
+  .drawer-backdrop.open { opacity: 1; pointer-events: auto; }
+  .drawer {
+    position: fixed; top: 0; bottom: 0; left: 0; width: 400px; max-width: 92vw; background: var(--color-surface);
+    box-shadow: var(--shadow-lg); transform: translateX(-100%); transition: transform .22s ease;
+    display: flex; flex-direction: column;
+  }
+  .drawer-backdrop.open .drawer { transform: translateX(0); }
+  .drawer-head { padding: 20px 22px; border-bottom: 1px solid var(--color-border); display: flex; align-items: center; justify-content: space-between; flex: none; }
+  .drawer-head h3 { font-size: 16px; font-weight: 700; }
+  .drawer-body { padding: 20px 22px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 16px; }
+  .drawer-foot { padding: 16px 22px; border-top: 1px solid var(--color-border); display: flex; gap: 10px; flex: none; }
+  .drawer-foot .btn { flex: 1; justify-content: center; }
+  .field label { display: block; font-size: 12.5px; font-weight: 600; margin-bottom: 6px; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .detail-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--color-border); font-size: 13.5px; }
+  .detail-row span:first-child { color: var(--color-text-secondary); }
+  .detail-row span:last-child { font-weight: 600; }
+
+  .badge { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 600; padding: 4px 10px; border-radius: var(--radius-full); }
+  .badge .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .badge-success { background: var(--color-success-tint); color: var(--color-success); }
+  .badge-warning { background: var(--color-warning-tint); color: var(--color-warning); }
+  .badge-danger { background: var(--color-danger-tint); color: var(--color-danger); }
+  .badge-info { background: var(--color-info-tint); color: var(--color-info); }
+
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--color-success); color: #fff; padding: 12px 22px; border-radius: var(--radius-md); font-size: 13.5px; font-weight: 600; box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 8px; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; z-index: 60; }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .toast svg { width: 16px; height: 16px; }
+
+  .pay-chip-row { display: flex; gap: 8px; }
+  .pay-chip { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 9px 6px; border-radius: var(--radius-sm); border: 1.5px solid var(--color-border-strong); background: var(--color-surface); color: var(--color-text-secondary); cursor: pointer; font-size: 12px; font-weight: 700; }
+  .pay-chip.active { border-color: var(--color-primary); background: var(--color-primary-tint); color: var(--color-primary); }
+  .drawer-foot { flex-wrap: wrap; }
+  .drawer-foot .btn { flex: 1 1 auto; min-width: 100px; }
+
+  /* ----- Service card picker (same look as POS tiles) ----- */
+  .drawer { transition: transform .22s ease, width .2s ease; }
+  .drawer.picking { width: 600px; }
+  .svc-picker { display: flex; flex-direction: column; gap: 12px; }
+  .svc-picker .search-wrap { position: relative; }
+  .svc-picker .search-wrap svg { position: absolute; inset-inline-start: 12px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--color-text-muted); }
+  .svc-picker .search-input { width: 100%; font-size: 14px; padding: 10px 12px; padding-inline-start: 36px; border: 1px solid var(--color-border-strong); border-radius: var(--radius-sm); background: var(--color-surface); color: var(--color-text); }
+  .svc-picker .search-input:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 3px var(--color-primary-tint); }
+  .svc-picker > * { flex: none; }
+  .svc-chip-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; flex: none; min-height: 40px; align-items: center; }
+  .svc-chip { flex: none; padding: 7px 16px; border-radius: var(--radius-full); font-size: 12.5px; font-weight: 600; border: 1px solid var(--color-border-strong); color: var(--color-text-secondary); background: var(--color-surface); cursor: pointer; white-space: nowrap; transition: background .15s, color .15s, border-color .15s; }
+  .svc-chip:hover { border-color: var(--color-primary); color: var(--color-primary); }
+  .svc-chip.active { background: var(--color-primary); color: var(--color-on-primary); border-color: var(--color-primary); }
+  .svc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 12px; }
+  .svc-tile { text-align: right; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); overflow: hidden; cursor: pointer; display: flex; flex-direction: column; transition: box-shadow .15s, border-color .15s, transform .1s; font-family: inherit; color: inherit; padding: 0; }
+  .svc-tile:hover { box-shadow: var(--shadow-md); border-color: var(--color-border-strong); transform: translateY(-2px); }
+  .svc-tile:active { transform: translateY(0); }
+  .svc-tile-thumb { height: 64px; background: linear-gradient(135deg, var(--color-primary-tint), var(--color-accent-tint)); display: flex; align-items: center; justify-content: center; }
+  .svc-tile-thumb svg { width: 28px; height: 28px; color: var(--color-primary); opacity: .5; }
+  .svc-tile-body { padding: 10px 10px 12px; display: flex; flex-direction: column; gap: 6px; }
+  .svc-tile .name { font-size: 12.5px; font-weight: 700; line-height: 1.35; min-height: 2.2em; }
+  .svc-tile .foot { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+  .svc-tile .price { font-family: var(--font-mono); font-weight: 700; font-size: 13px; direction: ltr; text-align: right; font-variant-numeric: tabular-nums; }
+  .svc-tile .dur { font-size: 10.5px; font-weight: 600; color: var(--color-text-muted); }
+  .cards-view { flex: 1; min-height: 0; overflow-y: auto; padding: 18px 24px 32px; }
+  .cards-view .svc-grid { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 14px; }
+  .cards-view .svc-tile-thumb { height: 92px; }
+  .svc-tile-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .svc-empty { grid-column: 1 / -1; text-align: center; padding: 40px 12px; color: var(--color-text-muted); font-size: 13px; }
+  .svc-selected { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 14px; border: 1.5px solid var(--color-primary); background: var(--color-primary-tint); border-radius: var(--radius-md); }
+  .svc-selected .s-name { font-weight: 700; font-size: 14px; }
+  .svc-selected .s-meta { font-size: 12px; color: var(--color-text-secondary); margin-top: 2px; }
+  .svc-selected .btn { flex: none; }
+</style>
+
+<div class="app-shell">
+
+  <aside class="sidebar">
+    <a class="sb-brand" href="dashboard.html">
+      <svg viewBox="0 0 48 48" aria-hidden="true">
+        <defs><linearGradient id="pgSb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#261A66"/><stop offset="1" stop-color="#EF5F18"/></linearGradient></defs>
+        <g transform="translate(24,24)">
+          <g><ellipse cx="0" cy="-13" rx="7" ry="11" fill="url(#pgSb)"/></g>
+          <g transform="rotate(72)"><ellipse cx="0" cy="-13" rx="7" ry="11" fill="url(#pgSb)" opacity=".9"/></g>
+          <g transform="rotate(144)"><ellipse cx="0" cy="-13" rx="7" ry="11" fill="url(#pgSb)" opacity=".82"/></g>
+          <g transform="rotate(216)"><ellipse cx="0" cy="-13" rx="7" ry="11" fill="url(#pgSb)" opacity=".74"/></g>
+          <g transform="rotate(288)"><ellipse cx="0" cy="-13" rx="7" ry="11" fill="url(#pgSb)" opacity=".66"/></g>
+          <circle r="6" fill="#AB7400"/>
+        </g>
+      </svg>
+      <span class="name"><b>Beauty</b> House</span>
+    </a>
+    <div class="sb-branch"><span class="dot"></span> الفرع الرئيسي — متصل</div>
+
+    <nav style="display:flex; flex-direction:column; gap:2px;">
+      <a class="nav-item" href="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg> لوحة التحكم</a>
+      <a class="nav-item" href="pos.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="7" width="18" height="13" rx="1.5"/><path d="M8 7V5a4 4 0 0 1 8 0v2"/></svg> نقطة البيع</a>
+      <a class="nav-item" href="inventory.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 8h16M4 8l1 12h14l1-12M9 8V5h6v3"/></svg> المخزون</a>
+      <div class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="1.5"/><path d="M3 10h18M8 3v4M16 3v4"/></svg> الحجوزات</div>
+      <a class="nav-item" href="customers.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.2"/><path d="M5 20c1-4 4-6 7-6s6 2 7 6"/></svg> العميلات</a>
+      <a class="nav-item" href="reports.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V9M11 19V5M18 19v-7"/></svg> التقارير</a>
+      <a class="nav-item" href="settings.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14.3 3H9.7l-.3 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5a7 7 0 0 0 0 2.4l-2 1.5 2 3.4 2.3-.9a7 7 0 0 0 2 1.2l.3 2.6h4.6l.3-2.6a7 7 0 0 0 2-1.2l2.3.9 2-3.4-2-1.5c.07-.4.1-.8.1-1.2Z"/></svg> الإعدادات</a>
+    </nav>
+
+    <div class="sb-footer">
+      <div class="sb-avatar" id="sbAvatar">—</div>
+      <div class="sb-user">
+        <div class="n" id="sbUserName">—</div>
+        <div class="r" id="sbUserRole">—</div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title">
+        <h1>الحجوزات</h1>
+        <div class="sub" id="weekStatsSub">—</div>
+      </div>
+      <div class="topbar-spacer"></div>
+      <div class="topbar-clock">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+        <div class="txt"><span class="time" id="clockTime">--:--:--</span><span class="date" id="clockDate"></span></div>
+      </div>
+      <button class="icon-btn" id="themeToggleBtn" title="تبديل المظهر" aria-label="تبديل المظهر"></button>
+      <div class="segmented" id="viewToggle">
+        <button data-view="cards" class="active">بطاقات الخدمات</button>
+        <button data-view="table">جدول الحجوزات</button>
+      </div>
+      <div class="segmented" id="calRangeSeg" style="display:none;">
+        <button>يوم</button>
+        <button class="active">أسبوع</button>
+        <button>شهر</button>
+      </div>
+    </div>
+
+    <div class="cards-view svc-picker" id="cardsView">
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input class="search-input" id="cvSearch" placeholder="ابحثي عن خدمة بالاسم" />
+      </div>
+      <div class="svc-chip-row" id="cvChips"></div>
+      <div class="svc-grid" id="cvGrid"></div>
+    </div>
+
+    <div class="cal-toolbar">
+      <div class="week-nav">
+        <button class="icon-btn" id="prevWeek" aria-label="الأسبوع السابق">›</button>
+        <span class="range" id="weekRange">—</span>
+        <button class="icon-btn" id="nextWeek" aria-label="الأسبوع التالي">‹</button>
+      </div>
+      <button class="chip" id="todayBtn">اليوم</button>
+
+      <div class="staff-chips" id="staffChips">
+        <button class="chip active" data-staff="الكل">الكل</button>
+      </div>
+
+      <div class="legend">
+        <span><span class="sw" style="background:var(--color-success)"></span> مؤكد</span>
+        <span><span class="sw" style="background:var(--color-warning)"></span> قيد الانتظار</span>
+        <span><span class="sw" style="background:var(--color-text-muted)"></span> مكتمل</span>
+        <span><span class="sw" style="background:var(--color-danger)"></span> ملغى</span>
+      </div>
+    </div>
+
+    <div class="cal-scroll">
+      <div class="cal-inner">
+        <div class="cal-row cal-header-row" id="calHeaderRow">
+          <div class="gutter-head"></div>
+        </div>
+        <div class="cal-row" id="calBodyRow">
+          <div class="time-gutter" id="timeGutter"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="drawer-backdrop" id="drawerBackdrop">
+  <div class="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+    <div class="drawer-head">
+      <h3 id="drawerTitle">حجز جديد</h3>
+      <button class="icon-btn" id="closeDrawerBtn" aria-label="إغلاق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    </div>
+
+    <div class="drawer-body" id="viewBody" style="display:none;">
+      <div id="viewStatusBadge"></div>
+      <div class="detail-row"><span>العميلة</span><span id="vCust"></span></div>
+      <div class="detail-row"><span>الخدمة</span><span id="vSvc"></span></div>
+      <div class="detail-row"><span>الموظفة</span><span id="vStaff"></span></div>
+      <div class="detail-row"><span>اليوم والوقت</span><span id="vTime"></span></div>
+      <div class="detail-row"><span>المدة</span><span id="vDur"></span></div>
+      <div class="detail-row"><span>السعر</span><span id="vPrice"></span></div>
+      <div class="field" id="vPayWrap">
+        <label>طريقة الدفع</label>
+        <div class="pay-chip-row" id="vPayRow">
+          <button type="button" class="pay-chip" data-pay="cash">نقداً</button>
+          <button type="button" class="pay-chip" data-pay="bankak">بنكك</button>
+          <button type="button" class="pay-chip" data-pay="ocash">أوكاش</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="drawer-body" id="formBody">
+      <div class="svc-picker" id="svcPicker">
+        <div class="search-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input class="search-input" id="svcSearch" placeholder="ابحثي عن خدمة بالاسم" />
+        </div>
+        <div class="svc-chip-row" id="svcChips"></div>
+        <div class="svc-grid" id="svcGrid"></div>
+      </div>
+
+      <div id="detailsStep" style="display:none; flex-direction:column; gap:16px;">
+        <div class="svc-selected">
+          <div><div class="s-name" id="selSvcName"></div><div class="s-meta" id="selSvcMeta"></div></div>
+          <button type="button" class="btn btn-outline" id="changeSvcBtn">تغيير الخدمة</button>
+        </div>
+        <select id="fSvc" style="display:none;"></select>
+        <div class="field"><label>اسم العميلة</label><input class="input" id="fCust" placeholder="مثال: نورة خالد" /></div>
+        <div class="field"><label>الموظفة</label>
+          <select class="input" id="fStaff"></select>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>التاريخ</label><input class="input" id="fDate" type="date" /></div>
+          <div class="field"><label>الوقت</label><input class="input" id="fStart" type="time" /></div>
+        </div>
+        <div class="field"><label>ملاحظات (اختياري)</label><textarea class="input" id="fNotes" rows="2" placeholder="أي تفضيلات أو ملاحظات للموظفة"></textarea></div>
+        <div class="field" id="payBlock">
+          <label>طريقة الدفع</label>
+          <div class="pay-chip-row" id="fPayRow">
+            <button type="button" class="pay-chip active" data-pay="cash">نقداً</button>
+            <button type="button" class="pay-chip" data-pay="bankak">بنكك</button>
+            <button type="button" class="pay-chip" data-pay="ocash">أوكاش</button>
+          </div>
+          <div class="detail-row" style="margin-top:10px; border-bottom:none; font-size:15px;"><span>الإجمالي</span><span id="fTotal">0</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="drawer-foot" id="viewFoot" style="display:none;">
+      <button class="btn btn-outline" id="editApptBtn">تعديل</button>
+      <button class="btn btn-danger-ghost" id="deleteApptBtn" style="display:none;">حذف نهائي</button>
+      <button class="btn btn-danger-ghost" id="cancelApptBtn">إلغاء الحجز</button>
+      <button class="btn btn-outline" id="printApptBtn" style="display:none;">طباعة الإيصال</button>
+      <button class="btn btn-primary" id="confirmApptBtn">تأكيد الحجز</button>
+      <button class="btn btn-accent" id="completeApptBtn" style="display:none;">إتمام الحجز والدفع</button>
+    </div>
+    <div class="drawer-foot" id="formFoot">
+      <button class="btn btn-outline" id="cancelDrawerBtn">إلغاء</button>
+      <button class="btn btn-outline" id="saveOnlyBtn" title="حفظ الحجز بدون دفع الآن">حفظ بدون دفع</button>
+      <button class="btn btn-accent" id="saveDrawerBtn">حفظ ودفع وطباعة الإيصال</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg><span id="toastMsg">تم إنشاء الحجز بنجاح</span></div>
+
+<script src="shared.js"></script>
+<script>
+  (function () {
+    var RANGE_START = 9 * 60;
+    var RANGE_END = 19 * 60;
+    var PX_PER_MIN = 1;
+    var HOURS = [9,10,11,12,13,14,15,16,17,18,19];
+    var WEEKDAY_AR = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+    var MONTH_AR = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+    var STAFF_PALETTE = ['var(--color-primary)', 'var(--color-accent)', 'var(--color-gold)', 'var(--color-info)', 'var(--color-success)'];
+
+    var weekOffset = 0;
+    var DAYS = [];
+    var TODAY_IDX = -1;
+    var todayIso = new Date().toISOString().slice(0, 10);
+
+    var staffList = [];
+    var staffColor = {};
+    var servicesList = [];
+    var SERVICES = {};
+    var appts = [];
+    var staffFilter = 'الكل';
+
+    function pad(n) { return n < 10 ? '0' + n : '' + n; }
+    function toIso(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+    function toMin(hhmm) { var p = hhmm.split(':'); return parseInt(p[0], 10) * 60 + parseInt(p[1], 10); }
+    function fmtTime(mins) {
+      var h = Math.floor(mins / 60), m = mins % 60;
+      var period = h >= 12 ? 'م' : 'ص';
+      var h12 = h % 12; if (h12 === 0) h12 = 12;
+      return (h12 < 10 ? '0' + h12 : h12) + ':' + (m < 10 ? '0' + m : m) + ' ' + period;
+    }
+
+    function computeWeek() {
+      var base = new Date();
+      base.setHours(0, 0, 0, 0);
+      var offsetFromSat = (base.getDay() + 1) % 7;
+      var saturday = new Date(base);
+      saturday.setDate(base.getDate() - offsetFromSat + weekOffset * 7);
+      DAYS = [];
+      TODAY_IDX = -1;
+      for (var i = 0; i < 7; i++) {
+        var d = new Date(saturday);
+        d.setDate(saturday.getDate() + i);
+        var iso = toIso(d);
+        DAYS.push({ name: WEEKDAY_AR[d.getDay()], date: d.getDate(), month: d.getMonth(), iso: iso, dateObj: d });
+        if (iso === todayIso) TODAY_IDX = i;
+      }
+      var first = DAYS[0], last = DAYS[6];
+      document.getElementById('weekRange').textContent =
+        first.date + (first.month !== last.month ? ' ' + MONTH_AR[first.month] : '') + ' – ' + last.date + ' ' + MONTH_AR[last.month] + ' ' + last.dateObj.getFullYear();
+    }
+
+    var headerRow = document.getElementById('calHeaderRow');
+    var bodyRow = document.getElementById('calBodyRow');
+    var timeGutter = document.getElementById('timeGutter');
+
+    function buildGrid() {
+      headerRow.querySelectorAll('.day-head').forEach(function (n) { n.remove(); });
+      bodyRow.querySelectorAll('.day-col').forEach(function (n) { n.remove(); });
+      timeGutter.innerHTML = '';
+      timeGutter.style.height = (RANGE_END - RANGE_START) * PX_PER_MIN + 'px';
+      HOURS.forEach(function (h) {
+        var lbl = document.createElement('div');
+        lbl.className = 'hour-label';
+        lbl.style.top = ((h * 60 - RANGE_START) * PX_PER_MIN) + 'px';
+        lbl.textContent = fmtTime(h * 60);
+        timeGutter.appendChild(lbl);
+      });
+
+      var dayCols = [];
+      DAYS.forEach(function (d, i) {
+        var head = document.createElement('div');
+        head.className = 'day-head' + (i === TODAY_IDX ? ' today' : '');
+        head.innerHTML = '<div class="dname">' + d.name + '</div><div class="ddate">' + d.date + '</div>';
+        headerRow.appendChild(head);
+
+        var col = document.createElement('div');
+        col.className = 'day-col' + (i === TODAY_IDX ? ' today' : '') + (i === 6 || i === 0 ? ' weekend' : '');
+        col.style.height = (RANGE_END - RANGE_START) * PX_PER_MIN + 'px';
+        col.setAttribute('data-day', i);
+        bodyRow.appendChild(col);
+        dayCols.push(col);
+      });
+
+      if (TODAY_IDX !== -1) {
+        var now = new Date();
+        var nowMin = now.getHours() * 60 + now.getMinutes();
+        if (nowMin >= RANGE_START && nowMin <= RANGE_END) {
+          var nowLine = document.createElement('div');
+          nowLine.className = 'now-line';
+          nowLine.style.top = ((nowMin - RANGE_START) * PX_PER_MIN) + 'px';
+          dayCols[TODAY_IDX].appendChild(nowLine);
+        }
+      }
+      window.__dayCols = dayCols;
+    }
+
+    function statusClass(s) { return s === 'قيد الانتظار' ? 'st-pending' : s === 'ملغى' ? 'st-cancelled' : s === 'مكتمل' ? 'st-completed' : ''; }
+    function statusColor(s) { return s === 'مؤكد' ? 'var(--color-success)' : s === 'قيد الانتظار' ? 'var(--color-warning)' : s === 'ملغى' ? 'var(--color-danger)' : 'var(--color-text-muted)'; }
+
+    function renderAppts() {
+      var dayCols = window.__dayCols;
+      dayCols.forEach(function (col) { col.querySelectorAll('.appt').forEach(function (n) { n.remove(); }); });
+      appts.forEach(function (a) {
+        var dayIdx = DAYS.findIndex(function (d) { return d.iso === a.booking_date; });
+        if (dayIdx === -1) return;
+        var startMin = toMin(a.start_time.slice(0, 5));
+        var top = (startMin - RANGE_START) * PX_PER_MIN;
+        var height = Math.max(26, a.duration_minutes * PX_PER_MIN - 3);
+        var color = staffColor[a.staff_name] || 'var(--color-text-muted)';
+        var el = document.createElement('div');
+        el.className = 'appt ' + statusClass(a.status) + (staffFilter !== 'الكل' && a.staff_name !== staffFilter ? ' hidden-filter' : '');
+        el.style.top = top + 'px';
+        el.style.height = height + 'px';
+        el.style.borderInlineStartColor = color;
+        el.style.background = 'color-mix(in srgb, ' + color + ' 13%, var(--color-surface))';
+        el.setAttribute('data-id', a.id);
+        var showSvc = height >= 40;
+        el.innerHTML = '<div class="time">' + fmtTime(startMin) + '</div><div class="cust">' + BH.esc(a.customer_name) + '</div>' + (showSvc ? '<div class="svc">' + BH.esc(a.service_name) + '</div>' : '');
+        dayCols[dayIdx].appendChild(el);
+      });
+    }
+
+    async function loadWeek() {
+      computeWeek();
+      buildGrid();
+      appts = await BH.api('/api/bookings?from=' + DAYS[0].iso + '&to=' + DAYS[6].iso);
+      renderAppts();
+      var pendingCount = appts.filter(function (a) { return a.status === 'قيد الانتظار'; }).length;
+      var sub = appts.length + ' حجزاً هذا الأسبوع';
+      if (pendingCount > 0) sub += ' — <b>' + pendingCount + ' قيد الانتظار</b> بحاجة لتأكيد';
+      document.getElementById('weekStatsSub').innerHTML = sub;
+    }
+
+    document.getElementById('prevWeek').addEventListener('click', function () { weekOffset--; loadWeek(); });
+    document.getElementById('nextWeek').addEventListener('click', function () { weekOffset++; loadWeek(); });
+    document.getElementById('todayBtn').addEventListener('click', function () { weekOffset = 0; loadWeek(); });
+
+    document.getElementById('staffChips').addEventListener('click', function (e) {
+      var chip = e.target.closest('.chip'); if (!chip) return;
+      document.querySelectorAll('#staffChips .chip').forEach(function (c) { c.classList.remove('active'); });
+      chip.classList.add('active');
+      staffFilter = chip.getAttribute('data-staff');
+      renderAppts();
+    });
+
+    /* ---- Drawer ---- */
+    var backdrop = document.getElementById('drawerBackdrop');
+    var viewBody = document.getElementById('viewBody'), formBody = document.getElementById('formBody');
+    var viewFoot = document.getElementById('viewFoot'), formFoot = document.getElementById('formFoot');
+    var currentApptId = null;
+    var editingApptId = null;
+    var selectedPayMethod = 'cash';
+    var PAY_LABELS = { cash: 'نقداً', bankak: 'بنكك', ocash: 'أوكاش' };
+
+    function openView(id) {
+      currentApptId = id;
+      var a = appts.find(function (x) { return x.id === id; });
+      if (!a) return;
+      var dayIdx = DAYS.findIndex(function (d) { return d.iso === a.booking_date; });
+      document.getElementById('drawerTitle').textContent = 'تفاصيل الحجز';
+      document.getElementById('viewStatusBadge').innerHTML = '<span class="badge" style="background:color-mix(in srgb, ' + statusColor(a.status) + ' 15%, var(--color-surface)); color:' + statusColor(a.status) + '"><span class="dot"></span>' + a.status + '</span>';
+      document.getElementById('vCust').textContent = a.customer_name;
+      document.getElementById('vSvc').textContent = a.service_name;
+      document.getElementById('vStaff').textContent = a.staff_name || '—';
+      document.getElementById('vTime').textContent = (dayIdx !== -1 ? DAYS[dayIdx].name + ' ' + DAYS[dayIdx].date : a.booking_date) + ' — ' + fmtTime(toMin(a.start_time.slice(0, 5)));
+      document.getElementById('vDur').textContent = a.duration_minutes + ' دقيقة';
+      document.getElementById('vPrice').textContent = BH.money(a.price);
+
+      selectedPayMethod = a.payment_method || 'cash';
+      document.querySelectorAll('#vPayRow .pay-chip').forEach(function (c) { c.classList.toggle('active', c.getAttribute('data-pay') === selectedPayMethod); });
+      document.getElementById('vPayWrap').style.display = (a.status === 'ملغى') ? 'none' : '';
+
+      var isPending = a.status === 'قيد الانتظار';
+      var isConfirmed = a.status === 'مؤكد';
+      var isCompleted = a.status === 'مكتمل';
+      var isCancelled = a.status === 'ملغى';
+
+      document.getElementById('confirmApptBtn').style.display = isPending ? 'inline-flex' : 'none';
+      document.getElementById('completeApptBtn').style.display = isConfirmed ? 'inline-flex' : 'none';
+      document.getElementById('cancelApptBtn').style.display = (isPending || isConfirmed || isCompleted) ? 'inline-flex' : 'none';
+      document.getElementById('printApptBtn').style.display = isCompleted ? 'inline-flex' : 'none';
+      document.getElementById('editApptBtn').style.display = isCancelled ? 'none' : 'inline-flex';
+      document.getElementById('deleteApptBtn').style.display = (isCancelled && BH.isOwner()) ? 'inline-flex' : 'none';
+
+      viewBody.style.display = 'flex'; formBody.style.display = 'none';
+      viewFoot.style.display = 'flex'; formFoot.style.display = 'none';
+      backdrop.classList.add('open');
+    }
+
+    document.getElementById('vPayRow').addEventListener('click', function (e) {
+      var chip = e.target.closest('.pay-chip');
+      if (!chip) return;
+      selectedPayMethod = chip.getAttribute('data-pay');
+      document.querySelectorAll('#vPayRow .pay-chip').forEach(function (c) { c.classList.toggle('active', c === chip); });
+    });
+
+    function fillNewForm() {
+      var svcSel = document.getElementById('fSvc');
+      svcSel.innerHTML = '';
+      var byCat = {};
+      servicesList.forEach(function (s) { (byCat[s.category] = byCat[s.category] || []).push(s); });
+      Object.keys(byCat).forEach(function (cat) {
+        var grp = document.createElement('optgroup'); grp.label = cat;
+        byCat[cat].forEach(function (s) {
+          var o = document.createElement('option'); o.value = s.name; o.textContent = s.name; grp.appendChild(o);
+        });
+        svcSel.appendChild(grp);
+      });
+
+      var staffSel = document.getElementById('fStaff');
+      staffSel.innerHTML = '';
+      staffList.forEach(function (u) {
+        var o = document.createElement('option'); o.value = u.id; o.textContent = u.name; staffSel.appendChild(o);
+      });
+
+    }
+
+    /* ----- Date/time default to "now" unless the user changes them manually ----- */
+    var dateTouched = false, timeTouched = false, formPayMethod = 'cash';
+    function nowDateIso() { return toIso(new Date()); }
+    function nowTimeHHMM() { var n = new Date(); return pad(n.getHours()) + ':' + pad(n.getMinutes()); }
+    function setNowDefaults() {
+      dateTouched = false; timeTouched = false;
+      document.getElementById('fDate').value = nowDateIso();
+      document.getElementById('fStart').value = nowTimeHHMM();
+    }
+    document.getElementById('fDate').addEventListener('input', function () { dateTouched = true; });
+    document.getElementById('fStart').addEventListener('input', function () { timeTouched = true; });
+    document.getElementById('fPayRow').addEventListener('click', function (e) {
+      var chip = e.target.closest('.pay-chip'); if (!chip) return;
+      formPayMethod = chip.getAttribute('data-pay');
+      document.querySelectorAll('#fPayRow .pay-chip').forEach(function (c) { c.classList.toggle('active', c === chip); });
+    });
+    function setFormPay(m) {
+      formPayMethod = m || 'cash';
+      document.querySelectorAll('#fPayRow .pay-chip').forEach(function (c) { c.classList.toggle('active', c.getAttribute('data-pay') === formPayMethod); });
+    }
+    function setFormMode(isNew) {
+      document.getElementById('payBlock').style.display = isNew ? '' : 'none';
+      document.getElementById('saveOnlyBtn').dataset.mode = isNew ? 'new' : 'edit';
+      document.getElementById('saveDrawerBtn').textContent = isNew ? 'حفظ ودفع وطباعة الإيصال' : 'حفظ التعديلات';
+    }
+
+    /* ----- Service card picker ----- */
+    var drawerEl = backdrop.querySelector('.drawer');
+    var svcCat = 'الكل';
+
+    function renderSvcChips() {
+      var cats = [];
+      servicesList.forEach(function (s) { if (cats.indexOf(s.category) === -1) cats.push(s.category); });
+      var wrap = document.getElementById('svcChips');
+      wrap.innerHTML = '';
+      ['الكل'].concat(cats).forEach(function (c) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'svc-chip' + (c === svcCat ? ' active' : '');
+        b.setAttribute('data-cat', c); b.textContent = c;
+        wrap.appendChild(b);
+      });
+    }
+
+    function renderSvcGrid() {
+      var q = document.getElementById('svcSearch').value.trim();
+      var grid = document.getElementById('svcGrid');
+      grid.innerHTML = '';
+      var list = servicesList.filter(function (s) {
+        return (svcCat === 'الكل' || s.category === svcCat) && (!q || s.name.indexOf(q) !== -1);
+      });
+      if (!list.length) { grid.innerHTML = '<div class="svc-empty">لا توجد خدمات مطابقة</div>'; return; }
+      list.forEach(function (s) { grid.appendChild(svcTileEl(s)); });
+    }
+
+    function svcTileEl(s) {
+      var t = document.createElement('button');
+      t.type = 'button'; t.className = 'svc-tile'; t.setAttribute('data-name', s.name);
+      t.innerHTML =
+        '<div class="svc-tile-thumb">' + (s.image_url
+          ? '<img src="' + BH.esc(s.image_url) + '" alt="" />'
+          : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>') + '</div>' +
+        '<div class="svc-tile-body"><div class="name">' + BH.esc(s.name) + '</div>' +
+        '<div class="foot"><span class="price">' + Number(s.price).toLocaleString('en-US') + '</span>' +
+        '<span class="dur">' + (s.duration_minutes ? s.duration_minutes + ' د' : '') + '</span></div></div>';
+      return t;
+    }
+
+    /* ----- Main cards view (default) + switch to the weekly table ----- */
+    var cvCat = 'الكل';
+    function renderCards() {
+      var cats = [];
+      servicesList.forEach(function (s) { if (cats.indexOf(s.category) === -1) cats.push(s.category); });
+      var chips = document.getElementById('cvChips');
+      chips.innerHTML = '';
+      ['الكل'].concat(cats).forEach(function (c) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'svc-chip' + (c === cvCat ? ' active' : '');
+        b.setAttribute('data-cat', c); b.textContent = c; chips.appendChild(b);
+      });
+      var q = document.getElementById('cvSearch').value.trim();
+      var grid = document.getElementById('cvGrid');
+      grid.innerHTML = '';
+      var list = servicesList.filter(function (s) {
+        return (cvCat === 'الكل' || s.category === cvCat) && (!q || s.name.indexOf(q) !== -1);
+      });
+      if (!list.length) { grid.innerHTML = '<div class="svc-empty">لا توجد خدمات مطابقة</div>'; return; }
+      list.forEach(function (s) { grid.appendChild(svcTileEl(s)); });
+    }
+    document.getElementById('cvChips').addEventListener('click', function (e) {
+      var c = e.target.closest('.svc-chip'); if (!c) return;
+      cvCat = c.getAttribute('data-cat'); renderCards();
+    });
+    document.getElementById('cvSearch').addEventListener('input', renderCards);
+    document.getElementById('cvGrid').addEventListener('click', function (e) {
+      var t = e.target.closest('.svc-tile'); if (!t) return;
+      var name = t.getAttribute('data-name');
+      openNew();
+      var sel = document.getElementById('fSvc');
+      sel.value = name;
+      sel.dispatchEvent(new Event('change'));
+      showDetails(name);
+      document.getElementById('fCust').focus();
+    });
+
+    function setView(v) {
+      var cards = v !== 'table';
+      document.getElementById('cardsView').style.display = cards ? '' : 'none';
+      document.querySelector('.cal-toolbar').style.display = cards ? 'none' : '';
+      document.querySelector('.cal-scroll').style.display = cards ? 'none' : '';
+      document.getElementById('calRangeSeg').style.display = cards ? 'none' : '';
+      document.querySelectorAll('#viewToggle button').forEach(function (b) { b.classList.toggle('active', b.getAttribute('data-view') === (cards ? 'cards' : 'table')); });
+      try { localStorage.setItem('bh_bookings_view', cards ? 'cards' : 'table'); } catch (e) {}
+    }
+    document.getElementById('viewToggle').addEventListener('click', function (e) {
+      var b = e.target.closest('button'); if (b) setView(b.getAttribute('data-view'));
+    });
+
+    function showPicker() {
+      svcCat = 'الكل';
+      document.getElementById('svcSearch').value = '';
+      renderSvcChips(); renderSvcGrid();
+      document.getElementById('svcPicker').style.display = 'flex';
+      document.getElementById('detailsStep').style.display = 'none';
+      document.getElementById('saveDrawerBtn').style.display = 'none';
+      document.getElementById('saveOnlyBtn').style.display = 'none';
+      drawerEl.classList.add('picking');
+    }
+
+    function showDetails(name) {
+      var svc = SERVICES[name];
+      document.getElementById('selSvcName').textContent = name || '';
+      document.getElementById('selSvcMeta').textContent = svc
+        ? svc.category + ' • ' + Number(svc.price).toLocaleString('en-US') + (svc.duration ? ' • ' + svc.duration + ' دقيقة' : '')
+        : '';
+      document.getElementById('svcPicker').style.display = 'none';
+      document.getElementById('detailsStep').style.display = 'flex';
+      document.getElementById('saveDrawerBtn').style.display = '';
+      document.getElementById('saveOnlyBtn').style.display = editingApptId ? 'none' : '';
+      document.getElementById('fTotal').textContent = svc ? Number(svc.price).toLocaleString('en-US') + ' ' + ((BH.__settingsCache || {}).currency_label || '') : '0';
+      drawerEl.classList.remove('picking');
+    }
+
+    document.getElementById('svcChips').addEventListener('click', function (e) {
+      var c = e.target.closest('.svc-chip'); if (!c) return;
+      svcCat = c.getAttribute('data-cat');
+      renderSvcChips(); renderSvcGrid();
+    });
+    document.getElementById('svcSearch').addEventListener('input', renderSvcGrid);
+    document.getElementById('svcGrid').addEventListener('click', function (e) {
+      var t = e.target.closest('.svc-tile'); if (!t) return;
+      var name = t.getAttribute('data-name');
+      var sel = document.getElementById('fSvc');
+      sel.value = name;
+      sel.dispatchEvent(new Event('change'));
+      showDetails(name);
+      document.getElementById('fCust').focus();
+    });
+    document.getElementById('changeSvcBtn').addEventListener('click', showPicker);
+
+    function openNew() {
+      currentApptId = null;
+      editingApptId = null;
+      document.getElementById('drawerTitle').textContent = 'حجز جديد';
+      setFormMode(true);
+      setFormPay('cash');
+      fillNewForm();
+      document.getElementById('fCust').value = '';
+      setNowDefaults();
+      document.getElementById('fNotes').value = '';
+      viewBody.style.display = 'none'; formBody.style.display = 'flex';
+      viewFoot.style.display = 'none'; formFoot.style.display = 'flex';
+      showPicker();
+      backdrop.classList.add('open');
+      document.getElementById('svcSearch').focus();
+    }
+
+    function openEdit(id) {
+      var a = appts.find(function (x) { return x.id === id; });
+      if (!a) return;
+      editingApptId = id;
+      currentApptId = id;
+      document.getElementById('drawerTitle').textContent = 'تعديل الحجز';
+      setFormMode(false);
+      fillNewForm();
+      dateTouched = true; timeTouched = true;
+      document.getElementById('fDate').value = a.booking_date;
+
+      document.getElementById('fCust').value = a.customer_name || '';
+      document.getElementById('fSvc').value = a.service_name || '';
+      if (a.user_id) document.getElementById('fStaff').value = a.user_id;
+      document.getElementById('fStart').value = a.start_time ? a.start_time.slice(0, 5) : nowTimeHHMM();
+      document.getElementById('fNotes').value = a.notes || '';
+
+      viewBody.style.display = 'none'; formBody.style.display = 'flex';
+      viewFoot.style.display = 'none'; formFoot.style.display = 'flex';
+      showDetails(a.service_name || '');
+      backdrop.classList.add('open');
+    }
+
+    function closeDrawer() { backdrop.classList.remove('open'); editingApptId = null; }
+
+    document.getElementById('fSvc').addEventListener('change', function () {
+      var svc = SERVICES[this.value];
+      if (!svc) return;
+      var cat = svc.category;
+      var pick = staffList.find(function (u) { return (u.role || '').indexOf(cat) !== -1; });
+      if (pick) document.getElementById('fStaff').value = pick.id;
+    });
+
+    document.getElementById('closeDrawerBtn').addEventListener('click', closeDrawer);
+    document.getElementById('cancelDrawerBtn').addEventListener('click', closeDrawer);
+    backdrop.addEventListener('click', function (e) { if (e.target === backdrop) closeDrawer(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeDrawer(); });
+
+    bodyRow.addEventListener('click', function (e) {
+      var el = e.target.closest('.appt');
+      if (!el) return;
+      openView(parseInt(el.getAttribute('data-id'), 10));
+    });
+
+    var saving = false;
+    async function saveBooking(payNow) {
+      if (saving) return;
+      var cust = document.getElementById('fCust').value.trim();
+      if (!cust) { document.getElementById('fCust').focus(); return; }
+      var svcName = document.getElementById('fSvc').value;
+      var svc = SERVICES[svcName];
+      if (!svc) { alert('اختاري الخدمة أولاً'); return; }
+      var isNew = !editingApptId;
+      // التاريخ والوقت: الحاليان ما لم يغيّرهما المستخدم يدوياً
+      if (isNew && !dateTouched) document.getElementById('fDate').value = nowDateIso();
+      if (isNew && !timeTouched) document.getElementById('fStart').value = nowTimeHHMM();
+      var bookingDate = document.getElementById('fDate').value;
+      var startTime = document.getElementById('fStart').value;
+      if (!bookingDate) { document.getElementById('fDate').focus(); return; }
+      if (!startTime) { document.getElementById('fStart').focus(); return; }
+      var receiptWin = (isNew && payNow) ? BH.openPrintWindow() : null; // قبل أي await ليُسمح بفتح النافذة
+      var body = {
+        customer_name: cust,
+        user_id: Number(document.getElementById('fStaff').value),
+        catalog_item_id: svc.id,
+        service_name: svcName,
+        booking_date: bookingDate,
+        start_time: startTime,
+        duration_minutes: svc.duration,
+        price: svc.price,
+        notes: document.getElementById('fNotes').value.trim()
+      };
+      saving = true;
+      try {
+        if (!isNew) {
+          await BH.api('/api/bookings/' + editingApptId, { method: 'PUT', body: body });
+          closeDrawer();
+          showToast('تم حفظ تعديلات الحجز');
+        } else {
+          body.status = 'مؤكد';
+          var created = await BH.api('/api/bookings', { method: 'POST', body: body });
+          if (payNow) {
+            var paid = await BH.api('/api/bookings/' + created.id, { method: 'PUT', body: { status: 'مكتمل', payment_method: formPayMethod } });
+            closeDrawer();
+            showToast('تم الحجز والدفع بنجاح');
+            printBookingReceipt(paid, receiptWin);
+          } else {
+            closeDrawer();
+            showToast('تم إنشاء الحجز بنجاح');
+          }
+        }
+        loadWeek();
+      } catch (err) {
+        if (receiptWin) receiptWin.close();
+        alert(err.message);
+      } finally {
+        saving = false;
+      }
+    }
+    document.getElementById('saveDrawerBtn').addEventListener('click', function () { saveBooking(!editingApptId); });
+    document.getElementById('saveOnlyBtn').addEventListener('click', function () { saveBooking(false); });
+
+    document.getElementById('confirmApptBtn').addEventListener('click', async function () {
+      if (currentApptId === null) return;
+      await BH.api('/api/bookings/' + currentApptId, { method: 'PUT', body: { status: 'مؤكد' } });
+      closeDrawer();
+      showToast('تم تأكيد الحجز');
+      loadWeek();
+    });
+    document.getElementById('cancelApptBtn').addEventListener('click', async function () {
+      if (currentApptId === null) return;
+      if (!confirm('إلغاء هذا الحجز؟')) return;
+      await BH.api('/api/bookings/' + currentApptId, { method: 'PUT', body: { status: 'ملغى' } });
+      closeDrawer();
+      showToast('تم إلغاء الحجز', 'danger');
+      loadWeek();
+    });
+    document.getElementById('editApptBtn').addEventListener('click', function () {
+      if (currentApptId === null) return;
+      openEdit(currentApptId);
+    });
+    document.getElementById('deleteApptBtn').addEventListener('click', async function () {
+      if (currentApptId === null) return;
+      if (!confirm('حذف هذا الحجز نهائياً؟ لا يمكن التراجع.')) return;
+      await BH.api('/api/bookings/' + currentApptId, { method: 'DELETE' });
+      closeDrawer();
+      showToast('تم حذف الحجز نهائياً', 'danger');
+      loadWeek();
+    });
+    document.getElementById('completeApptBtn').addEventListener('click', async function () {
+      if (currentApptId === null) return;
+      var receiptWin = BH.openPrintWindow();
+      try {
+        var a = await BH.api('/api/bookings/' + currentApptId, { method: 'PUT', body: { status: 'مكتمل', payment_method: selectedPayMethod } });
+        closeDrawer();
+        showToast('تم إتمام الحجز وتسجيل الدفع');
+        printBookingReceipt(a, receiptWin);
+        loadWeek();
+      } catch (err) {
+        if (receiptWin) receiptWin.close();
+        alert(err.message);
+      }
+    });
+    document.getElementById('printApptBtn').addEventListener('click', async function () {
+      if (currentApptId === null) return;
+      var receiptWin = BH.openPrintWindow();
+      var a = await BH.api('/api/bookings/' + currentApptId);
+      printBookingReceipt(a, receiptWin);
+    });
+
+    function printBookingReceipt(a, win) {
+      var s = BH.__settingsCache || {};
+      var now = new Date();
+      var dateStr = now.toLocaleDateString('en-GB') + ' ' + now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+      var body =
+        '<div class="receipt">' +
+        (s.logo ? '<img class="logo" src="' + BH.esc(s.logo) + '" />' : '') +
+        '<div class="shop">' + BH.esc(s.shop_name || '') + '</div>' +
+        (s.branch_name ? '<div class="line1">' + BH.esc(s.branch_name) + '</div>' : '') +
+        (s.phone ? '<div class="line1">' + BH.esc(s.phone) + '</div>' : '') +
+        '<div class="dash"></div>' +
+        '<div class="line1">إيصال حجز رقم #' + (2000 + a.id) + '</div>' +
+        '<div class="line1">' + dateStr + '</div>' +
+        '<div class="line1">موعد الحجز: ' + BH.esc(a.booking_date) + ' ' + BH.esc((a.start_time || '').slice(0, 5)) + '</div>' +
+        '<div class="line1">العميلة: ' + BH.esc(a.customer_name) + '</div>' +
+        (a.staff_name ? '<div class="line1">الموظفة: ' + BH.esc(a.staff_name) + '</div>' : '') +
+        '<div class="dash"></div>' +
+        '<div class="row"><span>' + BH.esc(a.service_name) + '</span><span>' + Number(a.price).toLocaleString('en-US') + '</span></div>' +
+        '<div class="row"><span>المدة</span><span>' + a.duration_minutes + ' دقيقة</span></div>' +
+        '<div class="dash"></div>' +
+        '<div class="row total"><span>الإجمالي</span><span>' + Number(a.price).toLocaleString('en-US') + ' ' + (s.currency_label || '') + '</span></div>' +
+        '<div class="dash"></div>' +
+        '<div class="line1">طريقة الدفع: ' + (PAY_LABELS[a.payment_method] || a.payment_method || '—') + '</div>' +
+        '<div class="thanks">شكراً لزيارتكم</div>' +
+        '</div>';
+      var style =
+        '@page { size: 72.1mm 210mm; margin: 0; } ' +
+        'html { background: #ddd; } ' +
+        'body { width: 72.1mm; margin: 0 auto; font-family: Tahoma, "Segoe UI", sans-serif; font-size: 11.5px; direction: rtl; color: #000; } ' +
+        '.receipt { text-align: center; padding: 2mm 2.5mm; background: #fff; } ' +
+        '.logo { max-width: 30mm; max-height: 30mm; display: block; margin: 0 auto 6px; object-fit: contain; } ' +
+        '.shop { font-weight: 700; font-size: 15px; word-break: break-word; } .line1 { font-size: 11px; margin-top: 2px; word-break: break-word; } ' +
+        '.dash { border-top: 1px dashed #000; margin: 7px 0; } ' +
+        '.row { display: flex; justify-content: space-between; gap: 6px; font-size: 11.5px; padding: 2px 0; } .row span:first-child { overflow-wrap: break-word; word-break: break-word; } ' +
+        '.row.total { font-weight: 700; font-size: 13px; border-top: 1px solid #000; margin-top: 4px; padding-top: 4px; } ' +
+        '.thanks { margin-top: 10px; font-size: 12px; font-weight: 600; } ' +
+        '@media print { html { background: #fff; } .receipt { padding: 1.5mm 2mm; } }';
+      BH.printHTML(body, style, win);
+    }
+
+    var toast = document.getElementById('toast');
+    function showToast(msg, kind) {
+      document.getElementById('toastMsg').textContent = msg;
+      toast.style.background = kind === 'danger' ? 'var(--color-danger)' : 'var(--color-success)';
+      toast.classList.add('show');
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(function () { toast.classList.remove('show'); }, 2400);
+    }
+
+    var ROLE_LABELS = { owner: 'المديرة', staff: 'موظفة' };
+
+    (async function init() {
+      var user = await BH.requireAuth();
+      BH.initThemeToggle('themeToggleBtn');
+      BH.startClock('clockTime', 'clockDate');
+      document.getElementById('sbUserName').textContent = user.name;
+      document.getElementById('sbAvatar').textContent = BH.initials(user.name);
+      document.getElementById('sbUserRole').textContent = ROLE_LABELS[user.role] || user.role;
+      BH.__settingsCache = await BH.getSettings();
+
+      staffList = await BH.api('/api/staff');
+      staffList = staffList.filter(function (u) { return u.active; });
+      staffList.forEach(function (u, i) { staffColor[u.name] = STAFF_PALETTE[i % STAFF_PALETTE.length]; });
+
+      var chipsWrap = document.getElementById('staffChips');
+      staffList.forEach(function (u) {
+        var chip = document.createElement('button');
+        chip.className = 'chip'; chip.setAttribute('data-staff', u.name);
+        chip.style.color = staffColor[u.name];
+        chip.innerHTML = '<span class="sw"></span> ' + u.name;
+        chipsWrap.appendChild(chip);
+      });
+
+      servicesList = (await BH.api('/api/items?type=service')).filter(function (s) { return s.active; });
+      servicesList.forEach(function (s) {
+        SERVICES[s.name] = { id: s.id, duration: s.duration_minutes, price: s.price, category: s.category };
+      });
+
+      loadWeek();
+      renderCards();
+      var savedView = 'cards';
+      try { savedView = localStorage.getItem('bh_bookings_view') || 'cards'; } catch (e) {}
+      setView(savedView);
+    })();
+  })();
+</script>
+
+</body>
+</html>

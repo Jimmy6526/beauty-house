@@ -1,0 +1,10 @@
+{
+  "name": "beauty-house",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Beauty House salon management system - local server",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js"
+  }
+}

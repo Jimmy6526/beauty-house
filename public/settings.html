@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Beauty House Settings</title>
+</head>
+<body>
+<style>
+  :root {
+    --font-body: "Segoe UI", Tahoma, "Segoe UI Arabic", Arial, sans-serif;
+    --font-mono: ui-monospace, "Cascadia Mono", Consolas, "SFMono-Regular", monospace;
+
+    --color-primary: #261A66;
+    --color-primary-hover: #1B1249;
+    --color-primary-tint: #EEEBFA;
+    --color-primary-tint-strong: #DAD2F4;
+
+    --color-accent: #EF5F18;
+    --color-accent-hover: #D14E0E;
+    --color-accent-tint: #FCE9DE;
+
+    --color-gold: #AB7400;
+    --color-gold-tint: #F6ECD8;
+
+    --color-bg-page: #F8F8FA;
+    --color-surface: #FFFFFF;
+    --color-surface-2: #FBFAFD;
+    --color-border: #E7E4F1;
+    --color-border-strong: #D3CDE6;
+
+    --color-text: #1E1E2D;
+    --color-text-secondary: #6B7280;
+    --color-text-muted: #9B98AC;
+    --color-on-primary: #FFFFFF;
+    --color-on-accent: #FFFFFF;
+
+    --color-success: #16A34A;
+    --color-success-tint: #E3F7E9;
+    --color-warning: #9A5B0C;
+    --color-warning-tint: #FBEEDC;
+    --color-danger: #C0362C;
+    --color-danger-tint: #FCE8E6;
+    --color-info: #1D5FC2;
+    --color-info-tint: #E6EEFC;
+
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-full: 999px;
+
+    --shadow-sm: 0 1px 2px rgba(38,26,102,.07), 0 1px 1px rgba(38,26,102,.05);
+    --shadow-md: 0 6px 16px rgba(38,26,102,.10), 0 2px 4px rgba(38,26,102,.06);
+    --shadow-lg: 0 16px 40px rgba(38,26,102,.16), 0 4px 10px rgba(38,26,102,.08);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --color-primary: #9385F0;
+      --color-primary-hover: #A99DF5;
+      --color-primary-tint: #29234A;
+      --color-primary-tint-strong: #382F63;
+
+      --color-accent: #FF7D42;
+      --color-accent-hover: #FF9666;
+      --color-accent-tint: #3A2313;
+
+      --color-gold: #E0B23D;
+      --color-gold-tint: #3A2E12;
+
+      --color-bg-page: #14101F;
+      --color-surface: #1D1830;
+      --color-surface-2: #221C39;
+      --color-border: #342A54;
+      --color-border-strong: #453768;
+
+      --color-text: #F2F0FB;
+      --color-text-secondary: #B7B0D4;
+      --color-text-muted: #837CA0;
+      --color-on-primary: #1A1430;
+      --color-on-accent: #2B1200;
+
+      --color-success: #4ADE80;
+      --color-success-tint: #123322;
+      --color-warning: #F0B429;
+      --color-warning-tint: #3A2A0C;
+      --color-danger: #F1786D;
+      --color-danger-tint: #3A1512;
+      --color-info: #6FA8F5;
+      --color-info-tint: #132A4A;
+
+      --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+      --shadow-md: 0 6px 16px rgba(0,0,0,.45);
+      --shadow-lg: 0 16px 40px rgba(0,0,0,.55);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --color-primary: #9385F0;
+    --color-primary-hover: #A99DF5;
+    --color-primary-tint: #29234A;
+    --color-primary-tint-strong: #382F63;
+
+    --color-accent: #FF7D42;
+    --color-accent-hover: #FF9666;
+    --color-accent-tint: #3A2313;
+
+    --color-gold: #E0B23D;
+    --color-gold-tint: #3A2E12;
+
+    --color-bg-page: #14101F;
+    --color-surface: #1D1830;
+    --color-surface-2: #221C39;
+    --color-border: #342A54;
+    --color-border-strong: #453768;
+
+    --color-text: #F2F0FB;
+    --color-text-secondary: #B7B0D4;
+    --color-text-muted: #837CA0;
+    --color-on-primary: #1A1430;
+    --color-on-accent: #2B1200;
+
+    --color-success: #4ADE80;
+    --color-success-tint: #123322;
+    --color-warning: #F0B429;
+    --color-warning-tint: #3A2A0C;
+    --color-danger: #F1786D;
+    --color-danger-tint: #3A1512;
+    --color-info: #6FA8F5;
+    --color-info-tint: #132A4A;
+
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+    --shadow-md: 0 6px 16px rgba(0,0,0,.45);
+    --shadow-lg: 0 16px 40px rgba(0,0,0,.55);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    background: var(--color-bg-page);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    direction: rtl;
+    text-align: right;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,h2,h3,h4 { margin: 0; text-wrap: balance; }
+  p { margin: 0; }
+  button, select, input, textarea { font-family: var(--font-body); }
+  :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; border-radius: 4px; }
+  ::selection { background: var(--color-primary-tint-strong); }
+
+  .card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); }
+
+  /* ---------------- App shell ---------------- */
+  .app-shell { display: flex; min-height: 100vh; }
+
+  .sidebar {
+    width: 252px; flex: none; position: sticky; top: 0; height: 100vh;
+    background: var(--color-surface); border-inline-start: 1px solid var(--color-border);
+    display: flex; flex-direction: column; padding: 20px 14px;
+  }
+  .sb-brand { display: flex; align-items: center; gap: 10px; padding: 6px 10px 4px; text-decoration: none; color: inherit; }
+  .sb-brand svg { width: 30px; height: 30px; flex: none; }
+  .sb-brand .name { font-family: Georgia, serif; font-weight: 700; font-size: 16px; direction: ltr; text-align: right; }
+  .sb-brand .name b { color: var(--color-gold); }
+  .sb-branch { margin: 8px 10px 22px; font-size: 11.5px; color: var(--color-text-secondary); display: flex; align-items: center; gap: 6px; }
+  .sb-branch .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--color-success); }
+
+  .nav-item {
+    display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: var(--radius-sm);
+    font-size: 13.5px; color: var(--color-text-secondary); text-decoration: none; position: relative;
+    transition: background .15s, color .15s;
+  }
+  .nav-item svg { width: 18px; height: 18px; flex: none; }
+  .nav-item:hover { background: var(--color-surface-2); color: var(--color-text); }
+  .nav-item.active { background: var(--color-primary-tint); color: var(--color-primary); font-weight: 600; }
+  .nav-item .count { margin-inline-start: auto; background: var(--color-accent); color: #fff; font-size: 10.5px; font-weight: 700; padding: 1px 6px; border-radius: var(--radius-full); }
+
+  .sb-footer { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--color-border); display: flex; align-items: center; gap: 10px; }
+  .sb-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--color-primary-tint); color: var(--color-primary); font-weight: 700; font-size: 13px; display: flex; align-items: center; justify-content: center; flex: none; }
+  .sb-user { min-width: 0; }
+  .sb-user .n { font-size: 13px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .sb-user .r { font-size: 11.5px; color: var(--color-text-secondary); }
+
+  .icon-btn {
+    width: 32px; height: 32px; border-radius: var(--radius-sm); border: 1px solid var(--color-border);
+    background: var(--color-surface); color: var(--color-text-secondary); display: flex; align-items: center; justify-content: center;
+    cursor: pointer; flex: none;
+  }
+  .icon-btn svg { width: 15px; height: 15px; }
+  .icon-btn:hover { background: var(--color-surface-2); color: var(--color-text); }
+  .icon-btn.danger:hover { background: var(--color-danger-tint); color: var(--color-danger); }
+
+  /* ---------------- Main / Topbar ---------------- */
+  .main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  .topbar {
+    position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--color-bg-page) 88%, transparent);
+    backdrop-filter: blur(8px); border-bottom: 1px solid var(--color-border);
+    display: flex; align-items: center; gap: 14px; padding: 16px 28px;
+  }
+  .topbar-title h1 { font-size: 20px; font-weight: 700; }
+  .topbar-spacer { flex: 1; }
+  .topbar-clock { display: flex; align-items: center; gap: 9px; padding: 7px 14px; border-radius: var(--radius-full); background: var(--color-surface-2); border: 1px solid var(--color-border); flex: none; }
+  .topbar-clock .ic { color: var(--color-primary); display: flex; flex: none; }
+  .topbar-clock .ic svg { width: 16px; height: 16px; }
+  .topbar-clock .txt { display: flex; flex-direction: column; line-height: 1.25; }
+  .topbar-clock .time { font-family: var(--font-mono); font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; direction: ltr; text-align: right; }
+  .topbar-clock .date { font-size: 10px; color: var(--color-text-secondary); white-space: nowrap; }
+  .topbar-title .sub { font-size: 12.5px; color: var(--color-text-secondary); margin-top: 3px; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; font-weight: 600;
+    border-radius: var(--radius-sm); border: 1px solid transparent; cursor: pointer;
+    transition: background .15s, border-color .15s, color .15s, transform .1s;
+    font-size: 14px; padding: 9px 16px; white-space: nowrap;
+  }
+  .btn:active { transform: translateY(1px); }
+  .btn svg { width: 16px; height: 16px; flex: none; }
+  .btn-primary { background: var(--color-primary); color: var(--color-on-primary); }
+  .btn-primary:hover { background: var(--color-primary-hover); }
+  .btn-accent { background: var(--color-accent); color: var(--color-on-accent); }
+  .btn-accent:hover { background: var(--color-accent-hover); }
+  .btn-outline { background: transparent; border-color: var(--color-border-strong); color: var(--color-text); }
+  .btn-outline:hover { border-color: var(--color-primary); color: var(--color-primary); }
+  .btn-ghost { background: transparent; color: var(--color-text-secondary); }
+  .btn-ghost:hover { background: var(--color-surface-2); color: var(--color-text); }
+  .btn-danger-ghost { background: transparent; color: var(--color-danger); border-color: var(--color-danger-tint); }
+  .btn-danger-ghost:hover { background: var(--color-danger-tint); }
+  .btn-sm { padding: 6px 12px; font-size: 12.5px; }
+
+  .input, select.input, textarea.input {
+    width: 100%; font-size: 13.5px; padding: 10px 12px; border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-sm); background: var(--color-surface); color: var(--color-text);
+  }
+  .input:focus, select.input:focus, textarea.input:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 3px var(--color-primary-tint); }
+
+  /* ---------------- Settings layout ---------------- */
+  .settings-layout { flex: 1; display: flex; gap: 22px; padding: 22px 28px 64px; align-items: flex-start; }
+  .settings-nav { width: 226px; flex: none; display: flex; flex-direction: column; gap: 2px; position: sticky; top: 84px; }
+  .settings-nav button {
+    display: flex; align-items: center; gap: 10px; width: 100%; text-align: right; border: none; background: none;
+    padding: 10px 12px; border-radius: var(--radius-sm); font-size: 13.5px; color: var(--color-text-secondary); cursor: pointer;
+  }
+  .settings-nav button svg { width: 17px; height: 17px; flex: none; }
+  .settings-nav button:hover { background: var(--color-surface-2); color: var(--color-text); }
+  .settings-nav button.active { background: var(--color-primary-tint); color: var(--color-primary); font-weight: 600; }
+
+  .settings-panel { flex: 1; min-width: 0; }
+  .settings-section { display: none; flex-direction: column; gap: 22px; }
+  .settings-section.active { display: flex; }
+
+  .panel-card { padding: 24px 26px; }
+  .panel-card .p-head { margin-bottom: 20px; }
+  .panel-card .p-head h2 { font-size: 17px; font-weight: 700; }
+  .panel-card .p-head p { font-size: 13px; color: var(--color-text-secondary); margin-top: 4px; }
+
+  .field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 7px; }
+  .field .helper { font-size: 12px; color: var(--color-text-secondary); margin-top: 6px; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .field { margin-bottom: 4px; }
+
+  .logo-row { display: flex; align-items: center; gap: 16px; margin-bottom: 22px; }
+  .logo-preview { width: 64px; height: 64px; border-radius: var(--radius-lg); background: var(--color-primary-tint); display: flex; align-items: center; justify-content: center; flex: none; }
+  .logo-preview svg { width: 34px; height: 34px; }
+
+  .day-chips { display: flex; gap: 7px; flex-wrap: wrap; }
+  .day-chip { padding: 7px 13px; border-radius: var(--radius-full); font-size: 12.5px; font-weight: 600; border: 1px solid var(--color-border-strong); color: var(--color-text-secondary); background: var(--color-surface); cursor: pointer; }
+  .day-chip.active { background: var(--color-primary); color: var(--color-on-primary); border-color: var(--color-primary); }
+
+  .panel-foot { display: flex; justify-content: flex-end; gap: 10px; padding-top: 18px; border-top: 1px solid var(--color-border); margin-top: 4px; }
+
+  /* ---------------- Toggle switch ---------------- */
+  .toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--color-border); gap: 16px; }
+  .toggle-row:last-child { border-bottom: none; }
+  .toggle-row .t { font-size: 13.5px; font-weight: 600; }
+  .toggle-row .d { font-size: 12px; color: var(--color-text-secondary); margin-top: 3px; }
+  .switch { position: relative; display: inline-block; width: 46px; height: 26px; flex: none; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch .track { position: absolute; inset: 0; background: var(--color-border-strong); border-radius: var(--radius-full); transition: background .2s ease; cursor: pointer; box-shadow: inset 0 1px 2px rgba(0,0,0,.06); }
+  .switch .track::before {
+    content: ""; position: absolute; width: 20px; height: 20px; left: 3px; top: 3px; background: #fff; border-radius: 50%;
+    transition: transform .2s cubic-bezier(.34,1.56,.64,1); box-shadow: 0 1px 3px rgba(0,0,0,.25);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23C7C2DD' stroke-width='3'%3E%3Cpath d='M6 6l12 12M18 6 6 18'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: center; background-size: 10px 10px;
+  }
+  .switch input:checked + .track { background: var(--color-success); box-shadow: inset 0 1px 2px rgba(0,0,0,.1); }
+  .switch input:checked + .track::before {
+    transform: translateX(-20px);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2316A34A' stroke-width='3'%3E%3Cpath d='M5 12l4 4 10-10'/%3E%3C/svg%3E");
+    background-size: 11px 11px;
+  }
+  .switch:hover .track { filter: brightness(.96); }
+  .switch input:focus-visible + .track { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+
+  /* ---------------- Staff / services lists ---------------- */
+  .person-row { display: flex; align-items: center; gap: 12px; padding: 13px 0; border-bottom: 1px solid var(--color-border); }
+  .person-row:last-child { border-bottom: none; }
+  .person-row .avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--color-primary-tint); color: var(--color-primary); font-weight: 700; font-size: 13px; display: flex; align-items: center; justify-content: center; flex: none; }
+  .person-row .info { flex: 1; min-width: 0; }
+  .person-row .info .n { font-size: 13.5px; font-weight: 700; }
+  .person-row .info .r { font-size: 12px; color: var(--color-text-secondary); }
+  .person-row .phone { font-size: 12px; color: var(--color-text-muted); font-family: var(--font-mono); direction: ltr; }
+  .badge { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: var(--radius-full); background: var(--color-success-tint); color: var(--color-success); }
+  .row-actions { display: flex; gap: 6px; }
+
+  table.svc-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  table.svc-table th { text-align: right; font-size: 11.5px; color: var(--color-text-secondary); font-weight: 700; padding: 0 4px 10px; }
+  table.svc-table td { padding: 11px 4px; border-top: 1px solid var(--color-border); }
+  table.svc-table td.num { font-family: var(--font-mono); direction: ltr; text-align: right; font-variant-numeric: tabular-nums; }
+  table.svc-table .cat-header td { background: var(--color-surface-2); font-size: 11.5px; font-weight: 700; color: var(--color-primary); padding: 8px 4px; border-top: none; }
+
+  /* ---------------- Drawer ---------------- */
+  .drawer-backdrop { position: fixed; inset: 0; background: rgba(20,16,31,.5); opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 50; }
+  .drawer-backdrop.open { opacity: 1; pointer-events: auto; }
+  .drawer { position: fixed; top: 0; bottom: 0; left: 0; width: 380px; max-width: 92vw; background: var(--color-surface); box-shadow: var(--shadow-lg); transform: translateX(-100%); transition: transform .22s ease; display: flex; flex-direction: column; }
+  .drawer-backdrop.open .drawer { transform: translateX(0); }
+  .drawer-head { padding: 20px 22px; border-bottom: 1px solid var(--color-border); display: flex; align-items: center; justify-content: space-between; flex: none; }
+  .drawer-head h3 { font-size: 16px; font-weight: 700; }
+  .drawer-body { padding: 20px 22px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 16px; }
+  .drawer-foot { padding: 16px 22px; border-top: 1px solid var(--color-border); display: flex; gap: 10px; flex: none; }
+  .drawer-foot .btn { flex: 1; justify-content: center; }
+
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--color-success); color: #fff; padding: 12px 22px; border-radius: var(--radius-md); font-size: 13.5px; font-weight: 600; box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 8px; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; z-index: 60; }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .toast svg { width: 16px; height: 16px; }
+
+  @media (max-width: 980px) {
+    .settings-layout { flex-direction: column; }
+    .settings-nav { width: 100%; flex-direction: row; overflow-x: auto; position: static; }
+    .field-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<div class="app-shell">
+
+  <aside class="sidebar">
+    <a class="sb-brand" href="dashboard.html">
+      <svg viewBox="0 0 48 48" aria-hidden="true">
+        <defs><linearGradient id="pgSb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#261A66"/><stop offset="1" stop-color="#EF5F18"/></linearGradient></defs>
+        <g transform="translate(24,24)">
+          <g><ellipse cx="0" cy="-13" rx="7" ry="11" fill="url(#pgSb)"/></g>
+          <g transform="rotate(72)"><ellipse cx="0" cy="-13" rx="7" ry="11" fill="url(#pgSb)" opacity=".9"/></g>
+          <g transform="rotate(144)"><ellipse cx="0" cy="-13" rx="7" ry="11" fill="url(#pgSb)" opacity=".82"/></g>
+          <g transform="rotate(216)"><ellipse cx="0" cy="-13" rx="7" ry="11" fill="url(#pgSb)" opacity=".74"/></g>
+          <g transform="rotate(288)"><ellipse cx="0" cy="-13" rx="7" ry="11" fill="url(#pgSb)" opacity=".66"/></g>
+          <circle r="6" fill="#AB7400"/>
+        </g>
+      </svg>
+      <span class="name"><b>Beauty</b> House</span>
+    </a>
+    <div class="sb-branch"><span class="dot"></span> الفرع الرئيسي — متصل</div>
+
+    <nav style="display:flex; flex-direction:column; gap:2px;">
+      <a class="nav-item" href="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg> لوحة التحكم</a>
+      <a class="nav-item" href="pos.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="7" width="18" height="13" rx="1.5"/><path d="M8 7V5a4 4 0 0 1 8 0v2"/></svg> نقطة البيع</a>
+      <a class="nav-item" href="inventory.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 8h16M4 8l1 12h14l1-12M9 8V5h6v3"/></svg> المخزون</a>
+      <a class="nav-item" href="bookings.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="1.5"/><path d="M3 10h18M8 3v4M16 3v4"/></svg> الحجوزات</a>
+      <a class="nav-item" href="customers.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.2"/><path d="M5 20c1-4 4-6 7-6s6 2 7 6"/></svg> العميلات</a>
+      <a class="nav-item" href="reports.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V9M11 19V5M18 19v-7"/></svg> التقارير</a>
+      <div class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14.3 3H9.7l-.3 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5a7 7 0 0 0 0 2.4l-2 1.5 2 3.4 2.3-.9a7 7 0 0 0 2 1.2l.3 2.6h4.6l.3-2.6a7 7 0 0 0 2-1.2l2.3.9 2-3.4-2-1.5c.07-.4.1-.8.1-1.2Z"/></svg> الإعدادات</div>
+    </nav>
+
+    <div class="sb-footer">
+      <div class="sb-avatar" id="sbAvatar">—</div>
+      <div class="sb-user">
+        <div class="n" id="sbUserName">—</div>
+        <div class="r" id="sbUserRole">—</div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title">
+        <h1>الإعدادات</h1>
+        <div class="sub">إدارة بيانات المحل، الفريق، الخدمات، والتفضيلات العامة</div>
+      </div>
+      <div class="topbar-spacer"></div>
+      <div class="topbar-clock">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+        <div class="txt"><span class="time" id="clockTime">--:--:--</span><span class="date" id="clockDate"></span></div>
+      </div>
+      <button class="icon-btn" id="themeToggleBtn" title="تبديل المظهر" aria-label="تبديل المظهر"></button>
+    </div>
+
+    <div class="settings-layout">
+      <nav class="settings-nav" id="settingsNav">
+        <button class="active" data-tab="info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-7h6v7"/></svg> معلومات المحل</button>
+        <button data-tab="team"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.2"/><path d="M3 19c.8-3.4 3-5 6-5s5.2 1.6 6 5"/><path d="M17 8h4M19 6v4"/></svg> الفريق</button>
+        <button data-tab="services"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3v18M18 3v18M6 8h4M6 16h4M14 8h4M14 16h4"/></svg> الخدمات والأسعار</button>
+        <button data-tab="cafe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h12l-1.5 14a2 2 0 0 1-2 1.8H9.5a2 2 0 0 1-2-1.8L6 3Z"/><path d="M6 8h12"/></svg> الكافيه</button>
+        <button data-tab="billing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/></svg> الدفع والفوترة</button>
+        <button data-tab="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 8a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6Z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg> الإشعارات</button>
+        <button data-tab="account"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.2-4.2 4.4-6 8-6s6.8 1.8 8 6"/></svg> الحساب والأمان</button>
+        <button data-tab="backup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg> نسخ احتياطي</button>
+      </nav>
+
+      <div class="settings-panel">
+
+        <!-- INFO -->
+        <section class="settings-section active" id="tab-info">
+          <div class="card panel-card">
+            <div class="p-head"><h2>معلومات المحل</h2><p>هذه البيانات تظهر في الفواتير والرسائل المرسلة للعميلات.</p></div>
+
+            <div class="logo-row">
+              <div class="logo-preview" id="logoPreview">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" style="width:28px;height:28px;color:var(--color-text-muted);"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="1.5"/><path d="m5 19 5-6 4 4 3-4 4 5"/></svg>
+              </div>
+              <div>
+                <div style="display:flex; gap:8px;">
+                  <button type="button" class="btn btn-outline btn-sm" id="logoUploadBtn">اختيار شعار</button>
+                  <button type="button" class="btn btn-ghost btn-sm" id="logoRemoveBtn" style="display:none;">إزالة الشعار</button>
+                </div>
+                <div class="field .helper" style="font-size:12px;color:var(--color-text-secondary);margin-top:6px;">يظهر الشعار في القائمة الجانبية وصفحة الدخول وكل الإيصالات المطبوعة</div>
+              </div>
+            </div>
+
+            <div class="field-grid">
+              <div class="field"><label>اسم المحل</label><input class="input" id="f_shop_name" /></div>
+              <div class="field"><label>اسم الفرع</label><input class="input" id="f_branch_name" /></div>
+              <div class="field"><label>رقم الجوال</label><input class="input" id="f_phone" style="direction:ltr;text-align:right;" /></div>
+              <div class="field"><label>البريد الإلكتروني</label><input class="input" id="f_email" style="direction:ltr;text-align:right;" /></div>
+            </div>
+            <div class="field" style="margin-top:16px;"><label>العنوان</label><input class="input" id="f_address" /></div>
+
+            <div class="field-grid" style="margin-top:16px;">
+              <div class="field"><label>وقت الفتح</label><input class="input" type="time" id="f_open_time" /></div>
+              <div class="field"><label>وقت الإغلاق</label><input class="input" type="time" id="f_close_time" /></div>
+            </div>
+
+            <div class="field" style="margin-top:16px;">
+              <label>أيام العمل</label>
+              <div class="day-chips" id="dayChips">
+                <button type="button" class="day-chip" data-day="السبت">السبت</button>
+                <button type="button" class="day-chip" data-day="الأحد">الأحد</button>
+                <button type="button" class="day-chip" data-day="الاثنين">الاثنين</button>
+                <button type="button" class="day-chip" data-day="الثلاثاء">الثلاثاء</button>
+                <button type="button" class="day-chip" data-day="الأربعاء">الأربعاء</button>
+                <button type="button" class="day-chip" data-day="الخميس">الخميس</button>
+                <button type="button" class="day-chip" data-day="الجمعة">الجمعة</button>
+              </div>
+            </div>
+
+            <div class="panel-foot">
+              <button class="btn btn-accent save-btn" id="saveInfoBtn">حفظ التغييرات</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- TEAM -->
+        <section class="settings-section" id="tab-team">
+          <div class="card panel-card">
+            <div class="p-head" style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px;">
+              <div><h2>الفريق</h2><p>الموظفات المخوّلات بالدخول إلى النظام وتلقّي الحجوزات.</p></div>
+              <button class="btn btn-accent btn-sm" id="openStaffBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                إضافة موظفة
+              </button>
+            </div>
+
+            <div id="staffList"><div style="padding:20px;color:var(--color-text-muted);font-size:13px;">جارِ التحميل...</div></div>
+          </div>
+        </section>
+
+        <!-- SERVICES -->
+        <section class="settings-section" id="tab-services">
+          <div class="card panel-card">
+            <div class="p-head" style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px;">
+              <div><h2>الخدمات والأسعار</h2><p>هذه القائمة تُستخدم في نقطة البيع والحجوزات مباشرة.</p></div>
+              <button class="btn btn-accent btn-sm" id="addServiceBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                إضافة خدمة
+              </button>
+            </div>
+            <table class="svc-table">
+              <thead><tr><th>الخدمة</th><th class="num">المدة</th><th class="num">السعر</th><th></th></tr></thead>
+              <tbody id="servicesTableBody">
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- CAFE -->
+        <section class="settings-section" id="tab-cafe">
+          <div class="card panel-card">
+            <div class="p-head" style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px;">
+              <div><h2>الكافيه</h2><p>مشروبات وعصائر وسناكس تُباع من نقطة البيع مباشرة، بدون حجز أو وقت.</p></div>
+              <button class="btn btn-accent btn-sm" id="addCafeBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                إضافة صنف
+              </button>
+            </div>
+            <table class="svc-table">
+              <thead><tr><th>الصنف</th><th class="num">السعر</th><th></th></tr></thead>
+              <tbody id="cafeTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- BILLING -->
+        <section class="settings-section" id="tab-billing">
+          <div class="card panel-card">
+            <div class="p-head"><h2>الدفع والفوترة</h2><p>إعدادات الضريبة، العملة، وطرق الدفع المتاحة في نقطة البيع.</p></div>
+            <div class="field-grid">
+              <div class="field"><label>نسبة الضريبة (٪)</label><input class="input" id="f_vat_rate" style="direction:ltr;text-align:right;" /></div>
+              <div class="field"><label>العملة</label>
+                <select class="input" id="f_currency">
+                  <option value="SDG|ج.س">جنيه سوداني (ج.س)</option>
+                  <option value="SAR|ر.س">ريال سعودي (ر.س)</option>
+                  <option value="AED|د.إ">درهم إماراتي (د.إ)</option>
+                  <option value="EGP|ج.م">جنيه مصري (ج.م)</option>
+                </select>
+              </div>
+            </div>
+            <div style="margin-top:8px;">
+              <div class="toggle-row">
+                <div><div class="t">الدفع نقداً</div><div class="d">قبول الدفع النقدي في نقطة البيع</div></div>
+                <label class="switch"><input type="checkbox" id="f_pay_cash" /><span class="track"></span></label>
+              </div>
+              <div class="toggle-row">
+                <div><div class="t">بنكك (Bankak)</div><div class="d">قبول التحويل عبر تطبيق بنكك</div></div>
+                <label class="switch"><input type="checkbox" id="f_pay_bankak" /><span class="track"></span></label>
+              </div>
+              <div class="toggle-row">
+                <div><div class="t">أوكاش (O Cash)</div><div class="d">قبول الدفع عبر محفظة أوكاش</div></div>
+                <label class="switch"><input type="checkbox" id="f_pay_ocash" /><span class="track"></span></label>
+              </div>
+            </div>
+            <div class="panel-foot">
+              <button class="btn btn-accent save-btn" id="saveBillingBtn">حفظ التغييرات</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- NOTIFICATIONS -->
+        <section class="settings-section" id="tab-notifications">
+          <div class="card panel-card">
+            <div class="p-head"><h2>الإشعارات</h2><p>تحكّمي في التنبيهات التي يستلمها الفريق والعميلات.</p></div>
+            <div>
+              <div class="toggle-row">
+                <div><div class="t">تذكير الحجز عبر واتساب</div><div class="d">يُرسل للعميلة قبل الموعد بساعة</div></div>
+                <label class="switch"><input type="checkbox" id="f_notif_whatsapp" /><span class="track"></span></label>
+              </div>
+              <div class="toggle-row">
+                <div><div class="t">تذكير الحجز عبر رسالة نصية</div><div class="d">بديل احتياطي في حال عدم توفر واتساب</div></div>
+                <label class="switch"><input type="checkbox" id="f_notif_sms" /><span class="track"></span></label>
+              </div>
+              <div class="toggle-row">
+                <div><div class="t">تنبيه المخزون المنخفض</div><div class="d">إشعار فوري عند وصول منتج للحد الأدنى</div></div>
+                <label class="switch"><input type="checkbox" id="f_notif_low_stock" /><span class="track"></span></label>
+              </div>
+              <div class="toggle-row">
+                <div><div class="t">تقرير يومي بالبريد الإلكتروني</div><div class="d">ملخص المبيعات والحجوزات في نهاية كل يوم</div></div>
+                <label class="switch"><input type="checkbox" id="f_notif_daily_report" /><span class="track"></span></label>
+              </div>
+              <div class="toggle-row">
+                <div><div class="t">إشعار حجز جديد للموظفات</div><div class="d">تنبيه فوري عند إضافة حجز في جدولهن</div></div>
+                <label class="switch"><input type="checkbox" id="f_notif_new_booking" /><span class="track"></span></label>
+              </div>
+            </div>
+            <div class="panel-foot">
+              <button class="btn btn-accent save-btn" id="saveNotifBtn">حفظ التغييرات</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ACCOUNT -->
+        <section class="settings-section" id="tab-account">
+          <div class="card panel-card">
+            <div class="p-head"><h2>بيانات الحساب</h2><p>معلومات حسابك الشخصي في النظام.</p></div>
+            <div class="field-grid">
+              <div class="field"><label>الاسم الكامل</label><input class="input" id="acc_name" /></div>
+              <div class="field"><label>الدور</label><input class="input" id="acc_role" disabled /></div>
+              <div class="field"><label>البريد الإلكتروني</label><input class="input" id="acc_email" style="direction:ltr;text-align:right;" /></div>
+              <div class="field"><label>رقم الجوال</label><input class="input" id="acc_phone" style="direction:ltr;text-align:right;" /></div>
+            </div>
+            <div class="panel-foot"><button class="btn btn-accent" id="saveAccountBtn">حفظ التغييرات</button></div>
+          </div>
+
+          <div class="card panel-card">
+            <div class="p-head"><h2>تغيير كلمة المرور</h2><p>يُفضّل استخدام كلمة مرور لا تقل عن 6 أحرف.</p></div>
+            <div class="field-error" id="pwError" style="display:none;margin-bottom:14px;padding:10px 12px;background:var(--color-danger-tint);border-radius:var(--radius-sm);"></div>
+            <div class="field" style="margin-bottom:16px;"><label>كلمة المرور الحالية</label><input class="input" id="pw_current" type="password" placeholder="••••••••" /></div>
+            <div class="field-grid">
+              <div class="field"><label>كلمة المرور الجديدة</label><input class="input" id="pw_new" type="password" placeholder="••••••••" /></div>
+              <div class="field"><label>تأكيد كلمة المرور</label><input class="input" id="pw_confirm" type="password" placeholder="••••••••" /></div>
+            </div>
+            <div class="panel-foot"><button class="btn btn-primary" id="savePasswordBtn">تحديث كلمة المرور</button></div>
+          </div>
+
+          <div class="card panel-card">
+            <div class="p-head"><h2>سؤال الأمان</h2><p>يُستخدم لاستعادة كلمة المرور من صفحة تسجيل الدخول في حال نسيانها.</p></div>
+            <div class="field-error" id="secqStatus" style="display:none;margin-bottom:14px;padding:10px 12px;border-radius:var(--radius-sm);"></div>
+            <div class="field" style="margin-bottom:16px;"><label>سؤال الأمان</label>
+              <select class="input" id="secq_question">
+                <option value="اسم أول محل عملتِ فيه؟">اسم أول محل عملتِ فيه؟</option>
+                <option value="ما اسم أفضل صديقة لك في الطفولة؟">ما اسم أفضل صديقة لك في الطفولة؟</option>
+                <option value="ما هو لونك المفضل؟">ما هو لونك المفضل؟</option>
+                <option value="ما اسم مدينة ميلادك؟">ما اسم مدينة ميلادك؟</option>
+                <option value="ما اسم حيوانك الأليف الأول؟">ما اسم حيوانك الأليف الأول؟</option>
+              </select>
+            </div>
+            <div class="field"><label>الإجابة</label><input class="input" id="secq_answer" placeholder="أدخلي إجابتك" /></div>
+            <div class="panel-foot"><button class="btn btn-primary" id="saveSecQBtn">حفظ سؤال الأمان</button></div>
+          </div>
+        </section>
+
+        <!-- BACKUP -->
+        <section class="settings-section" id="tab-backup">
+          <div class="card panel-card">
+            <div class="p-head"><h2>نسخة احتياطية جديدة</h2><p>يتم أخذ نسخة احتياطية تلقائية يومياً بشكل صامت. يمكنكِ أيضاً إنشاء نسخة يدوياً في أي وقت.</p></div>
+            <div class="panel-foot" style="padding-top:0; border-top:none;">
+              <button class="btn btn-accent" id="createBackupBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+                إنشاء نسخة احتياطية الآن
+              </button>
+            </div>
+          </div>
+
+          <div class="card panel-card">
+            <div class="p-head"><h2>النسخ الاحتياطية المتوفرة</h2><p>يمكن تنزيل أي نسخة كملف، أو استعادتها لتحل محل بيانات النظام الحالية.</p></div>
+            <div id="backupList"></div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="restoreConfirmBackdrop" style="position:fixed;inset:0;background:rgba(20,16,31,.55);opacity:0;pointer-events:none;transition:opacity .2s;z-index:80;display:flex;align-items:center;justify-content:center;padding:20px;">
+  <div style="width:100%;max-width:420px;background:var(--color-surface);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);padding:24px;">
+    <h3 style="font-size:16px;font-weight:700;margin-bottom:10px;">تأكيد استعادة النسخة الاحتياطية</h3>
+    <p style="font-size:13.5px;color:var(--color-text-secondary);line-height:1.8;margin-bottom:20px;">
+      سيتم استبدال كل بيانات النظام الحالية (المبيعات، الحجوزات، العميلات، المخزون...) ببيانات النسخة المحددة، وسيُعاد تشغيل النظام تلقائياً. سيتم أخذ نسخة احتياطية من الوضع الحالي قبل الاستبدال تحسباً لذلك. هل ترغبين بالمتابعة؟
+    </p>
+    <div style="display:flex; gap:10px;">
+      <button class="btn btn-outline" id="cancelRestoreBtn" style="flex:1;justify-content:center;">إلغاء</button>
+      <button class="btn btn-danger-ghost" id="confirmRestoreBtn" style="flex:1;justify-content:center;border:1.5px solid var(--color-danger);">نعم، استبدال البيانات</button>
+    </div>
+  </div>
+</div>
+
+<div class="drawer-backdrop" id="drawerBackdrop">
+  <div class="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+    <div class="drawer-head">
+      <h3 id="drawerTitle">إضافة موظفة</h3>
+      <button class="icon-btn" id="closeDrawerBtn" aria-label="إغلاق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    </div>
+    <div class="drawer-body">
+      <div class="field"><label>اسم الموظفة</label><input class="input" id="fName" placeholder="مثال: هيا سعد" /></div>
+      <div class="field"><label>الدور / التخصص</label><input class="input" id="fRole" placeholder="مثال: أخصائية مكياج" /></div>
+      <div class="field"><label>رقم الجوال</label><input class="input" id="fPhone" placeholder="09XXXXXXXX" /></div>
+      <div class="field"><label>البريد الإلكتروني (اختياري)</label><input class="input" id="fEmail" placeholder="haya@beautyhouse.local" style="direction:ltr;text-align:right;" /></div>
+      <div class="field"><label>اسم المستخدم (لتسجيل الدخول)</label><input class="input" id="fUsername" placeholder="haya" style="direction:ltr;text-align:right;" /></div>
+      <div class="field" id="fPasswordField"><label>كلمة المرور</label><input class="input" id="fPassword" type="password" placeholder="6 أحرف على الأقل" /></div>
+      <div class="toggle-row" style="border:none;padding-top:4px;">
+        <div><div class="t">تفعيل تسجيل الدخول</div><div class="d">السماح لها بالدخول إلى النظام</div></div>
+        <label class="switch"><input type="checkbox" id="fCanLogin" checked /><span class="track"></span></label>
+      </div>
+      <div class="toggle-row" style="border-top:1px solid var(--color-border); margin-top:4px; padding-top:16px;">
+        <div><div class="t">كامل الصلاحيات</div><div class="d">الوصول لكل الأقسام. عطّلي هذا لتحديد أقسام معينة فقط.</div></div>
+        <label class="switch"><input type="checkbox" id="fFullAccess" checked /><span class="track"></span></label>
+      </div>
+      <div class="field" id="fPermsWrap" style="display:none;">
+        <label>الأقسام المسموح بها</label>
+        <div style="display:flex; flex-direction:column; gap:10px; margin-top:6px;">
+          <label style="display:flex;align-items:center;gap:9px;font-size:13.5px;cursor:pointer;"><input type="checkbox" class="perm-chk" value="pos" /> نقطة البيع</label>
+          <label style="display:flex;align-items:center;gap:9px;font-size:13.5px;cursor:pointer;"><input type="checkbox" class="perm-chk" value="bookings" /> الحجوزات</label>
+          <label style="display:flex;align-items:center;gap:9px;font-size:13.5px;cursor:pointer;"><input type="checkbox" class="perm-chk" value="inventory" /> المخزون</label>
+          <label style="display:flex;align-items:center;gap:9px;font-size:13.5px;cursor:pointer;"><input type="checkbox" class="perm-chk" value="customers" /> العميلات</label>
+        </div>
+      </div>
+    </div>
+    <div class="drawer-foot">
+      <button class="btn btn-outline" id="cancelDrawerBtn">إلغاء</button>
+      <button class="btn btn-accent" id="saveStaffBtn">إضافة</button>
+    </div>
+  </div>
+</div>
+
+<div class="drawer-backdrop" id="itemDrawerBackdrop">
+  <div class="drawer" role="dialog" aria-modal="true" aria-labelledby="itemDrawerTitle">
+    <div class="drawer-head">
+      <h3 id="itemDrawerTitle">إضافة خدمة</h3>
+      <button class="icon-btn" id="closeItemDrawerBtn" aria-label="إغلاق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    </div>
+    <div class="drawer-body">
+      <div class="field">
+        <label>الصورة</label>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div id="iImagePreview" style="width:64px; height:64px; border-radius:var(--radius-md); background:var(--color-surface-2); border:1px solid var(--color-border); display:flex; align-items:center; justify-content:center; overflow:hidden; flex:none;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" style="width:24px;height:24px;color:var(--color-text-muted);"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="1.5"/><path d="m5 19 5-6 4 4 3-4 4 5"/></svg>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <button type="button" class="btn btn-outline btn-sm" id="iImageBtn">اختيار صورة</button>
+            <button type="button" class="btn btn-ghost btn-sm" id="iImageRemoveBtn" style="display:none;">إزالة الصورة</button>
+          </div>
+        </div>
+      </div>
+      <div class="field"><label>الاسم</label><input class="input" id="iName" placeholder="مثال: تنظيف بشرة" /></div>
+      <div class="field"><label>الفئة</label>
+        <select class="input" id="iCategory"></select>
+      </div>
+      <div class="field" id="iDurationField"><label>المدة (دقيقة)</label><input class="input" id="iDuration" type="number" min="5" step="5" /></div>
+      <div class="field"><label>السعر</label><input class="input" id="iPrice" type="number" min="0" /></div>
+    </div>
+    <div class="drawer-foot">
+      <button class="btn btn-outline" id="cancelItemDrawerBtn">إلغاء</button>
+      <button class="btn btn-danger-ghost" id="deleteItemBtn" style="display:none;flex:none;width:auto;padding:9px 14px;">حذف</button>
+      <button class="btn btn-accent" id="saveItemBtn">إضافة</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg><span id="toastMsg">تم الحفظ بنجاح</span></div>
+
+<script src="shared.js"></script>
+<script>
+  (function () {
+    var EDIT_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
+    var DEL_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13"/></svg>';
+    var SERVICE_CATS = ['البشرة', 'الشعر', 'الجسم', 'ميك آب'];
+    var CAFE_CATS = ['مشروبات باردة', 'عصائر', 'سناكس'];
+
+    var toast = document.getElementById('toast');
+    function showToast(msg) {
+      document.getElementById('toastMsg').textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(function () { toast.classList.remove('show'); }, 2400);
+    }
+
+    document.getElementById('settingsNav').addEventListener('click', function (e) {
+      var btn = e.target.closest('button'); if (!btn) return;
+      document.querySelectorAll('#settingsNav button').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      var tab = btn.getAttribute('data-tab');
+      document.querySelectorAll('.settings-section').forEach(function (s) { s.classList.toggle('active', s.id === 'tab-' + tab); });
+    });
+
+    document.getElementById('dayChips').addEventListener('click', function (e) {
+      var chip = e.target.closest('.day-chip'); if (!chip) return;
+      chip.classList.toggle('active');
+    });
+
+    /* ---------------- Shop info ---------------- */
+    function fillInfoForm(s) {
+      document.getElementById('f_shop_name').value = s.shop_name || '';
+      document.getElementById('f_branch_name').value = s.branch_name || '';
+      document.getElementById('f_phone').value = s.phone || '';
+      document.getElementById('f_email').value = s.email || '';
+      document.getElementById('f_address').value = s.address || '';
+      document.getElementById('f_open_time').value = s.open_time || '09:00';
+      document.getElementById('f_close_time').value = s.close_time || '21:00';
+      var days = [];
+      try { days = JSON.parse(s.working_days || '[]'); } catch (e) {}
+      document.querySelectorAll('.day-chip').forEach(function (chip) {
+        chip.classList.toggle('active', days.indexOf(chip.getAttribute('data-day')) !== -1);
+      });
+      document.getElementById('f_vat_rate').value = s.vat_rate || '0';
+      var curVal = (s.currency_code || 'SDG') + '|' + (s.currency_label || 'ج.س');
+      var curSel = document.getElementById('f_currency');
+      if (![].some.call(curSel.options, function (o) { return o.value === curVal; })) {
+        var opt = document.createElement('option'); opt.value = curVal; opt.textContent = s.currency_label; curSel.appendChild(opt);
+      }
+      curSel.value = curVal;
+      document.getElementById('f_pay_cash').checked = s.pay_cash === '1';
+      document.getElementById('f_pay_bankak').checked = s.pay_bankak === '1';
+      document.getElementById('f_pay_ocash').checked = s.pay_ocash === '1';
+      document.getElementById('f_notif_whatsapp').checked = s.notif_whatsapp === '1';
+      document.getElementById('f_notif_sms').checked = s.notif_sms === '1';
+      document.getElementById('f_notif_low_stock').checked = s.notif_low_stock === '1';
+      document.getElementById('f_notif_daily_report').checked = s.notif_daily_report === '1';
+      document.getElementById('f_notif_new_booking').checked = s.notif_new_booking === '1';
+      currentLogoUrl = s.logo || null;
+      renderLogoPreview();
+    }
+
+    var currentLogoUrl = null;
+    function renderLogoPreview() {
+      var box = document.getElementById('logoPreview');
+      if (currentLogoUrl) {
+        box.innerHTML = '<img src="' + BH.esc(currentLogoUrl) + '" style="width:100%;height:100%;object-fit:contain;" />';
+        document.getElementById('logoRemoveBtn').style.display = 'inline-flex';
+      } else {
+        box.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" style="width:28px;height:28px;color:var(--color-text-muted);"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="1.5"/><path d="m5 19 5-6 4 4 3-4 4 5"/></svg>';
+        document.getElementById('logoRemoveBtn').style.display = 'none';
+      }
+    }
+    document.getElementById('logoUploadBtn').addEventListener('click', async function () {
+      try {
+        currentLogoUrl = await BH.uploadImage(500);
+        renderLogoPreview();
+        await BH.api('/api/settings', { method: 'PUT', body: { logo: currentLogoUrl } });
+        await BH.getSettings(true);
+        BH.applyBranding(await BH.getSettings());
+        showToast('تم تحديث الشعار في كامل النظام');
+      } catch (e) {}
+    });
+    document.getElementById('logoRemoveBtn').addEventListener('click', async function () {
+      currentLogoUrl = null;
+      renderLogoPreview();
+      await BH.api('/api/settings', { method: 'PUT', body: { logo: '' } });
+      await BH.getSettings(true);
+      showToast('تمت إزالة الشعار');
+    });
+
+    document.getElementById('saveInfoBtn').addEventListener('click', async function () {
+      var days = Array.from(document.querySelectorAll('.day-chip.active')).map(function (c) { return c.getAttribute('data-day'); });
+      await BH.api('/api/settings', { method: 'PUT', body: {
+        shop_name: document.getElementById('f_shop_name').value.trim(),
+        branch_name: document.getElementById('f_branch_name').value.trim(),
+        phone: document.getElementById('f_phone').value.trim(),
+        email: document.getElementById('f_email').value.trim(),
+        address: document.getElementById('f_address').value.trim(),
+        open_time: document.getElementById('f_open_time').value,
+        close_time: document.getElementById('f_close_time').value,
+        working_days: JSON.stringify(days)
+      }});
+      await BH.getSettings(true);
+      BH.applyBranding(await BH.getSettings());
+      showToast('تم حفظ بيانات المحل في كامل النظام');
+    });
+
+    document.getElementById('saveBillingBtn').addEventListener('click', async function () {
+      var curParts = document.getElementById('f_currency').value.split('|');
+      await BH.api('/api/settings', { method: 'PUT', body: {
+        vat_rate: document.getElementById('f_vat_rate').value || '0',
+        currency_code: curParts[0],
+        currency_label: curParts[1],
+        pay_cash: document.getElementById('f_pay_cash').checked ? '1' : '0',
+        pay_bankak: document.getElementById('f_pay_bankak').checked ? '1' : '0',
+        pay_ocash: document.getElementById('f_pay_ocash').checked ? '1' : '0'
+      }});
+      await BH.getSettings(true);
+      showToast('تم حفظ إعدادات الدفع');
+    });
+
+    document.getElementById('saveNotifBtn').addEventListener('click', async function () {
+      await BH.api('/api/settings', { method: 'PUT', body: {
+        notif_whatsapp: document.getElementById('f_notif_whatsapp').checked ? '1' : '0',
+        notif_sms: document.getElementById('f_notif_sms').checked ? '1' : '0',
+        notif_low_stock: document.getElementById('f_notif_low_stock').checked ? '1' : '0',
+        notif_daily_report: document.getElementById('f_notif_daily_report').checked ? '1' : '0',
+        notif_new_booking: document.getElementById('f_notif_new_booking').checked ? '1' : '0'
+      }});
+      showToast('تم حفظ إعدادات الإشعارات');
+    });
+
+    /* ---------------- Staff ---------------- */
+    async function loadStaff() {
+      var list = await BH.api('/api/staff');
+      var wrap = document.getElementById('staffList');
+      wrap.innerHTML = '';
+      if (!list.length) { wrap.innerHTML = '<div style="padding:20px;color:var(--color-text-muted);font-size:13px;">لا يوجد أعضاء فريق بعد</div>'; return; }
+      list.forEach(function (u) {
+        var row = document.createElement('div');
+        row.className = 'person-row';
+        row.innerHTML =
+          '<div class="avatar">' + BH.esc(BH.initials(u.name)) + '</div>' +
+          '<div class="info"><div class="n">' + BH.esc(u.name) + '</div><div class="r">' + (u.role === 'owner' ? 'مديرة الفرع' : (u.role || 'موظفة')) + '</div></div>' +
+          '<span class="phone">' + (u.username ? '@' + BH.esc(u.username) : '—') + '</span>' +
+          '<span class="badge" style="' + (u.active ? '' : 'background:var(--color-danger-tint);color:var(--color-danger);') + '">' + (u.active ? 'نشطة' : 'موقوفة') + '</span>' +
+          '<div class="row-actions">' +
+            '<button class="icon-btn edit-staff" data-id="' + u.id + '" title="تعديل">' + EDIT_ICON + '</button>' +
+            (u.id === BH.user.id ? '' : '<button class="icon-btn danger del-staff" data-id="' + u.id + '" title="إزالة">' + DEL_ICON + '</button>') +
+          '</div>';
+        wrap.appendChild(row);
+      });
+    }
+
+    var staffBackdrop = document.getElementById('drawerBackdrop');
+    var editingStaffId = null;
+    function openStaffDrawer(user) {
+      editingStaffId = user ? user.id : null;
+      document.getElementById('drawerTitle').textContent = user ? 'تعديل بيانات الموظفة' : 'إضافة موظفة';
+      document.getElementById('fName').value = user ? user.name : '';
+      document.getElementById('fRole').value = user ? (user.role === 'owner' ? '' : user.role) : '';
+      document.getElementById('fPhone').value = user ? (user.phone || '') : '';
+      document.getElementById('fEmail').value = user ? (user.email || '') : '';
+      document.getElementById('fUsername').value = user ? (user.username || '') : '';
+      document.getElementById('fPassword').value = '';
+      document.getElementById('fPassword').placeholder = user ? 'اتركيها فارغة لعدم التغيير' : '6 أحرف على الأقل';
+      document.getElementById('fCanLogin').checked = user ? !!user.can_login : true;
+      document.getElementById('saveStaffBtn').textContent = user ? 'حفظ' : 'إضافة';
+
+      var perms = user ? user.permissions : null;
+      var fullAccess = !user || perms == null;
+      document.getElementById('fFullAccess').checked = fullAccess;
+      document.getElementById('fPermsWrap').style.display = fullAccess ? 'none' : '';
+      document.querySelectorAll('.perm-chk').forEach(function (chk) {
+        chk.checked = !fullAccess && Array.isArray(perms) && perms.indexOf(chk.value) !== -1;
+      });
+
+      staffBackdrop.classList.add('open');
+      document.getElementById('fName').focus();
+    }
+    function closeStaffDrawer() { staffBackdrop.classList.remove('open'); }
+    document.getElementById('openStaffBtn').addEventListener('click', function () { openStaffDrawer(null); });
+    document.getElementById('closeDrawerBtn').addEventListener('click', closeStaffDrawer);
+    document.getElementById('cancelDrawerBtn').addEventListener('click', closeStaffDrawer);
+    staffBackdrop.addEventListener('click', function (e) { if (e.target === staffBackdrop) closeStaffDrawer(); });
+    document.getElementById('fFullAccess').addEventListener('change', function () {
+      document.getElementById('fPermsWrap').style.display = this.checked ? 'none' : '';
+    });
+
+    document.getElementById('saveStaffBtn').addEventListener('click', async function () {
+      var name = document.getElementById('fName').value.trim();
+      if (!name) { document.getElementById('fName').focus(); return; }
+      var fullAccess = document.getElementById('fFullAccess').checked;
+      var payload = {
+        name: name,
+        role: document.getElementById('fRole').value.trim() || 'staff',
+        phone: document.getElementById('fPhone').value.trim(),
+        email: document.getElementById('fEmail').value.trim(),
+        username: document.getElementById('fUsername').value.trim(),
+        can_login: document.getElementById('fCanLogin').checked,
+        permissions: fullAccess ? null : Array.prototype.map.call(
+          document.querySelectorAll('.perm-chk:checked'), function (chk) { return chk.value; }
+        )
+      };
+      var pw = document.getElementById('fPassword').value;
+      try {
+        if (editingStaffId) {
+          if (pw) payload.password = pw;
+          await BH.api('/api/staff/' + editingStaffId, { method: 'PUT', body: payload });
+          showToast('تم تحديث بيانات الموظفة');
+        } else {
+          if (!payload.username || !pw) { alert('اسم المستخدم وكلمة المرور مطلوبان لإنشاء حساب دخول'); return; }
+          payload.password = pw;
+          await BH.api('/api/staff', { method: 'POST', body: payload });
+          showToast('تمت إضافة الموظفة بنجاح');
+        }
+        closeStaffDrawer();
+        loadStaff();
+      } catch (err) {
+        alert(err.message);
+      }
+    });
+
+    document.getElementById('staffList').addEventListener('click', async function (e) {
+      var editBtn = e.target.closest('.edit-staff');
+      if (editBtn) {
+        var list = await BH.api('/api/staff');
+        var u = list.find(function (x) { return String(x.id) === editBtn.getAttribute('data-id'); });
+        if (u) openStaffDrawer(u);
+        return;
+      }
+      var delBtn = e.target.closest('.del-staff');
+      if (delBtn) {
+        if (!confirm('إزالة هذه الموظفة؟')) return;
+        await BH.api('/api/staff/' + delBtn.getAttribute('data-id'), { method: 'DELETE' });
+        showToast('تمت إزالة الموظفة');
+        loadStaff();
+      }
+    });
+
+    /* ---------------- Catalog (services + cafe) ---------------- */
+    var itemsCache = [];
+    function renderCatalogTable(tbodyId, type, cats, priceOnly) {
+      var tbody = document.getElementById(tbodyId);
+      tbody.innerHTML = '';
+      cats.forEach(function (cat) {
+        var rows = itemsCache.filter(function (it) { return it.type === type && it.category === cat; });
+        if (!rows.length) return;
+        var head = document.createElement('tr');
+        head.className = 'cat-header';
+        head.innerHTML = '<td colspan="' + (priceOnly ? 3 : 4) + '">' + cat + '</td>';
+        tbody.appendChild(head);
+        rows.forEach(function (it) {
+          var tr = document.createElement('tr');
+          var thumb = '<span style="display:inline-block;width:30px;height:30px;border-radius:7px;overflow:hidden;vertical-align:middle;margin-inline-end:9px;background:var(--color-surface-2);">' +
+            (it.image_url ? '<img src="' + BH.esc(it.image_url) + '" alt="" style="width:100%;height:100%;object-fit:cover;" />' : '') + '</span>';
+          tr.innerHTML =
+            '<td>' + thumb + BH.esc(it.name) + '</td>' +
+            (priceOnly ? '' : '<td class="num">' + it.duration_minutes + ' د</td>') +
+            '<td class="num">' + BH.money(it.price) + '</td>' +
+            '<td style="text-align:left"><button class="icon-btn edit-item" data-id="' + it.id + '" title="تعديل">' + EDIT_ICON + '</button></td>';
+          tbody.appendChild(tr);
+        });
+      });
+    }
+
+    async function loadCatalog() {
+      itemsCache = await BH.api('/api/items');
+      renderCatalogTable('servicesTableBody', 'service', SERVICE_CATS, false);
+      renderCatalogTable('cafeTableBody', 'cafe', CAFE_CATS, true);
+    }
+
+    var itemBackdrop = document.getElementById('itemDrawerBackdrop');
+    var editingItemId = null;
+    var itemDrawerType = 'service';
+    var currentItemImageUrl = null;
+    function fillCategorySelect(type) {
+      var sel = document.getElementById('iCategory');
+      sel.innerHTML = '';
+      (type === 'service' ? SERVICE_CATS : CAFE_CATS).forEach(function (c) {
+        var o = document.createElement('option'); o.value = c; o.textContent = c; sel.appendChild(o);
+      });
+    }
+    function renderImagePreview() {
+      var box = document.getElementById('iImagePreview');
+      if (currentItemImageUrl) {
+        box.innerHTML = '<img src="' + BH.esc(currentItemImageUrl) + '" style="width:100%;height:100%;object-fit:cover;" />';
+        document.getElementById('iImageRemoveBtn').style.display = 'inline-flex';
+      } else {
+        box.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" style="width:24px;height:24px;color:var(--color-text-muted);"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="1.5"/><path d="m5 19 5-6 4 4 3-4 4 5"/></svg>';
+        document.getElementById('iImageRemoveBtn').style.display = 'none';
+      }
+    }
+    document.getElementById('iImageBtn').addEventListener('click', async function () {
+      try {
+        var url = await BH.uploadImage(700);
+        currentItemImageUrl = url;
+        renderImagePreview();
+      } catch (e) {}
+    });
+    document.getElementById('iImageRemoveBtn').addEventListener('click', function () {
+      currentItemImageUrl = null;
+      renderImagePreview();
+    });
+    function openItemDrawer(type, item) {
+      itemDrawerType = type;
+      editingItemId = item ? item.id : null;
+      document.getElementById('itemDrawerTitle').textContent = item ? 'تعديل ' + (type === 'service' ? 'الخدمة' : 'الصنف') : (type === 'service' ? 'إضافة خدمة' : 'إضافة صنف');
+      fillCategorySelect(type);
+      document.getElementById('iName').value = item ? item.name : '';
+      if (item) document.getElementById('iCategory').value = item.category;
+      document.getElementById('iDurationField').style.display = type === 'service' ? '' : 'none';
+      document.getElementById('iDuration').value = item ? item.duration_minutes : 30;
+      document.getElementById('iPrice').value = item ? item.price : '';
+      currentItemImageUrl = item ? (item.image_url || null) : null;
+      renderImagePreview();
+      document.getElementById('deleteItemBtn').style.display = item ? 'inline-flex' : 'none';
+      document.getElementById('saveItemBtn').textContent = item ? 'حفظ' : 'إضافة';
+      itemBackdrop.classList.add('open');
+      document.getElementById('iName').focus();
+    }
+    function closeItemDrawer() { itemBackdrop.classList.remove('open'); }
+    document.getElementById('addServiceBtn').addEventListener('click', function () { openItemDrawer('service', null); });
+    document.getElementById('addCafeBtn').addEventListener('click', function () { openItemDrawer('cafe', null); });
+    document.getElementById('closeItemDrawerBtn').addEventListener('click', closeItemDrawer);
+    document.getElementById('cancelItemDrawerBtn').addEventListener('click', closeItemDrawer);
+    itemBackdrop.addEventListener('click', function (e) { if (e.target === itemBackdrop) closeItemDrawer(); });
+
+    document.getElementById('saveItemBtn').addEventListener('click', async function () {
+      var name = document.getElementById('iName').value.trim();
+      if (!name) { document.getElementById('iName').focus(); return; }
+      var payload = {
+        name: name,
+        type: itemDrawerType,
+        category: document.getElementById('iCategory').value,
+        duration_minutes: itemDrawerType === 'service' ? Number(document.getElementById('iDuration').value) || 30 : null,
+        price: Number(document.getElementById('iPrice').value) || 0,
+        image_url: currentItemImageUrl
+      };
+      if (editingItemId) await BH.api('/api/items/' + editingItemId, { method: 'PUT', body: payload });
+      else await BH.api('/api/items', { method: 'POST', body: payload });
+      closeItemDrawer();
+      showToast('تم الحفظ بنجاح');
+      loadCatalog();
+    });
+
+    document.getElementById('deleteItemBtn').addEventListener('click', async function () {
+      if (!editingItemId || !confirm('حذف هذا العنصر نهائياً؟')) return;
+      await BH.api('/api/items/' + editingItemId, { method: 'DELETE' });
+      closeItemDrawer();
+      showToast('تم الحذف');
+      loadCatalog();
+    });
+
+    document.getElementById('servicesTableBody').addEventListener('click', function (e) {
+      var btn = e.target.closest('.edit-item'); if (!btn) return;
+      var item = itemsCache.find(function (x) { return String(x.id) === btn.getAttribute('data-id'); });
+      if (item) openItemDrawer('service', item);
+    });
+    document.getElementById('cafeTableBody').addEventListener('click', function (e) {
+      var btn = e.target.closest('.edit-item'); if (!btn) return;
+      var item = itemsCache.find(function (x) { return String(x.id) === btn.getAttribute('data-id'); });
+      if (item) openItemDrawer('cafe', item);
+    });
+
+    /* ---------------- Account ---------------- */
+    function fillAccount(u) {
+      document.getElementById('acc_name').value = u.name;
+      document.getElementById('acc_role').value = u.role === 'owner' ? 'مديرة الفرع' : u.role;
+      document.getElementById('acc_email').value = u.email || '';
+    }
+    document.getElementById('saveAccountBtn').addEventListener('click', async function () {
+      await BH.api('/api/auth/profile', { method: 'PUT', body: {
+        name: document.getElementById('acc_name').value.trim(),
+        email: document.getElementById('acc_email').value.trim(),
+        phone: document.getElementById('acc_phone').value.trim()
+      }});
+      showToast('تم حفظ بيانات الحساب');
+      document.getElementById('sbUserName').textContent = document.getElementById('acc_name').value.trim();
+    });
+
+    document.getElementById('saveSecQBtn').addEventListener('click', async function () {
+      var status = document.getElementById('secqStatus');
+      var answer = document.getElementById('secq_answer').value.trim();
+      if (!answer) { document.getElementById('secq_answer').focus(); return; }
+      try {
+        await BH.api('/api/auth/security-question', { method: 'PUT', body: {
+          question: document.getElementById('secq_question').value,
+          answer: answer
+        }});
+        status.style.display = 'block';
+        status.style.background = 'var(--color-success-tint)';
+        status.style.color = 'var(--color-success)';
+        status.textContent = 'تم حفظ سؤال الأمان بنجاح';
+        document.getElementById('secq_answer').value = '';
+      } catch (err) {
+        status.style.display = 'block';
+        status.style.background = 'var(--color-danger-tint)';
+        status.style.color = 'var(--color-danger)';
+        status.textContent = err.message;
+      }
+    });
+
+    document.getElementById('savePasswordBtn').addEventListener('click', async function () {
+      var pwError = document.getElementById('pwError');
+      pwError.style.display = 'none';
+      var cur = document.getElementById('pw_current').value;
+      var next = document.getElementById('pw_new').value;
+      var confirmPw = document.getElementById('pw_confirm').value;
+      if (next !== confirmPw) { pwError.textContent = 'كلمتا المرور الجديدتان غير متطابقتين'; pwError.style.display = 'block'; return; }
+      try {
+        await BH.api('/api/auth/change-password', { method: 'POST', body: { currentPassword: cur, newPassword: next } });
+        document.getElementById('pw_current').value = '';
+        document.getElementById('pw_new').value = '';
+        document.getElementById('pw_confirm').value = '';
+        showToast('تم تحديث كلمة المرور');
+      } catch (err) {
+        pwError.textContent = err.message;
+        pwError.style.display = 'block';
+      }
+    });
+
+    /* ---------------- Backup ---------------- */
+    function fmtSize(bytes) {
+      if (bytes < 1024 * 1024) return Math.round(bytes / 1024) + ' KB';
+      return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+    }
+    function fmtBackupDate(iso) {
+      var d = new Date(iso);
+      return d.toLocaleDateString('en-GB') + ' — ' + d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+    }
+    function backupKind(name) {
+      if (name.indexOf('-auto') !== -1) return { label: 'تلقائية', cls: 'badge-info' };
+      if (name.indexOf('-before-restore') !== -1) return { label: 'قبل استعادة', cls: 'badge-warning' };
+      return { label: 'يدوية', cls: 'badge-success' };
+    }
+
+    async function loadBackups() {
+      var wrap = document.getElementById('backupList');
+      var list = await BH.api('/api/backup/list');
+      wrap.innerHTML = '';
+      if (!list.length) {
+        wrap.innerHTML = '<div style="padding:20px 0;color:var(--color-text-muted);font-size:13px;">لا توجد نسخ احتياطية بعد</div>';
+        return;
+      }
+      list.forEach(function (b) {
+        var kind = backupKind(b.name);
+        var row = document.createElement('div');
+        row.className = 'person-row';
+        row.innerHTML =
+          '<div class="info"><div class="n">' + fmtBackupDate(b.created_at) + '</div>' +
+          '<div class="r">' + fmtSize(b.size) + '</div></div>' +
+          '<span class="badge ' + kind.cls + '">' + kind.label + '</span>' +
+          '<div class="row-actions">' +
+            '<a class="icon-btn" href="/api/backup/download/' + encodeURIComponent(b.name) + '" title="تنزيل" download>' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg></a>' +
+            '<button class="icon-btn restore-backup" data-name="' + BH.esc(b.name) + '" title="استعادة">' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg></button>' +
+            '<button class="icon-btn danger del-backup" data-name="' + BH.esc(b.name) + '" title="حذف">' + DEL_ICON + '</button>' +
+          '</div>';
+        wrap.appendChild(row);
+      });
+    }
+
+    document.getElementById('createBackupBtn').addEventListener('click', async function () {
+      this.setAttribute('disabled', 'true');
+      try {
+        await BH.api('/api/backup/create', { method: 'POST' });
+        showToast('تم إنشاء نسخة احتياطية جديدة');
+        loadBackups();
+      } catch (err) {
+        alert(err.message);
+      } finally {
+        this.removeAttribute('disabled');
+      }
+    });
+
+    var pendingRestoreName = null;
+    var restoreBackdrop = document.getElementById('restoreConfirmBackdrop');
+    function openRestoreConfirm(name) {
+      pendingRestoreName = name;
+      restoreBackdrop.style.opacity = '1';
+      restoreBackdrop.style.pointerEvents = 'auto';
+    }
+    function closeRestoreConfirm() {
+      restoreBackdrop.style.opacity = '0';
+      restoreBackdrop.style.pointerEvents = 'none';
+    }
+    document.getElementById('cancelRestoreBtn').addEventListener('click', closeRestoreConfirm);
+    restoreBackdrop.addEventListener('click', function (e) { if (e.target === restoreBackdrop) closeRestoreConfirm(); });
+
+    document.getElementById('confirmRestoreBtn').addEventListener('click', async function () {
+      if (!pendingRestoreName) return;
+      this.setAttribute('disabled', 'true');
+      try {
+        var res = await BH.api('/api/backup/restore', { method: 'POST', body: { filename: pendingRestoreName } });
+        closeRestoreConfirm();
+        alert(res.message || 'تم الاستعادة بنجاح، سيُعاد تحميل الصفحة خلال لحظات');
+        setTimeout(function () { window.location.href = 'login.html'; }, 4000);
+      } catch (err) {
+        alert(err.message);
+        this.removeAttribute('disabled');
+      }
+    });
+
+    document.getElementById('backupList').addEventListener('click', async function (e) {
+      var restoreBtn = e.target.closest('.restore-backup');
+      if (restoreBtn) { openRestoreConfirm(restoreBtn.getAttribute('data-name')); return; }
+      var delBtn = e.target.closest('.del-backup');
+      if (delBtn) {
+        if (!confirm('حذف هذه النسخة الاحتياطية نهائياً؟')) return;
+        await BH.api('/api/backup/' + encodeURIComponent(delBtn.getAttribute('data-name')), { method: 'DELETE' });
+        loadBackups();
+      }
+    });
+
+    var ROLE_LABELS = { owner: 'المديرة', staff: 'موظفة' };
+
+    /* ---------------- Init ---------------- */
+    (async function init() {
+      var user = await BH.requireAuth();
+      BH.initThemeToggle('themeToggleBtn');
+      BH.startClock('clockTime', 'clockDate');
+      document.getElementById('sbUserName').textContent = user.name;
+      document.getElementById('sbAvatar').textContent = BH.initials(user.name);
+      document.getElementById('sbUserRole').textContent = ROLE_LABELS[user.role] || user.role;
+      fillAccount(user);
+
+      if (user.role !== 'owner') {
+        document.querySelectorAll('#settingsNav button[data-tab]').forEach(function (btn) {
+          if (btn.getAttribute('data-tab') !== 'account') btn.style.display = 'none';
+        });
+        document.querySelector('#settingsNav button[data-tab="account"]').click();
+        return;
+      }
+
+      var settings = await BH.getSettings();
+      fillInfoForm(settings);
+      await Promise.all([loadStaff(), loadCatalog(), loadBackups()]);
+    })();
+  })();
+</script>
+
+</body>
+</html>
