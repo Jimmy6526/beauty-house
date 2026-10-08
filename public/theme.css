@@ -1,0 +1,165 @@
+/* Beauty House — shared theme polish.
+   Loaded after each page's inline tokens (plum + berry-rose + gold, matching the logo). */
+
+:root {
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --shadow-sm: 0 1px 2px rgba(110,42,85,.05), 0 8px 22px -14px rgba(110,42,85,.22);
+  --shadow-md: 0 14px 30px -14px rgba(110,42,85,.30), 0 2px 6px rgba(110,42,85,.06);
+  --shadow-lg: 0 24px 54px -18px rgba(110,42,85,.38), 0 6px 14px rgba(110,42,85,.08);
+  --gold-1: #E7C278;
+  --gold-2: #B98A2E;
+}
+
+body {
+  background:
+    radial-gradient(900px 420px at 100% 0%, color-mix(in srgb, var(--color-accent) 6%, transparent), transparent 70%),
+    radial-gradient(760px 380px at 0% 100%, color-mix(in srgb, var(--color-gold) 7%, transparent), transparent 70%),
+    var(--color-bg-page);
+  background-attachment: fixed;
+}
+::selection { background: color-mix(in srgb, var(--color-accent) 28%, transparent); }
+:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+
+/* ---------- Scrollbars ---------- */
+* { scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--color-primary) 35%, transparent) transparent; }
+*::-webkit-scrollbar { width: 9px; height: 9px; }
+*::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--color-primary) 30%, transparent); border-radius: 10px; }
+*::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--color-primary) 50%, transparent); }
+*::-webkit-scrollbar-track { background: transparent; }
+
+/* ---------- Sidebar: deep plum with gold accents (both themes) ---------- */
+body .sidebar {
+  background: linear-gradient(185deg, #3C1838 0%, #28112A 55%, #1B0C1C 100%);
+  border-inline-start: 1px solid rgba(231,194,120,.20);
+  box-shadow: -10px 0 34px -20px rgba(0,0,0,.55);
+}
+body .sidebar .sb-brand { color: #fff; }
+body .sidebar .sb-brand .name { color: #FFF3F8; }
+body .sidebar .sb-brand .name b { color: var(--gold-1); }
+body .sidebar .sb-brand img { border-radius: 50%; box-shadow: 0 0 0 2px rgba(231,194,120,.55); background: #fff; }
+body .sidebar .sb-branch { color: rgba(255,240,247,.62); }
+body .sidebar .sb-branch .dot { background: #6BE29B; box-shadow: 0 0 0 3px rgba(107,226,155,.18); }
+body .sidebar .sb-section-label { color: rgba(231,194,120,.7); }
+body .sidebar .nav-item { color: rgba(255,240,247,.74); border-radius: 12px; padding: 10px 14px; font-weight: 600; transition: background .18s, color .18s, transform .18s; }
+body .sidebar .nav-item:hover { background: rgba(255,255,255,.08); color: #fff; }
+body .sidebar .nav-item.active {
+  background: linear-gradient(270deg, rgba(231,194,120,.24), rgba(231,194,120,.05));
+  color: #F6D98F; font-weight: 800; box-shadow: inset -3px 0 0 var(--gold-1);
+}
+body .sidebar .nav-item.disabled { opacity: .38; }
+body .sidebar .nav-item .count { background: linear-gradient(135deg, #F07AA6, #C03A72); color: #fff; }
+body .sidebar .sb-footer { border-top: 1px solid rgba(255,255,255,.10); background: transparent; }
+body .sidebar .sb-avatar { background: linear-gradient(135deg, var(--gold-1), var(--gold-2)); color: #2A1020; }
+body .sidebar .sb-user .n { color: #fff; }
+body .sidebar .sb-user .r { color: rgba(255,240,247,.60); }
+body .sidebar .icon-btn { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.16); color: #F3DCE8; }
+body .sidebar .icon-btn:hover { background: rgba(255,255,255,.16); color: #fff; }
+
+/* ---------- Top bar ---------- */
+.topbar { box-shadow: 0 1px 0 var(--color-border), 0 10px 26px -24px rgba(110,42,85,.5); }
+.topbar-title h1 { font-weight: 800; }
+.topbar-clock { background: linear-gradient(135deg, var(--color-surface), var(--color-surface-2)); border-color: color-mix(in srgb, var(--color-gold) 35%, var(--color-border)); }
+.topbar-clock .ic { color: var(--color-gold); }
+.icon-btn { border-radius: 10px; transition: background .15s, color .15s, border-color .15s, transform .15s; }
+.icon-btn:hover { border-color: var(--color-accent); color: var(--color-accent); }
+
+/* ---------- Cards & KPI ---------- */
+.card { border-color: var(--color-border); box-shadow: var(--shadow-sm); }
+.kpi-card, .stat-card { transition: transform .2s, box-shadow .2s, border-color .2s; }
+.kpi-card:hover, .stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: color-mix(in srgb, var(--color-accent) 35%, var(--color-border)); }
+.kpi-icon { width: 44px; height: 44px; border-radius: 14px; }
+.kpi-icon svg { width: 20px; height: 20px; }
+.kpi-value { letter-spacing: -.2px; }
+.panel-head h3, .p-head h2 { font-weight: 800; }
+.panel-head h3::before { content: ''; display: inline-block; width: 4px; height: 15px; margin-inline-end: 9px; vertical-align: -2px; border-radius: 3px; background: linear-gradient(180deg, var(--gold-1), var(--color-accent)); }
+
+/* ---------- Buttons ---------- */
+.btn { border-radius: 12px; font-weight: 700; letter-spacing: 0; }
+.btn-primary { background: linear-gradient(135deg, color-mix(in srgb, var(--color-primary) 90%, #fff), var(--color-primary)); box-shadow: 0 8px 18px -10px var(--color-primary); }
+.btn-accent { background: linear-gradient(135deg, color-mix(in srgb, var(--color-accent) 90%, #fff), var(--color-accent)); box-shadow: 0 10px 20px -10px var(--color-accent); }
+.btn-primary:hover, .btn-accent:hover { transform: translateY(-1px); }
+.btn-primary:hover { background: linear-gradient(135deg, var(--color-primary), var(--color-primary-hover)); }
+.btn-accent:hover:not([disabled]) { background: linear-gradient(135deg, var(--color-accent), var(--color-accent-hover)); }
+.btn-outline:hover { background: var(--color-primary-tint); }
+.btn-accent[disabled] { box-shadow: none; }
+
+/* ---------- Inputs ---------- */
+.input, select.input, textarea.input, .search-input { border-radius: 12px; background: var(--color-surface); transition: border-color .15s, box-shadow .15s; }
+.input:focus, select.input:focus, textarea.input:focus, .search-input:focus {
+  border-color: var(--color-accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 20%, transparent);
+}
+
+/* ---------- Chips / tabs / segmented ---------- */
+.chip, .svc-chip { transition: all .15s; }
+.chip.active, .svc-chip.active { background: linear-gradient(135deg, color-mix(in srgb, var(--color-primary) 90%, #fff), var(--color-primary)); color: var(--color-on-primary) !important; border-color: var(--color-primary); box-shadow: 0 6px 14px -8px var(--color-primary); }
+.chip.active .sw { background: currentColor; }
+.tabs, .segmented { background: var(--color-primary-tint); border-color: transparent; }
+.tabs button.active, .segmented button.active { box-shadow: 0 4px 12px -6px rgba(110,42,85,.45); }
+
+/* ---------- Tables ---------- */
+thead th { background: var(--color-surface-2); color: var(--color-text-secondary); font-weight: 800; }
+tbody tr { transition: background .12s; }
+tbody tr:hover td { background: color-mix(in srgb, var(--color-primary-tint) 60%, transparent); }
+.badge { letter-spacing: 0; }
+
+/* ---------- Drawers / modals ---------- */
+.drawer, .modal-card { box-shadow: var(--shadow-lg); }
+.drawer-head, .modal-head { background: linear-gradient(180deg, var(--color-surface-2), var(--color-surface)); }
+
+/* ---------- POS ---------- */
+.tile { border-radius: 14px; }
+.tile:hover { border-color: var(--color-accent); box-shadow: var(--shadow-md); }
+.tile .price { color: var(--color-primary); }
+.tile.in-cart { box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-accent) 35%, transparent); }
+.cart-panel { box-shadow: -14px 0 30px -26px rgba(110,42,85,.5); }
+.cart-head { background: linear-gradient(135deg, var(--color-primary-tint), transparent 70%); }
+.sum-row.total .amt { color: var(--color-primary); }
+.pay-btn.active { box-shadow: 0 6px 14px -8px var(--color-primary); }
+
+/* ---------- Toast ---------- */
+.toast { border-radius: 14px; }
+
+/* ---------- Login ---------- */
+.btn-submit { background: linear-gradient(135deg, color-mix(in srgb, var(--color-accent) 90%, #fff), var(--color-accent)); box-shadow: 0 14px 26px -12px var(--color-accent); border-radius: 12px; }
+.btn-submit:hover { filter: brightness(1.05); }
+.brand-pane { box-shadow: inset -1px 0 0 rgba(231,194,120,.25); }
+.brand-mid h1 { background: linear-gradient(90deg, #fff, #F6D98F); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.feature-list .ic { background: rgba(231,194,120,.14); border-color: rgba(231,194,120,.32); color: var(--gold-1); }
+.login-card h2 { font-weight: 800; }
+
+/* ---------- Dark-mode refinements ---------- */
+:root[data-theme="dark"] body .sidebar { background: linear-gradient(185deg, #2A1128 0%, #1B0C1C 60%, #120812 100%); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) body .sidebar { background: linear-gradient(185deg, #2A1128 0%, #1B0C1C 60%, #120812 100%); }
+}
+
+/* ---------- POS: compact cart column so checkout is always visible on laptop screens ---------- */
+.customer-row { display: grid; grid-template-columns: 1.4fr 1fr; gap: 8px; padding: 10px 14px; }
+.customer-row .row2 { display: contents; }
+.customer-row .input { padding: 8px 10px; font-size: 12.5px; }
+.cart-head { padding: 12px 16px; }
+.cart-summary { padding: 8px 16px; gap: 3px; }
+.cart-summary .sum-row { font-size: 12.5px; }
+.cart-summary .sum-row.total { font-size: 15px; padding-top: 6px; }
+.cart-summary .sum-row.total .amt { font-size: 17px; }
+.pay-methods { padding: 8px 16px 2px; gap: 6px; }
+.pay-btn { padding: 8px 4px; gap: 4px; }
+.pay-split { padding: 7px 4px; }
+.cart-actions { padding: 8px 16px 14px; }
+.cart-actions .btn { padding: 11px 16px; font-size: 15px; }
+
+/* ---------- Narrow windows: icon-only sidebar ---------- */
+@media (max-width: 980px) {
+  body .sidebar { width: 66px !important; padding: 16px 8px !important; }
+  body .sidebar .sb-brand { justify-content: center; padding: 6px 0; }
+  body .sidebar .sb-brand .name, body .sidebar .sb-branch, body .sidebar .sb-section-label, body .sidebar .sb-user { display: none; }
+  body .sidebar .nav-item { font-size: 0; justify-content: center; padding: 12px 0; gap: 0; }
+  body .sidebar .nav-item svg { width: 20px; height: 20px; }
+  body .sidebar .nav-item .count { display: none; }
+  body .sidebar .sb-footer { justify-content: center; flex-direction: column; gap: 8px; padding-top: 10px; }
+  body .sidebar .nav-item.active { box-shadow: inset -3px 0 0 var(--gold-1); }
+  .topbar { padding-inline: 14px !important; gap: 8px !important; flex-wrap: wrap; }
+  .main-content { padding-inline: 14px !important; }
+}

@@ -26,7 +26,7 @@ const serverCtx = {
   }
 };
 
-['auth', 'items', 'products', 'customers', 'bookings', 'sales', 'settings', 'staff', 'dashboard', 'reports', 'upload', 'backup'].forEach((name) => {
+['auth', 'items', 'products', 'customers', 'bookings', 'sales', 'settings', 'staff', 'dashboard', 'reports', 'upload', 'backup', 'finance'].forEach((name) => {
   require('./routes/' + name)(router, serverCtx);
 });
 

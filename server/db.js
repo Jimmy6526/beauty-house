@@ -130,7 +130,63 @@ ensureColumn('users', 'security_answer_hash', 'TEXT');
 ensureColumn('users', 'security_answer_salt', 'TEXT');
 ensureColumn('users', 'permissions', 'TEXT');
 
+ensureColumn('users', 'base_salary', 'REAL NOT NULL DEFAULT 0');
+
 db.prepare("UPDATE users SET username = 'admin' WHERE username IS NULL AND email = 'admin@beautyhouse.local'").run();
+
+db.exec(`
+CREATE TABLE IF NOT EXISTS payments (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  sale_id INTEGER REFERENCES sales(id) ON DELETE CASCADE,
+  booking_id INTEGER REFERENCES bookings(id) ON DELETE CASCADE,
+  method TEXT NOT NULL,
+  amount REAL NOT NULL,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_payments_sale ON payments(sale_id);
+CREATE INDEX IF NOT EXISTS idx_payments_booking ON payments(booking_id);
+
+CREATE TABLE IF NOT EXISTS expenses (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  category TEXT NOT NULL,
+  description TEXT,
+  amount REAL NOT NULL,
+  expense_date TEXT NOT NULL,
+  method TEXT NOT NULL DEFAULT 'cash',
+  notes TEXT,
+  user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS employee_transactions (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL REFERENCES users(id),
+  type TEXT NOT NULL CHECK (type IN ('advance','advance_repay','bonus','deduction','salary')),
+  amount REAL NOT NULL,
+  month TEXT NOT NULL,
+  tx_date TEXT NOT NULL,
+  method TEXT,
+  notes TEXT,
+  base REAL,
+  bonuses REAL,
+  deductions REAL,
+  advance_repaid REAL,
+  salary_id INTEGER,
+  created_by INTEGER REFERENCES users(id) ON DELETE SET NULL,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_emp_tx_user ON employee_transactions(user_id, month);
+`);
+
+// Backfill: older sales/bookings only had a single payment_method column.
+db.exec(`
+INSERT INTO payments (sale_id, method, amount, created_at)
+  SELECT s.id, CASE WHEN s.payment_method IN ('cash','bankak','ocash') THEN s.payment_method ELSE 'cash' END, s.total, s.created_at
+  FROM sales s WHERE NOT EXISTS (SELECT 1 FROM payments p WHERE p.sale_id = s.id);
+INSERT INTO payments (booking_id, method, amount, created_at)
+  SELECT b.id, CASE WHEN b.payment_method IN ('cash','bankak','ocash') THEN b.payment_method ELSE 'cash' END, b.price, b.created_at
+  FROM bookings b WHERE b.status = 'مكتمل' AND NOT EXISTS (SELECT 1 FROM payments p WHERE p.booking_id = b.id);
+`);
 
 db.exec(`
 DROP VIEW IF EXISTS revenue_events;

@@ -77,6 +77,10 @@ module.exports = (router) => {
 
   router.del('/api/staff/:id', (req, res, params, ctx) => {
     if (Number(params.id) === ctx.user.id) return ctx.json(400, { error: 'لا يمكن حذف حسابك الحالي' });
+    const hasFinance = db.prepare('SELECT COUNT(*) AS c FROM employee_transactions WHERE user_id = ?').get(params.id).c;
+    if (hasFinance) {
+      return ctx.json(400, { error: 'لا يمكن حذف هذه الموظفة لأن لها سجلات رواتب/سلف — أوقفي حسابها بدلاً من حذفه' });
+    }
     db.prepare('DELETE FROM users WHERE id = ?').run(params.id);
     ctx.json(200, { ok: true });
   }, { role: 'owner' });

@@ -1,4 +1,5 @@
 const { db } = require('../db');
+const { normalizePayments, summaryMethod, savePayments, getPayments } = require('../payments');
 
 module.exports = (router) => {
   router.get('/api/sales', (req, res, params, ctx) => {
@@ -16,7 +17,7 @@ module.exports = (router) => {
     const sale = db.prepare('SELECT * FROM sales WHERE id = ?').get(params.id);
     if (!sale) return ctx.json(404, { error: 'غير موجودة' });
     const items = db.prepare('SELECT * FROM sale_items WHERE sale_id = ?').all(params.id);
-    ctx.json(200, { ...sale, items });
+    ctx.json(200, { ...sale, items, payments: getPayments({ saleId: sale.id }) });
   });
 
   router.post('/api/sales', (req, res, params, ctx) => {
@@ -43,6 +44,9 @@ module.exports = (router) => {
       if (existing) customerId = existing.id;
     }
 
+    const pay = normalizePayments(b.payments, total, b.payment_method);
+    if (pay.error) return ctx.json(400, { error: pay.error });
+
     db.exec('BEGIN');
     try {
       const saleInfo = db
@@ -50,9 +54,10 @@ module.exports = (router) => {
           `INSERT INTO sales (customer_id, customer_name, user_id, subtotal, discount, tax, total, payment_method)
            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
         )
-        .run(customerId, customerName, ctx.user.id, subtotal, discount, tax, total, b.payment_method || 'cash');
+        .run(customerId, customerName, ctx.user.id, subtotal, discount, tax, total, summaryMethod(pay.list));
 
       const saleId = saleInfo.lastInsertRowid;
+      savePayments({ saleId }, pay.list);
       const insertItem = db.prepare(
         'INSERT INTO sale_items (sale_id, catalog_item_id, product_id, name, unit_price, qty, line_total) VALUES (?, ?, ?, ?, ?, ?, ?)'
       );
@@ -107,12 +112,20 @@ module.exports = (router) => {
       const tax = Math.round((taxable * taxPct) / 100 * 100) / 100;
       const total = Math.round((taxable + tax) * 100) / 100;
 
+      const oldPays = getPayments({ saleId: sale.id });
+      if (!b.payments && !b.payment_method && oldPays.length > 1) {
+        return ctx.json(400, { error: 'الدفع مقسّم — أعيدي تحديد وسائل الدفع بعد تعديل الأصناف' });
+      }
+      const pay = normalizePayments(b.payments, total, b.payment_method || (oldPays[0] && oldPays[0].method) || sale.payment_method);
+      if (pay.error) return ctx.json(400, { error: pay.error });
+
       db.exec('BEGIN');
       try {
         const oldItems = db.prepare('SELECT * FROM sale_items WHERE sale_id = ?').all(params.id);
         const restoreStock = db.prepare('UPDATE products SET quantity = quantity + ? WHERE id = ?');
         oldItems.forEach((it) => { if (it.product_id) restoreStock.run(it.qty, it.product_id); });
         db.prepare('DELETE FROM sale_items WHERE sale_id = ?').run(params.id);
+        savePayments({ saleId: sale.id }, pay.list);
 
         const insertItem = db.prepare(
           'INSERT INTO sale_items (sale_id, catalog_item_id, product_id, name, unit_price, qty, line_total) VALUES (?, ?, ?, ?, ?, ?, ?)'
@@ -128,7 +141,7 @@ module.exports = (router) => {
           'UPDATE sales SET subtotal=?, discount=?, tax=?, total=?, payment_method=?, customer_name=?, notes=? WHERE id=?'
         ).run(
           subtotal, discount, tax, total,
-          b.payment_method ?? sale.payment_method,
+          summaryMethod(pay.list),
           b.customer_name ?? sale.customer_name,
           b.notes ?? sale.notes,
           params.id
@@ -143,8 +156,15 @@ module.exports = (router) => {
       return;
     }
 
+    let method = sale.payment_method;
+    if (b.payments || b.payment_method) {
+      const pay = normalizePayments(b.payments, sale.total, b.payment_method);
+      if (pay.error) return ctx.json(400, { error: pay.error });
+      savePayments({ saleId: sale.id }, pay.list);
+      method = summaryMethod(pay.list);
+    }
     db.prepare('UPDATE sales SET payment_method=?, customer_name=?, notes=? WHERE id=?').run(
-      b.payment_method ?? sale.payment_method,
+      method,
       b.customer_name ?? sale.customer_name,
       b.notes ?? sale.notes,
       params.id

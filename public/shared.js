@@ -167,7 +167,7 @@ var BH = (function () {
   function hasPerm(mod) {
     if (!currentUser) return false;
     if (currentUser.role === 'owner') return true;
-    if (mod === 'reports') return false;
+    if (mod === 'reports' || mod === 'finance') return false;
     if (currentUser.permissions === null || currentUser.permissions === undefined) return true;
     return currentUser.permissions.indexOf(mod) !== -1;
   }
@@ -177,7 +177,8 @@ var BH = (function () {
     'bookings.html': 'bookings',
     'inventory.html': 'inventory',
     'customers.html': 'customers',
-    'reports.html': 'reports'
+    'reports.html': 'reports',
+    'finance.html': 'finance'
   };
 
   function applyRolePermissions(user) {
@@ -300,6 +301,105 @@ var BH = (function () {
     document.head.appendChild(st);
   })();
 
+  /* ---------------- Finance nav link + payment helpers ---------------- */
+  var PAY_LABELS = { cash: 'نقداً', bankak: 'بنكك', ocash: 'أوكاش', split: 'مقسّم' };
+  function payLabel(m) { return PAY_LABELS[m] || m || '—'; }
+
+  function ensureFinanceNav() {
+    if (document.querySelector('[data-nav="finance"]')) return;
+    var items = document.querySelectorAll('.sidebar nav .nav-item');
+    var anchor = null;
+    items.forEach(function (el) { if (el.textContent.indexOf('التقارير') !== -1) anchor = el; });
+    if (!anchor) return;
+    var a = document.createElement('a');
+    a.className = 'nav-item';
+    a.setAttribute('data-nav', 'finance');
+    a.href = 'finance.html';
+    a.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="6" width="20" height="13" rx="2"/><circle cx="12" cy="12.5" r="2.8"/><path d="M6 9.5v.01M18 15.5v.01"/></svg> المالية';
+    anchor.parentNode.insertBefore(a, anchor.nextSibling);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ensureFinanceNav);
+  else ensureFinanceNav();
+
+  function round2(n) { return Math.round(Number(n) * 100) / 100; }
+
+  /* Split-payment dialog. opts: { total, initial: [{method, amount}] }. Resolves to a list or null (cancelled). */
+  function splitPaymentDialog(opts) {
+    return new Promise(function (resolve) {
+      var total = round2(opts.total);
+      var s = settingsCache || {};
+      var methods = ['cash', 'bankak', 'ocash'].filter(function (m) { return s['pay_' + m] !== '0'; });
+      var initial = {};
+      (opts.initial || []).forEach(function (p) { initial[p.method] = p.amount; });
+
+      var overlay = document.createElement('div');
+      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(20,16,31,.55);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;';
+      var rows = methods.map(function (m) {
+        return '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">' +
+          '<div style="width:70px;font-weight:700;font-size:13.5px;">' + payLabel(m) + '</div>' +
+          '<input type="number" min="0" step="any" data-m="' + m + '" value="' + (initial[m] || '') + '" placeholder="0" style="flex:1;direction:ltr;text-align:right;font-family:var(--font-mono);font-size:14px;padding:9px 12px;border:1px solid var(--color-border-strong);border-radius:6px;background:var(--color-surface);color:var(--color-text);" />' +
+          '<button type="button" data-fill="' + m + '" style="border:1px solid var(--color-border-strong);background:var(--color-surface-2);color:var(--color-text-secondary);border-radius:6px;padding:8px 10px;font-size:11.5px;font-weight:600;cursor:pointer;">الباقي</button>' +
+          '</div>';
+      }).join('');
+      overlay.innerHTML =
+        '<div style="width:100%;max-width:400px;background:var(--color-surface);color:var(--color-text);border-radius:16px;box-shadow:var(--shadow-lg);padding:22px;font-family:var(--font-body);">' +
+        '<h3 style="margin:0 0 4px;font-size:16px;">تقسيم الدفع على عدة وسائل</h3>' +
+        '<p style="margin:0 0 16px;font-size:12.5px;color:var(--color-text-secondary);">الإجمالي المطلوب: <b style="font-family:var(--font-mono);">' + money(total) + '</b></p>' +
+        rows +
+        '<div id="spStatus" style="margin:6px 0 16px;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:600;"></div>' +
+        '<div style="display:flex;gap:10px;">' +
+        '<button type="button" id="spCancel" style="flex:1;padding:10px;border-radius:6px;border:1px solid var(--color-border-strong);background:transparent;color:var(--color-text);font-weight:600;cursor:pointer;font-family:inherit;">إلغاء</button>' +
+        '<button type="button" id="spOk" style="flex:1;padding:10px;border-radius:6px;border:none;background:var(--color-accent);color:var(--color-on-accent);font-weight:700;cursor:pointer;font-family:inherit;">تأكيد</button>' +
+        '</div></div>';
+      document.body.appendChild(overlay);
+
+      var inputs = overlay.querySelectorAll('input[data-m]');
+      var status = overlay.querySelector('#spStatus');
+      var ok = overlay.querySelector('#spOk');
+      function paid() {
+        var sum = 0;
+        inputs.forEach(function (i) { sum += Number(i.value) || 0; });
+        return round2(sum);
+      }
+      function refresh() {
+        var rem = round2(total - paid());
+        var good = Math.abs(rem) < 0.01 && paid() > 0;
+        status.style.background = good ? 'var(--color-success-tint)' : 'var(--color-warning-tint)';
+        status.style.color = good ? 'var(--color-success)' : 'var(--color-warning)';
+        status.textContent = good ? 'المبلغ مكتمل' : (rem > 0 ? 'المتبقي: ' + money(rem) : 'زيادة عن الإجمالي بمقدار ' + money(-rem));
+        ok.disabled = !good;
+        ok.style.opacity = good ? '1' : '.5';
+        ok.style.cursor = good ? 'pointer' : 'not-allowed';
+      }
+      function close(val) { overlay.remove(); resolve(val); }
+      inputs.forEach(function (i) { i.addEventListener('input', refresh); });
+      overlay.querySelectorAll('[data-fill]').forEach(function (b) {
+        b.addEventListener('click', function () {
+          var m = b.getAttribute('data-fill');
+          var inp = overlay.querySelector('input[data-m="' + m + '"]');
+          var others = 0;
+          inputs.forEach(function (i) { if (i !== inp) others += Number(i.value) || 0; });
+          var rest = round2(total - others);
+          inp.value = rest > 0 ? rest : '';
+          refresh();
+        });
+      });
+      overlay.querySelector('#spCancel').addEventListener('click', function () { close(null); });
+      overlay.addEventListener('click', function (e) { if (e.target === overlay) close(null); });
+      ok.addEventListener('click', function () {
+        if (ok.disabled) return;
+        var list = [];
+        inputs.forEach(function (i) {
+          var a = round2(i.value);
+          if (a > 0) list.push({ method: i.getAttribute('data-m'), amount: a });
+        });
+        close(list);
+      });
+      refresh();
+      if (inputs[0]) inputs[0].focus();
+    });
+  }
+
   /* Keep the logout button in the sidebar footer on every page (dashboard has its own). */
   function ensureLogoutButton() {
     var footer = document.querySelector('.sb-footer');
@@ -323,6 +423,9 @@ var BH = (function () {
     getSettings: getSettings,
     money: money,
     esc: esc,
+    payLabel: payLabel,
+    PAY_LABELS: PAY_LABELS,
+    splitPaymentDialog: splitPaymentDialog,
     requireAuth: requireAuth,
     isOwner: isOwner,
     hasPerm: hasPerm,
