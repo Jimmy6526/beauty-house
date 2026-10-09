@@ -2,7 +2,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
 
-const UPLOAD_DIR = path.join(__dirname, '..', '..', 'public', 'uploads');
+const { UPLOAD_DIR } = require('../config');
 if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 
 const EXT_BY_MIME = {

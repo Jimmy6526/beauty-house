@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Beauty House Settings</title>
+<title>نوفا الجمال — الإعدادات</title>
 </head>
 <body>
 <style>
@@ -611,6 +611,11 @@
         <!-- BACKUP -->
         <section class="settings-section" id="tab-backup">
           <div class="card panel-card">
+            <div class="p-head"><h2>الترخيص والنسخة</h2><p>معلومات ترخيص نظام نوفا الجمال على هذا الجهاز.</p></div>
+            <div id="licInfo" style="font-size:13.5px;line-height:2;">جارٍ التحميل…</div>
+            <div class="panel-foot" style="padding-top:8px;border-top:none;"><a class="btn btn-outline" href="activate.html">إدارة الترخيص والتفعيل</a></div>
+          </div>
+          <div class="card panel-card">
             <div class="p-head"><h2>نسخة احتياطية جديدة</h2><p>يتم أخذ نسخة احتياطية تلقائية يومياً بشكل صامت. يمكنكِ أيضاً إنشاء نسخة يدوياً في أي وقت.</p></div>
             <div class="panel-foot" style="padding-top:0; border-top:none;">
               <button class="btn btn-accent" id="createBackupBtn">
@@ -798,7 +803,8 @@
         await BH.api('/api/settings', { method: 'PUT', body: { logo: currentLogoUrl } });
         await BH.getSettings(true);
         BH.applyBranding(await BH.getSettings());
-        showToast('تم تحديث الشعار في كامل النظام');
+        try { await BH.syncBrandIcons(currentLogoUrl); showToast('تم تحديث الشعار وأيقونة سطح المكتب والمتصفح (دائرية)'); }
+        catch (e2) { showToast('تم تحديث الشعار — تعذّر تحديث أيقونة سطح المكتب'); }
       } catch (e) {}
     });
     document.getElementById('logoRemoveBtn').addEventListener('click', async function () {
@@ -806,7 +812,8 @@
       renderLogoPreview();
       await BH.api('/api/settings', { method: 'PUT', body: { logo: '' } });
       await BH.getSettings(true);
-      showToast('تمت إزالة الشعار');
+      try { await BH.syncBrandIcons(null); } catch (e) { /* ignore */ }
+      showToast('تمت إزالة الشعار — عادت أيقونة نوفا الجمال');
     });
 
     document.getElementById('saveInfoBtn').addEventListener('click', async function () {
@@ -1141,6 +1148,23 @@
       }
     });
 
+    /* ---------------- License info ---------------- */
+    async function loadLicenseInfo() {
+      try {
+        var s = await BH.api('/api/license/status');
+        var T = { full: 'دائم', annual: 'سنوي', trial: 'تجريبي مؤقت' };
+        var rows = [];
+        if (s.state === 'licensed') {
+          rows.push(['الحالة', 'مُفعّل']); rows.push(['المنشأة', s.customer]); rows.push(['النوع', T[s.type] || s.type]);
+          rows.push(['الانتهاء', s.expires ? s.expires + ' (' + s.days_left + ' يوماً)' : 'دائم']);
+        } else if (s.state === 'trial') rows.push(['الحالة', 'فترة تجريبية — متبقي ' + s.days_left + ' يوماً']);
+        else if (s.state === 'dev') rows.push(['الحالة', 'وضع التطوير (بدون فحص ترخيص)']);
+        else rows.push(['الحالة', 'غير مُفعّل']);
+        rows.push(['معرّف الجهاز', s.machine_id]); rows.push(['إصدار النظام', s.version]);
+        document.getElementById('licInfo').innerHTML = rows.map(function (r) { return '<div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--color-border);padding:2px 0;"><span style="color:var(--color-text-secondary)">' + r[0] + '</span><b style="direction:ltr">' + BH.esc(r[1]) + '</b></div>'; }).join('');
+      } catch (e) { document.getElementById('licInfo').textContent = 'تعذّر قراءة حالة الترخيص'; }
+    }
+
     /* ---------------- Backup ---------------- */
     function fmtSize(bytes) {
       if (bytes < 1024 * 1024) return Math.round(bytes / 1024) + ' KB';
@@ -1257,7 +1281,7 @@
 
       var settings = await BH.getSettings();
       fillInfoForm(settings);
-      await Promise.all([loadStaff(), loadCatalog(), loadBackups()]);
+      await Promise.all([loadStaff(), loadCatalog(), loadBackups(), loadLicenseInfo()]);
     })();
   })();
 </script>

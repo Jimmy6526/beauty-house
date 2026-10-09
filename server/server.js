@@ -4,15 +4,23 @@ const path = require('node:path');
 const url = require('node:url');
 const { spawn } = require('node:child_process');
 
+const config = require('./config');
 const { db } = require('./db');
 const router = require('./router');
+const license = require('./license');
+const branding = require('./branding');
 
 const PORT = process.env.PORT || 5173;
-const PUBLIC_DIR = path.join(__dirname, '..', 'public');
+const PUBLIC_DIR = config.PUBLIC_DIR;
 
 const serverCtx = {
   restartAfterResponse() {
     setTimeout(() => {
+      if (config.supervised) { // the Windows service restarts us
+        server.close(() => process.exit(0));
+        setTimeout(() => process.exit(0), 3000);
+        return;
+      }
       server.close(() => {
         const child = spawn(process.execPath, [__filename], {
           detached: true,
@@ -26,7 +34,7 @@ const serverCtx = {
   }
 };
 
-['auth', 'items', 'products', 'customers', 'bookings', 'sales', 'settings', 'staff', 'dashboard', 'reports', 'upload', 'backup', 'finance'].forEach((name) => {
+['auth', 'items', 'products', 'customers', 'bookings', 'sales', 'settings', 'staff', 'dashboard', 'reports', 'upload', 'backup', 'finance', 'license', 'setup', 'branding'].forEach((name) => {
   require('./routes/' + name)(router, serverCtx);
 });
 
@@ -87,20 +95,65 @@ function getUserFromSession(token) {
   return db.prepare('SELECT * FROM users WHERE id = ? AND active = 1').get(session.user_id);
 }
 
+function inside(base, target) {
+  return target === base || target.startsWith(base + path.sep);
+}
+
+let setupDone = !config.freshInstall;
+function setupNeeded() {
+  if (setupDone) return false;
+  const c = db.prepare('SELECT COUNT(*) AS c FROM users').get().c;
+  if (c > 0) setupDone = true;
+  return c === 0;
+}
+
+const OPEN_PAGES = new Set(['activate.html', 'setup.html']);
+
+function redirect(res, to) {
+  res.writeHead(302, { Location: to, 'Cache-Control': 'no-store' });
+  res.end();
+}
+
 function serveStatic(req, res, pathname) {
-  let filePath = path.join(PUBLIC_DIR, pathname);
-  if (pathname === '/' || pathname === '') filePath = path.join(PUBLIC_DIR, 'login.html');
-  if (filePath !== PUBLIC_DIR && !filePath.startsWith(PUBLIC_DIR + path.sep)) {
-    res.writeHead(403);
-    return res.end('Forbidden');
+  // dynamic web-app manifest + branding icons (custom logo falls back to the Nova default)
+  if (pathname === '/manifest.webmanifest') {
+    let shop = '';
+    try { const r = db.prepare("SELECT value FROM settings WHERE key = 'shop_name'").get(); shop = r ? r.value : ''; } catch (e) { /* ignore */ }
+    res.writeHead(200, { 'Content-Type': 'application/manifest+json; charset=utf-8', 'Cache-Control': 'no-cache' });
+    return res.end(JSON.stringify(branding.manifest(shop)));
   }
+
+  let filePath;
+  const isHtml = pathname === '/' || pathname === '' || path.extname(pathname).toLowerCase() === '.html';
+  if (isHtml) {
+    const page = pathname === '/' || pathname === '' ? 'login.html' : pathname.slice(1);
+    if (config.enforceLicense && !license.status().allowed && page !== 'activate.html') return redirect(res, '/activate.html');
+    if (!OPEN_PAGES.has(page) && setupNeeded()) return redirect(res, '/setup.html');
+    if (page === 'setup.html' && !setupNeeded()) return redirect(res, '/login.html');
+  }
+
+  if (pathname.startsWith('/branding/')) {
+    const name = path.basename(pathname);
+    const m = /^icon-(\d+)\.png$/.exec(name);
+    filePath = m ? branding.iconFile(Number(m[1])) : name === 'app.ico' ? branding.icoFile() : path.join(config.BRANDING_DIR, name);
+  } else if (pathname.startsWith('/uploads/')) {
+    filePath = path.join(config.UPLOAD_DIR, pathname.slice('/uploads/'.length));
+    if (!inside(config.UPLOAD_DIR, filePath)) { res.writeHead(403); return res.end('Forbidden'); }
+  } else {
+    filePath = path.join(PUBLIC_DIR, pathname);
+    if (pathname === '/' || pathname === '') filePath = path.join(PUBLIC_DIR, 'login.html');
+    if (!inside(PUBLIC_DIR, filePath)) { res.writeHead(403); return res.end('Forbidden'); }
+  }
+
   fs.readFile(filePath, (err, content) => {
     if (err) {
       res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
       return res.end('404 - غير موجود');
     }
     const ext = path.extname(filePath).toLowerCase();
-    res.writeHead(200, { 'Content-Type': MIME[ext] || 'application/octet-stream' });
+    const headers = { 'Content-Type': MIME[ext] || 'application/octet-stream' };
+    if (pathname.startsWith('/branding/')) headers['Cache-Control'] = 'no-cache';
+    res.writeHead(200, headers);
     res.end(content);
   });
 }
@@ -115,6 +168,11 @@ const server = http.createServer(async (req, res) => {
 
   const cookies = parseCookies(req.headers.cookie);
   const matched = router.match(req.method, pathname);
+
+  if (config.enforceLicense && !pathname.startsWith('/api/license/') && !(pathname === '/api/settings' && req.method === 'GET') && !license.status().allowed) {
+    res.writeHead(402, { 'Content-Type': 'application/json; charset=utf-8' });
+    return res.end(JSON.stringify({ error: 'يلزم تفعيل النظام بمفتاح ترخيص', code: 'license' }));
+  }
 
   if (!matched) {
     res.writeHead(404, { 'Content-Type': 'application/json; charset=utf-8' });
@@ -170,9 +228,8 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-server.listen(PORT, () => {
-  console.log('Beauty House server running at http://localhost:' + PORT);
-});
+const onListening = () => console.log(config.productNameEn + ' running at http://localhost:' + PORT + (config.isDev ? ' (dev mode)' : ''));
+if (config.host) server.listen(PORT, config.host, onListening); else server.listen(PORT, onListening);
 
 /* ---------------- Automatic daily backup ---------------- */
 (function scheduleAutoBackup() {

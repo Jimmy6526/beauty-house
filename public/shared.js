@@ -85,6 +85,10 @@ var BH = (function () {
       fetchOpts.body = JSON.stringify(opts.body);
     }
     var res = await fetch(path, fetchOpts);
+    if (res.status === 402 && !location.pathname.endsWith('activate.html')) {
+      window.location.href = 'activate.html';
+      throw new Error('license');
+    }
     if (res.status === 401) {
       if (!location.pathname.endsWith('login.html') && location.pathname !== '/') {
         window.location.href = 'login.html';
@@ -132,8 +136,8 @@ var BH = (function () {
         var w = el.getBoundingClientRect().width || 30;
         img.style.width = w + 'px';
         img.style.height = w + 'px';
-        img.style.objectFit = 'contain';
-        img.style.borderRadius = '8px';
+        img.style.objectFit = 'cover';
+        img.style.borderRadius = '50%';
         el.replaceWith(img);
       });
     }
@@ -152,6 +156,7 @@ var BH = (function () {
       currentUser = await api('/api/auth/me');
       await getSettings();
       applyRolePermissions(currentUser);
+      showLicenseBanner();
       return currentUser;
     } catch (e) {
       window.location.href = 'login.html';
@@ -301,6 +306,72 @@ var BH = (function () {
     document.head.appendChild(st);
   })();
 
+
+  /* ---------------- Brand icons (favicon / web-app icon / Windows shortcut), always circular ---------------- */
+  function brandVersion() { try { return localStorage.getItem('bh_brand_v') || '1'; } catch (e) { return '1'; } }
+  function applyBrandIcons() {
+    var v = brandVersion();
+    function setLink(rel, href, extra) {
+      var el = document.querySelector('link[rel="' + rel + '"]' + (extra && extra.sizes ? '[sizes="' + extra.sizes + '"]' : ''));
+      if (!el) { el = document.createElement('link'); el.rel = rel; if (extra && extra.sizes) el.setAttribute('sizes', extra.sizes); document.head.appendChild(el); }
+      if (extra && extra.type) el.type = extra.type;
+      el.href = href;
+    }
+    setLink('icon', '/branding/icon-64.png?v=' + v, { type: 'image/png' });
+    setLink('apple-touch-icon', '/branding/icon-192.png?v=' + v);
+    setLink('manifest', '/manifest.webmanifest?v=' + v);
+    if (!document.querySelector('meta[name="theme-color"]')) {
+      var m = document.createElement('meta'); m.name = 'theme-color'; m.content = '#6E2A55'; document.head.appendChild(m);
+    }
+  }
+  applyBrandIcons();
+
+  function circularPng(img, size) {
+    var c = document.createElement('canvas'); c.width = c.height = size;
+    var x = c.getContext('2d');
+    x.imageSmoothingQuality = 'high';
+    x.beginPath(); x.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2); x.closePath(); x.clip();
+    var sc = Math.max(size / img.naturalWidth, size / img.naturalHeight);
+    var w = img.naturalWidth * sc, h = img.naturalHeight * sc;
+    x.drawImage(img, (size - w) / 2, (size - h) / 2, w, h);
+    return c.toDataURL('image/png');
+  }
+
+  // Build circular PNG icons from the uploaded logo and let the server turn them into the .ico used by shortcuts.
+  async function syncBrandIcons(logoUrl) {
+    if (!logoUrl) {
+      await api('/api/branding/icon', { method: 'POST', body: { reset: true } });
+    } else {
+      var img = await new Promise(function (resolve, reject) {
+        var i = new Image(); i.onload = function () { resolve(i); }; i.onerror = reject; i.src = logoUrl + (logoUrl.indexOf('?') === -1 ? '?' : '&') + 'x=' + Date.now();
+      });
+      var icons = {};
+      [16, 32, 48, 64, 128, 192, 256, 512].forEach(function (sz) { icons[sz] = circularPng(img, sz); });
+      await api('/api/branding/icon', { method: 'POST', body: { icons: icons } });
+    }
+    try { localStorage.setItem('bh_brand_v', String(Date.now())); } catch (e) { /* ignore */ }
+    applyBrandIcons();
+  }
+
+  /* ---------------- License banner (trial / expiring) ---------------- */
+  async function showLicenseBanner() {
+    try {
+      var main = document.querySelector('.main');
+      if (!main || document.getElementById('licBanner')) return;
+      var s = await api('/api/license/status');
+      var msg = null, bad = false;
+      if (s.state === 'trial') msg = 'نسخة تجريبية — متبقي ' + s.days_left + ' يوماً. فعّلي النظام للاستمرار دون انقطاع.';
+      else if (s.state === 'licensed' && s.expires && s.days_left <= 14) { msg = 'ينتهي ترخيص النظام خلال ' + s.days_left + ' يوماً (' + s.expires + ') — تواصلي مع مزوّد النظام للتجديد.'; bad = s.days_left <= 3; }
+      if (!msg) return;
+      var b = document.createElement('div');
+      b.id = 'licBanner';
+      b.style.cssText = 'display:flex;align-items:center;gap:12px;justify-content:center;flex:none;padding:8px 16px;font-size:12.5px;font-weight:700;' +
+        'background:' + (bad ? 'var(--color-danger-tint)' : 'var(--color-warning-tint)') + ';color:' + (bad ? 'var(--color-danger)' : 'var(--color-warning)') + ';border-bottom:1px solid var(--color-border);';
+      b.innerHTML = '<span>' + esc(msg) + '</span><a href="activate.html" style="color:inherit;text-decoration:underline;white-space:nowrap;">إدارة الترخيص</a>';
+      main.insertBefore(b, main.firstChild);
+    } catch (e) { /* never block the page */ }
+  }
+
   /* ---------------- Finance nav link + payment helpers ---------------- */
   var PAY_LABELS = { cash: 'نقداً', bankak: 'بنكك', ocash: 'أوكاش', split: 'مقسّم' };
   function payLabel(m) { return PAY_LABELS[m] || m || '—'; }
@@ -423,6 +494,8 @@ var BH = (function () {
     getSettings: getSettings,
     money: money,
     esc: esc,
+    syncBrandIcons: syncBrandIcons,
+    applyBrandIcons: applyBrandIcons,
     payLabel: payLabel,
     PAY_LABELS: PAY_LABELS,
     splitPaymentDialog: splitPaymentDialog,

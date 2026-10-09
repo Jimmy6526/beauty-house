@@ -1,11 +1,9 @@
-const path = require('node:path');
 const fs = require('node:fs');
 const { DatabaseSync } = require('node:sqlite');
 const { hashPassword } = require('./auth');
+const config = require('./config');
 
-const DATA_DIR = path.join(__dirname, '..', 'data');
-if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
-const DB_PATH = path.join(DATA_DIR, 'beautyhouse.db');
+const DB_PATH = config.DB_PATH;
 
 const isNewDb = !fs.existsSync(DB_PATH);
 const db = new DatabaseSync(DB_PATH);
@@ -200,7 +198,7 @@ CREATE VIEW revenue_events AS
 
 function seedIfEmpty() {
   const itemCount = db.prepare('SELECT COUNT(*) AS c FROM catalog_items').get().c;
-  if (itemCount === 0) {
+  if (itemCount === 0 && !config.freshInstall) {
     const insert = db.prepare(
       'INSERT INTO catalog_items (name, type, category, duration_minutes, price) VALUES (?, ?, ?, ?, ?)'
     );
@@ -264,7 +262,7 @@ function seedIfEmpty() {
   }
 
   const userCount = db.prepare('SELECT COUNT(*) AS c FROM users').get().c;
-  if (userCount === 0) {
+  if (userCount === 0 && !config.freshInstall) {
     const { hash, salt } = hashPassword('BeautyHouse@2026');
     db.prepare(
       'INSERT INTO users (name, role, phone, email, password_hash, password_salt, can_login, active) VALUES (?, ?, ?, ?, ?, ?, 1, 1)'
@@ -272,7 +270,7 @@ function seedIfEmpty() {
   }
 
   const defaults = {
-    shop_name: 'Beauty House',
+    shop_name: config.freshInstall ? '' : 'Beauty House',
     branch_name: '',
     phone: '',
     email: '',

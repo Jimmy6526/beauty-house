@@ -2,9 +2,8 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { db } = require('../db');
 
-const BACKUP_DIR = path.join(__dirname, '..', '..', 'backups');
+const { BACKUP_DIR, DB_PATH } = require('../config');
 if (!fs.existsSync(BACKUP_DIR)) fs.mkdirSync(BACKUP_DIR, { recursive: true });
-const DB_PATH = path.join(__dirname, '..', '..', 'data', 'beautyhouse.db');
 
 function pad(n) { return n < 10 ? '0' + n : '' + n; }
 

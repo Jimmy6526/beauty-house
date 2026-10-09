@@ -10,3 +10,11 @@ README.txt
 .claude/
 node_modules/
 *.log
+
+# ترخيص/تغليف — لا يُرفع أبداً
+tools/keygen/keys/
+tools/keygen/issued.json
+.dev
+installer/stage/
+installer/output/
+installer/assets/*.bmp

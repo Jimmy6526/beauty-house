@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>نوفا الجمال — إدارة الترخيص</title>
+<style>
+  :root {
+    --font-body: "Segoe UI", Tahoma, "Segoe UI Arabic", Arial, sans-serif;
+    --font-mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
+    --color-primary: #6E2A55; --color-primary-tint: #F6E8F0;
+    --color-accent: #C03A72; --color-accent-hover: #A22E5E;
+    --color-gold: #A8741A;
+    --color-bg-page: #FAF5F7; --color-surface: #FFFFFF; --color-surface-2: #FCF8FA;
+    --color-border: #F0E2E9; --color-border-strong: #E0C9D4;
+    --color-text: #2B1B26; --color-text-secondary: #77626F; --color-text-muted: #A691A0;
+    --color-success: #16A34A; --color-success-tint: #E3F7E9; --color-danger: #C0362C; --color-danger-tint: #FCE8E6;
+    --color-warning: #9A5B0C; --color-warning-tint: #FBEEDC;
+    --shadow-lg: 0 24px 54px -18px rgba(110,42,85,.38), 0 6px 14px rgba(110,42,85,.08);
+  }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+    --color-primary: #E6A9CB; --color-primary-tint: #35202F; --color-accent: #F0719F; --color-accent-hover: #F58DB2; --color-gold: #E5BC62;
+    --color-bg-page: #150E14; --color-surface: #1F161E; --color-surface-2: #281D27; --color-border: #3A2B39; --color-border-strong: #4C3949;
+    --color-text: #F8EEF3; --color-text-secondary: #CDB6C4; --color-text-muted: #988294;
+    --color-success: #4ADE80; --color-success-tint: #123322; --color-danger: #F1786D; --color-danger-tint: #3A1512; --color-warning: #F0B429; --color-warning-tint: #3A2A0C;
+  } }
+  :root[data-theme="dark"] {
+    --color-primary: #E6A9CB; --color-primary-tint: #35202F; --color-accent: #F0719F; --color-accent-hover: #F58DB2; --color-gold: #E5BC62;
+    --color-bg-page: #150E14; --color-surface: #1F161E; --color-surface-2: #281D27; --color-border: #3A2B39; --color-border-strong: #4C3949;
+    --color-text: #F8EEF3; --color-text-secondary: #CDB6C4; --color-text-muted: #988294;
+    --color-success: #4ADE80; --color-success-tint: #123322; --color-danger: #F1786D; --color-danger-tint: #3A1512; --color-warning: #F0B429; --color-warning-tint: #3A2A0C;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; font-family: var(--font-body); color: var(--color-text); direction: rtl; line-height: 1.6;
+    background: radial-gradient(900px 420px at 100% 0%, color-mix(in srgb, var(--color-accent) 10%, transparent), transparent 70%),
+                radial-gradient(760px 380px at 0% 100%, color-mix(in srgb, var(--color-gold) 10%, transparent), transparent 70%), var(--color-bg-page);
+    display: flex; flex-direction: column; align-items: center; padding: 34px 16px 28px; }
+  .brand { text-align: center; margin-bottom: 22px; }
+  .brand img { width: 92px; height: 92px; border-radius: 50%; box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-gold) 55%, transparent), var(--shadow-lg); background: #fff; }
+  .brand h1 { margin: 14px 0 2px; font-size: 26px; font-weight: 800; }
+  .brand p { margin: 0; color: var(--color-text-secondary); font-size: 13.5px; }
+  .grid { width: 100%; max-width: 880px; display: grid; grid-template-columns: 1fr 1.15fr; gap: 18px; }
+  .card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 18px; padding: 22px; box-shadow: var(--shadow-lg); }
+  .card h2 { margin: 0 0 14px; font-size: 15.5px; font-weight: 800; }
+  .card h2::before { content: ''; display: inline-block; width: 4px; height: 15px; margin-inline-end: 9px; vertical-align: -2px; border-radius: 3px; background: linear-gradient(180deg, #E7C278, var(--color-accent)); }
+  .badge { display: inline-flex; align-items: center; gap: 7px; padding: 6px 16px; border-radius: 99px; font-weight: 800; font-size: 13.5px; }
+  .badge::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+  .b-ok { background: var(--color-success-tint); color: var(--color-success); }
+  .b-trial { background: var(--color-warning-tint); color: var(--color-warning); }
+  .b-bad { background: var(--color-danger-tint); color: var(--color-danger); }
+  .rows { margin-top: 14px; }
+  .line { display: flex; justify-content: space-between; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--color-border); font-size: 13.5px; }
+  .line:last-child { border-bottom: none; }
+  .line span:first-child { color: var(--color-text-secondary); }
+  .line b { font-weight: 700; text-align: left; }
+  .mid { margin-top: 16px; }
+  .mid label, .field label { display: block; font-size: 12.5px; font-weight: 700; margin-bottom: 6px; }
+  .midbox { display: flex; gap: 8px; }
+  .mono { font-family: var(--font-mono); direction: ltr; text-align: center; letter-spacing: 1.5px; font-weight: 700; font-size: 16px; }
+  input, textarea { width: 100%; font: inherit; font-size: 13.5px; padding: 11px 13px; border: 1px solid var(--color-border-strong); border-radius: 12px; background: var(--color-surface); color: var(--color-text); }
+  textarea { resize: vertical; min-height: 110px; font-family: var(--font-mono); font-size: 12px; direction: ltr; text-align: left; }
+  input:focus, textarea:focus { outline: none; border-color: var(--color-accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 20%, transparent); }
+  .btn { font: inherit; font-weight: 800; border: 0; cursor: pointer; border-radius: 12px; padding: 12px 20px; color: #fff; background: linear-gradient(135deg, color-mix(in srgb, var(--color-accent) 90%, #fff), var(--color-accent)); box-shadow: 0 10px 20px -10px var(--color-accent); text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn:hover { filter: brightness(1.05); }
+  .btn.sec { background: var(--color-surface); color: var(--color-primary); border: 1px solid var(--color-border-strong); box-shadow: none; }
+  .btn.sm { padding: 10px 14px; font-size: 13px; }
+  .btn[disabled] { opacity: .6; cursor: progress; }
+  .field { margin-top: 14px; }
+  .msg { display: none; margin-top: 14px; padding: 11px 13px; border-radius: 12px; font-size: 13px; font-weight: 700; }
+  .msg.err { background: var(--color-danger-tint); color: var(--color-danger); }
+  .msg.good { background: var(--color-success-tint); color: var(--color-success); }
+  .actions { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+  .help { margin-top: 14px; font-size: 12.5px; color: var(--color-text-secondary); line-height: 1.8; background: var(--color-surface-2); border: 1px dashed var(--color-border-strong); border-radius: 12px; padding: 11px 13px; }
+  .credit { margin-top: 26px; font-size: 12px; color: var(--color-text-muted); text-align: center; line-height: 1.9; }
+  .credit a { color: inherit; text-decoration: none; direction: ltr; unicode-bidi: embed; }
+  .credit a:hover { color: var(--color-accent); text-decoration: underline; }
+  @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+</style>
+<link rel="stylesheet" href="theme.css">
+</head>
+<body>
+  <div class="brand">
+    <img id="logo" src="/branding/icon-256.png" alt="نوفا الجمال">
+    <h1>نظام نوفا الجمال</h1>
+    <p>لإدارة الصالونات ومحلات التجميل — إدارة الترخيص والتفعيل</p>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>حالة الترخيص</h2>
+      <div id="badge"></div>
+      <div class="rows" id="rows"></div>
+      <div class="mid">
+        <label>معرّف هذا الجهاز (Machine ID)</label>
+        <div class="midbox">
+          <input id="mid" class="mono" readonly value="…">
+          <button class="btn sec sm" id="copyMid" type="button">نسخ</button>
+        </div>
+      </div>
+      <div class="help">أرسلي معرّف الجهاز واسم المنشأة إلى مزوّد النظام للحصول على مفتاح الترخيص. المفتاح يعمل على هذا الجهاز فقط، وتغيير اللوحة الأم أو المعالج يستلزم ترخيصاً جديداً.</div>
+    </div>
+
+    <div class="card">
+      <h2>تفعيل النظام</h2>
+      <div class="field"><label for="customer">اسم المنشأة (كما في الترخيص)</label><input id="customer" placeholder="مثال: صالون بيت الجمال" autocomplete="off"></div>
+      <div class="field"><label for="key">مفتاح الترخيص (License Key)</label><textarea id="key" placeholder="NOVA1.…" spellcheck="false"></textarea></div>
+      <div class="msg err" id="err"></div>
+      <div class="msg good" id="good"></div>
+      <div class="actions">
+        <button class="btn" id="activate" type="button">تفعيل النظام</button>
+        <a class="btn sec" id="enter" href="login.html" style="display:none">الدخول إلى النظام</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="credit">
+    تصميم وتطوير: <b>المهندس محمد جمال الدين</b><br>
+    <a href="tel:0965269898">0965269898</a> · <a href="mailto:jamalmohamed942@gmail.com">jamalmohamed942@gmail.com</a>
+  </div>
+
+<script src="shared.js"></script>
+<script>
+  (function () {
+    var $ = function (id) { return document.getElementById(id); };
+    var TYPES = { full: 'دائم', annual: 'سنوي', trial: 'تجريبي مؤقت' };
+
+    function line(k, v) { return '<div class="line"><span>' + k + '</span><b>' + BH.esc(v) + '</b></div>'; }
+
+    function render(s) {
+      $('mid').value = s.machine_id || '';
+      var badge = $('badge'), rows = '';
+      if (s.state === 'licensed') {
+        badge.innerHTML = '<span class="badge b-ok">مُفعّل — ترخيص ساري</span>';
+        rows = line('المنشأة', s.customer) + line('نوع الترخيص', TYPES[s.type] || s.type) +
+          line('تاريخ الانتهاء', s.expires ? s.expires + ' (' + s.days_left + ' يوماً متبقياً)' : 'دائم بلا انتهاء') + line('رقم الترخيص', s.license_id);
+      } else if (s.state === 'trial') {
+        badge.innerHTML = '<span class="badge b-trial">فترة تجريبية — متبقي ' + s.days_left + ' يوماً</span>';
+        rows = line('الحالة', 'يعمل النظام كاملاً خلال التجربة') + line('مدة التجربة', s.trial_days + ' يوماً');
+      } else if (s.state === 'dev') {
+        badge.innerHTML = '<span class="badge b-trial">وضع التطوير</span>';
+        rows = line('الحالة', 'لا يوجد فحص ترخيص في وضع التطوير');
+      } else {
+        badge.innerHTML = '<span class="badge b-bad">غير مُفعّل</span>';
+        rows = line('الحالة', s.message || 'يلزم تفعيل النظام');
+      }
+      if (s.key_error) rows += line('آخر خطأ في المفتاح', s.key_error);
+      $('rows').innerHTML = rows;
+      $('enter').style.display = s.allowed ? '' : 'none';
+    }
+
+    async function load() {
+      try { render(await BH.api('/api/license/status')); }
+      catch (e) { $('badge').innerHTML = '<span class="badge b-bad">تعذّر قراءة الحالة</span>'; }
+    }
+
+    $('copyMid').addEventListener('click', async function () {
+      try { await navigator.clipboard.writeText($('mid').value); } catch (e) { $('mid').select(); document.execCommand('copy'); }
+      this.textContent = 'تم النسخ ✓'; var b = this; setTimeout(function () { b.textContent = 'نسخ'; }, 1800);
+    });
+
+    $('activate').addEventListener('click', async function () {
+      var btn = this; $('err').style.display = 'none'; $('good').style.display = 'none';
+      if (!$('key').value.trim()) { $('err').textContent = 'الصقي مفتاح الترخيص أولاً'; $('err').style.display = 'block'; return; }
+      btn.setAttribute('disabled', 'true');
+      try {
+        var s = await BH.api('/api/license/activate', { method: 'POST', body: { key: $('key').value, customer: $('customer').value.trim() } });
+        render(s);
+        $('good').textContent = 'تم تفعيل النظام بنجاح للمنشأة: ' + s.customer; $('good').style.display = 'block';
+        $('key').value = '';
+        setTimeout(function () { window.location.href = 'login.html'; }, 2600);
+      } catch (e) {
+        $('err').textContent = e.message; $('err').style.display = 'block';
+      } finally { btn.removeAttribute('disabled'); }
+    });
+
+    BH.initThemeToggle && null;
+    load();
+  })();
+</script>
+</body>
+</html>
