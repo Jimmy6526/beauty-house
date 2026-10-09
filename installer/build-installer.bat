@@ -9,7 +9,7 @@ node tools\build\make-art.js || goto :fail
 
 echo [2/5] Building the Windows service host...
 pushd installer
-call build-service.bat || (popd & goto :fail)
+call .\build-service.bat || (popd & goto :fail)
 popd
 
 echo [3/5] Staging files (no data, no private keys)...

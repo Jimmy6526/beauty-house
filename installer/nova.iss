@@ -25,6 +25,7 @@ DefaultDirName={autopf}\NovaAlJamal
 DefaultGroupName={#AppName}
 DisableProgramGroupPage=yes
 PrivilegesRequired=admin
+MinVersion=10.0
 #if Ver >= EncodeVer(6,3,0)
 ArchitecturesInstallIn64BitMode=x64compatible
 ArchitecturesAllowed=x64compatible

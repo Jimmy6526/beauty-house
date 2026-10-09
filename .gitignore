@@ -18,3 +18,5 @@ tools/keygen/issued.json
 installer/stage/
 installer/output/
 installer/assets/*.bmp
+
+tools/keygen/LicenseTool.exe

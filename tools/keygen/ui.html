@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>أداة ترخيص محلات التجميل</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="shortcut icon" href="/favicon.ico">
+<style>
+:root{--plum:#6E2A55;--plum2:#4A1A3A;--rose:#C03A72;--gold:#E7C278;--ink:#2B1B26;--mut:#77626F;--bd:#E8D6DF;--bg:#FAF5F7;--ok:#1F8A5B;--warn:#B7791F;--bad:#C0362C}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI",Tahoma,sans-serif;background:linear-gradient(165deg,#3C1838 0,#1B0C1C 100%) fixed;min-height:100vh;color:var(--ink);padding:22px 16px 40px}
+.wrap{max-width:1000px;margin:0 auto}
+.head{display:flex;align-items:center;gap:14px;color:#fff;margin-bottom:16px}
+.head img{width:60px;height:60px;border-radius:50%;box-shadow:0 0 0 3px var(--gold)}
+.head h1{margin:0;font-size:22px}.head p{margin:3px 0 0;color:#E3C3D6;font-size:12.5px}
+.head .grow{flex:1}
+.chip{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);color:#F6E4EE;border:1px solid rgba(255,255,255,.18);padding:6px 12px;border-radius:99px;font-size:12px}
+.chip b{font-family:Consolas,monospace;direction:ltr;letter-spacing:.5px}
+.tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.tab{background:rgba(255,255,255,.08);color:#F1DCE8;border:1px solid rgba(255,255,255,.14);padding:10px 18px;border-radius:12px;cursor:pointer;font:inherit;font-weight:700;box-shadow:none}
+.tab.on{background:#fff;color:var(--plum);border-color:#fff}
+.card{background:#fff;border-radius:18px;padding:22px;box-shadow:0 20px 50px -20px rgba(0,0,0,.6);margin-bottom:16px}
+h2{margin:0 0 14px;font-size:16px;border-inline-start:4px solid var(--gold);padding-inline-start:10px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+label{display:block;font-size:12.5px;font-weight:700;margin:12px 0 6px}
+.hint{font-size:11.5px;color:var(--mut);margin-top:4px;font-weight:400}
+input,select,textarea{width:100%;font:inherit;padding:10px 12px;border:1px solid var(--bd);border-radius:10px;background:#fff;color:var(--ink)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--rose);box-shadow:0 0 0 3px rgba(192,58,114,.18)}
+.mono{font-family:Consolas,monospace;direction:ltr;text-align:left;letter-spacing:.5px}
+button{font:inherit;font-weight:700;border:0;border-radius:12px;padding:10px 18px;cursor:pointer;color:#fff;background:linear-gradient(135deg,#D4528A,var(--rose));box-shadow:0 10px 20px -12px var(--rose)}
+button:hover{filter:brightness(1.06)}
+button.sec{background:#fff;color:var(--plum);border:1px solid var(--bd);box-shadow:none}
+button.sm{padding:5px 10px;font-size:12px;border-radius:9px}
+button.dng{background:#fff;color:var(--bad);border:1px solid #F0C9C5;box-shadow:none}
+.inl{display:flex;gap:8px}.inl input{flex:1}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{background:#fff;color:var(--ink);border:1px solid var(--bd);box-shadow:none;flex:1;min-width:90px}
+.seg button.on{background:var(--plum);color:#fff;border-color:var(--plum)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.chips button{background:#F8EEF3;color:var(--plum);box-shadow:none;padding:5px 12px;font-size:12.5px;border-radius:99px}
+.chips button.on{background:var(--rose);color:#fff}
+.valid{font-size:12px;margin-top:4px;font-weight:700}.valid.ok{color:var(--ok)}.valid.no{color:var(--bad)}
+.err{background:#FCE8E6;color:var(--bad);padding:10px 12px;border-radius:10px;margin-top:12px;display:none;font-weight:600}
+.result{display:none;margin-top:16px;background:var(--bg);border:1px dashed var(--rose);border-radius:14px;padding:16px}
+.result textarea{height:96px;font-family:Consolas,monospace;direction:ltr;font-size:12px}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.stat{background:var(--bg);border-radius:14px;padding:12px 14px;border:1px solid var(--bd)}
+.stat b{display:block;font-size:24px;color:var(--plum)}.stat span{font-size:12px;color:var(--mut)}
+.stat.warn b{color:var(--warn)}.stat.bad b{color:var(--bad)}.stat.ok b{color:var(--ok)}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.tools input{flex:2;min-width:180px}.tools select{flex:1;min-width:120px}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:760px}
+th{text-align:right;color:var(--mut);padding:8px 6px;border-bottom:2px solid var(--bd);white-space:nowrap}
+td{padding:9px 6px;border-bottom:1px solid var(--bd);vertical-align:top}
+td .note{color:var(--mut);font-size:11.5px;margin-top:3px}
+.badge{display:inline-block;padding:2px 10px;border-radius:99px;background:#F6E8F0;color:var(--plum);font-weight:700;font-size:11.5px;white-space:nowrap}
+.badge.ok{background:#E3F4EC;color:var(--ok)}.badge.warn{background:#FBF0DA;color:var(--warn)}.badge.bad{background:#FCE8E6;color:var(--bad)}
+.acts{display:flex;gap:4px;flex-wrap:wrap}
+.empty{text-align:center;color:#9a8a93;padding:26px}
+.kv{display:grid;grid-template-columns:130px 1fr;gap:8px 12px;font-size:13.5px}.kv div:nth-child(odd){color:var(--mut)}
+.warnbox{background:#FFF7E6;border:1px solid #F1D9A3;color:#7A5A12;border-radius:12px;padding:12px 14px;font-size:13px;line-height:1.8}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#2B1B26;color:#fff;padding:10px 20px;border-radius:99px;font-weight:700;font-size:13px;opacity:0;pointer-events:none;transition:.25s;z-index:9}
+.toast.on{opacity:1}
+.foot{color:#C9A8BB;text-align:center;font-size:12px;margin-top:10px}
+@media(max-width:700px){.row{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.head{flex-wrap:wrap}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <img src="/icon.png" alt="">
+    <div class="grow"><h1>أداة ترخيص محلات التجميل</h1><p>إصدار وإدارة تراخيص نظام نوفا الجمال · توقيع غير متناظر Ed25519 · أداة المطوّر فقط</p></div>
+    <div class="chip" id="fpchip" title="بصمة المفتاح العام — يجب أن تتطابق مع النسخة التي تسلّمها للعملاء">🔑 بصمة المفتاح <b id="fp">—</b></div>
+  </div>
+
+  <div class="tabs" id="tabs">
+    <button class="tab on" data-tab="issue">➕ إصدار ترخيص</button>
+    <button class="tab" data-tab="log">📋 السجل والعملاء</button>
+    <button class="tab" data-tab="verify">🔍 فحص مفتاح</button>
+    <button class="tab" data-tab="tools">⚙️ الأدوات والنسخ الاحتياطي</button>
+  </div>
+
+  <!-- ISSUE -->
+  <section id="p-issue">
+    <div class="card">
+      <h2>إصدار ترخيص جديد</h2>
+      <div class="row">
+        <div>
+          <label>معرّف جهاز العميل (Machine ID)</label>
+          <div class="inl"><input id="machine" class="mono" placeholder="XXXXX-XXXXX-XXXXX-XXXXX" autocomplete="off" spellcheck="false"><button class="sec" id="paste" type="button">لصق</button></div>
+          <div class="valid" id="mvalid"></div>
+        </div>
+        <div>
+          <label>اسم المنشأة (يُكتب كما هو عند التفعيل)</label>
+          <input id="customer" placeholder="مثال: صالون بيت الجمال">
+        </div>
+      </div>
+      <div class="row">
+        <div><label>هاتف العميل (اختياري — للإرسال عبر واتساب)</label><input id="phone" class="mono" placeholder="9677XXXXXXXX" inputmode="tel"></div>
+        <div><label>ملاحظات داخلية (اختياري)</label><input id="note" placeholder="مثال: دفع كامل — فرع صنعاء"></div>
+      </div>
+      <label>نوع الترخيص</label>
+      <div class="seg" id="typeSeg">
+        <button type="button" data-v="full" class="on">دائم</button>
+        <button type="button" data-v="annual">سنوي</button>
+        <button type="button" data-v="trial">تجريبي مؤقت</button>
+      </div>
+      <div id="durBox" style="display:none">
+        <label>مدة الصلاحية</label>
+        <div class="row">
+          <div><input id="days" type="number" min="1" max="3650" placeholder="عدد الأيام"></div>
+          <div><input id="expires" type="date"><div class="hint">أو حدّد تاريخ انتهاء محدد (له الأولوية)</div></div>
+        </div>
+        <div class="chips" id="chips"></div>
+      </div>
+      <div class="hint" id="preview" style="margin-top:12px;font-size:13px;color:var(--plum);font-weight:700"></div>
+      <div class="err" id="err"></div>
+      <div style="margin-top:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <button id="go" type="button">🔑 توليد مفتاح الترخيص</button>
+        <button id="clear" class="sec" type="button">تفريغ الحقول</button>
+      </div>
+      <div class="result" id="result">
+        <label style="margin-top:0">مفتاح الترخيص</label>
+        <textarea id="key" readonly></textarea>
+        <label>رسالة جاهزة للعميل</label>
+        <textarea id="msg" style="height:170px;font-family:inherit;direction:rtl;font-size:13px" readonly></textarea>
+        <div class="btns">
+          <button id="copyKey" type="button">نسخ المفتاح</button>
+          <button id="copyMsg" class="sec" type="button">نسخ الرسالة كاملة</button>
+          <button id="wa" class="sec" type="button">إرسال عبر واتساب</button>
+          <button id="dl" class="sec" type="button">تنزيل ملف المفتاح</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOG -->
+  <section id="p-log" style="display:none">
+    <div class="stats">
+      <div class="stat"><b id="sAll">0</b><span>إجمالي التراخيص</span></div>
+      <div class="stat ok"><b id="sAct">0</b><span>سارية</span></div>
+      <div class="stat warn"><b id="sSoon">0</b><span>تنتهي خلال 30 يوماً</span></div>
+      <div class="stat bad"><b id="sExp">0</b><span>منتهية</span></div>
+    </div>
+    <div class="card">
+      <h2>التراخيص الصادرة</h2>
+      <div class="tools">
+        <input id="q" placeholder="بحث بالاسم أو الهاتف أو الجهاز أو الرقم...">
+        <select id="fStatus"><option value="">كل الحالات</option><option value="active">سارية</option><option value="soon">تنتهي قريباً</option><option value="expired">منتهية</option></select>
+        <select id="fType"><option value="">كل الأنواع</option><option value="full">دائم</option><option value="annual">سنوي</option><option value="trial">تجريبي</option></select>
+        <a href="/api/export.csv" download><button class="sec" type="button">تصدير Excel / CSV</button></a>
+      </div>
+      <div class="tw"><table>
+        <thead><tr><th>الرقم</th><th>المنشأة</th><th>النوع</th><th>الحالة</th><th>الجهاز</th><th>أُصدر</th><th>ينتهي</th><th>إجراءات</th></tr></thead>
+        <tbody id="list"></tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <!-- VERIFY -->
+  <section id="p-verify" style="display:none">
+    <div class="card">
+      <h2>فحص مفتاح ترخيص</h2>
+      <p class="hint" style="margin-top:-6px">الصق أي مفتاح لمعرفة صحته وبياناته (المنشأة، الجهاز، النوع، تاريخ الانتهاء) — مفيد عند استفسار العميل.</p>
+      <textarea id="vkey" class="mono" style="height:110px;font-size:12px" placeholder="NOVA1...."></textarea>
+      <div class="btns"><button id="vgo" type="button">فحص المفتاح</button></div>
+      <div class="err" id="verr"></div>
+      <div id="vres" style="margin-top:16px"></div>
+    </div>
+  </section>
+
+  <!-- TOOLS -->
+  <section id="p-tools" style="display:none">
+    <div class="card">
+      <h2>النسخ الاحتياطي لمفاتيح التوقيع</h2>
+      <div class="warnbox">⚠️ المفتاح الخاص هو الشيء الوحيد الذي يتيح لك إصدار تراخيص. إن ضاع فلن تستطيع إصدار تراخيص جديدة تعمل مع النسخ المسلَّمة للعملاء، وإن سُرّب فيمكن لأي شخص توليد تراخيص. احفظ النسخة الاحتياطية على وسيط خارجي آمن (فلاش مشفّر أو خزنة كلمات المرور) ولا ترفعها إلى الإنترنت أو GitHub.</div>
+      <div class="btns"><a href="/api/backup-keys" download><button type="button">⬇️ تنزيل نسخة احتياطية (المفاتيح + السجل)</button></a></div>
+    </div>
+    <div class="card">
+      <h2>معلومات الأداة</h2>
+      <div class="kv">
+        <div>بصمة المفتاح العام</div><div class="mono" id="fp2">—</div>
+        <div>مكان المفاتيح</div><div class="mono">tools\keygen\keys\</div>
+        <div>سجل التراخيص</div><div class="mono">tools\keygen\issued.json</div>
+        <div>الخوارزمية</div><div>Ed25519 (توقيع بمفتاح خاص · تحقق بمفتاح عام داخل التطبيق)</div>
+      </div>
+      <div class="btns" style="margin-top:16px"><button class="dng" id="quit" type="button">إيقاف الأداة وإغلاقها</button></div>
+    </div>
+    <div class="card">
+      <h2>طريقة العمل مع العميل</h2>
+      <ol style="line-height:2;margin:0;padding-inline-start:20px;font-size:13.5px">
+        <li>يثبّت العميل النظام ويفتح أيقونة «نوفا الجمال - إدارة الترخيص».</li>
+        <li>يرسل لك «معرّف الجهاز» الظاهر في الصفحة واسم منشأته.</li>
+        <li>تُدخلهما هنا وتختار نوع الترخيص ثم تضغط «توليد».</li>
+        <li>ترسل له الرسالة الجاهزة؛ يدخل الاسم والمفتاح ويضغط «تفعيل».</li>
+      </ol>
+    </div>
+  </section>
+
+  <div class="foot">تصميم وتطوير: المهندس محمد جمال الدين · 0965269898</div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const TYPE = { full: 'دائم', annual: 'سنوي', trial: 'تجريبي' };
+const MACHINE_RE = /^[0-9A-F]{5}(-[0-9A-F]{5}){3}$/;
+const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+let type = 'full', issued = [], last = null;
+
+function toast(t) { const e = $('toast'); e.textContent = t; e.classList.add('on'); setTimeout(() => e.classList.remove('on'), 1800); }
+async function api(url, body) {
+  const r = await fetch(url, body === undefined ? {} : { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  const j = await r.json();
+  if (!r.ok) throw new Error(j.error || 'خطأ');
+  return j;
+}
+async function copy(text, msg) {
+  try { await navigator.clipboard.writeText(text); }
+  catch (e) { const t = document.createElement('textarea'); t.value = text; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove(); }
+  toast(msg || 'تم النسخ ✓');
+}
+const pad = (n) => (n < 10 ? '0' : '') + n;
+const ymd = (d) => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+const today = () => ymd(new Date());
+function addDays(n) { const d = new Date(); d.setDate(d.getDate() + n); return ymd(d); }
+function status(x) {
+  if (!x.expires) return 'active';
+  if (x.expires < today()) return 'expired';
+  return x.expires <= addDays(30) ? 'soon' : 'active';
+}
+const STATUS_LBL = { active: 'ساري', soon: 'ينتهي قريباً', expired: 'منتهٍ' };
+const STATUS_CLS = { active: 'ok', soon: 'warn', expired: 'bad' };
+
+/* tabs */
+document.querySelectorAll('.tab').forEach((b) => b.onclick = () => {
+  document.querySelectorAll('.tab').forEach((x) => x.classList.toggle('on', x === b));
+  ['issue', 'log', 'verify', 'tools'].forEach((n) => $('p-' + n).style.display = n === b.dataset.tab ? '' : 'none');
+  if (b.dataset.tab === 'log') loadLog();
+});
+function goTab(n) { document.querySelector('.tab[data-tab="' + n + '"]').click(); }
+
+/* machine id input */
+function fmtMachine(v) {
+  const raw = v.toUpperCase().replace(/[^0-9A-F]/g, '').slice(0, 20);
+  return raw.match(/.{1,5}/g) ? raw.match(/.{1,5}/g).join('-') : '';
+}
+function checkMachine() {
+  const v = $('machine').value, e = $('mvalid');
+  if (!v) { e.textContent = ''; e.className = 'valid'; return; }
+  if (MACHINE_RE.test(v)) { e.textContent = '✓ معرّف جهاز صحيح'; e.className = 'valid ok'; }
+  else { e.textContent = 'غير مكتمل (' + v.replace(/-/g, '').length + ' / 20 رمز)'; e.className = 'valid no'; }
+}
+$('machine').addEventListener('input', () => { const p = $('machine'); p.value = fmtMachine(p.value); checkMachine(); });
+$('paste').onclick = async () => {
+  try { $('machine').value = fmtMachine(await navigator.clipboard.readText()); checkMachine(); }
+  catch (e) { toast('اسمح بالوصول إلى الحافظة أو الصق يدوياً (Ctrl+V)'); $('machine').focus(); }
+};
+
+/* type + duration */
+const CHIPS = { annual: [[365, 'سنة'], [730, 'سنتان'], [180, '6 أشهر'], [90, '3 أشهر']], trial: [[7, '7 أيام'], [14, '14 يوماً'], [30, '30 يوماً'], [60, '60 يوماً']] };
+function renderChips() {
+  const list = CHIPS[type] || [];
+  $('chips').innerHTML = list.map(([d, l]) => '<button type="button" data-d="' + d + '" class="' + (Number($('days').value) === d && !$('expires').value ? 'on' : '') + '">' + l + '</button>').join('');
+}
+function setType(t) {
+  type = t;
+  document.querySelectorAll('#typeSeg button').forEach((b) => b.classList.toggle('on', b.dataset.v === t));
+  $('durBox').style.display = t === 'full' ? 'none' : '';
+  if (t !== 'full' && !$('days').value && !$('expires').value) $('days').value = t === 'annual' ? 365 : 14;
+  renderChips(); preview();
+}
+document.querySelectorAll('#typeSeg button').forEach((b) => b.onclick = () => setType(b.dataset.v));
+$('chips').onclick = (e) => { const d = e.target.dataset.d; if (d) { $('days').value = d; $('expires').value = ''; renderChips(); preview(); } };
+$('days').oninput = () => { $('expires').value = ''; renderChips(); preview(); };
+$('expires').oninput = () => { if ($('expires').value) $('days').value = ''; renderChips(); preview(); };
+function expiryValue() {
+  if (type === 'full') return null;
+  if ($('expires').value) return $('expires').value;
+  return addDays(Number($('days').value) || (type === 'annual' ? 365 : 30));
+}
+function preview() {
+  const e = expiryValue();
+  $('preview').textContent = e ? 'سينتهي الترخيص بتاريخ: ' + e : 'ترخيص دائم — لا ينتهي';
+}
+
+/* message */
+function buildMsg(x) {
+  const lines = [
+    'السلام عليكم ورحمة الله،',
+    'مرحباً بكم في نظام نوفا الجمال 🌸',
+    '',
+    'تم إصدار ترخيص لمنشأتكم:',
+    '• اسم المنشأة: ' + x.customer,
+    '• نوع الترخيص: ' + TYPE[x.type],
+    '• ' + (x.expires ? 'ينتهي بتاريخ: ' + x.expires : 'مدة الترخيص: دائم'),
+    '',
+    'مفتاح الترخيص:',
+    x.key,
+    '',
+    'خطوات التفعيل:',
+    '1) افتح أيقونة «نوفا الجمال - إدارة الترخيص» على سطح المكتب.',
+    '2) اكتب اسم المنشأة تماماً كما هو أعلاه، ثم الصق المفتاح.',
+    '3) اضغط «تفعيل الترخيص».',
+    '',
+    'للدعم الفني: المهندس محمد جمال الدين — 0965269898'
+  ];
+  return lines.join('\n');
+}
+
+/* issue */
+$('go').onclick = async () => {
+  const err = $('err'); err.style.display = 'none';
+  try {
+    const r = await api('/api/issue', {
+      machine: $('machine').value, customer: $('customer').value, type,
+      days: $('days').value, expires: type === 'full' ? '' : $('expires').value,
+      phone: $('phone').value, note: $('note').value
+    });
+    last = { ...r.payload, key: r.key, phone: $('phone').value };
+    $('key').value = r.key; $('msg').value = buildMsg(last);
+    $('result').style.display = 'block'; $('result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    toast('تم إصدار الترخيص ✓');
+  } catch (e) { err.textContent = e.message; err.style.display = 'block'; }
+};
+$('clear').onclick = () => { ['machine', 'customer', 'phone', 'note', 'days', 'expires'].forEach((i) => $(i).value = ''); $('result').style.display = 'none'; $('err').style.display = 'none'; checkMachine(); setType('full'); };
+$('copyKey').onclick = () => copy($('key').value, 'تم نسخ المفتاح ✓');
+$('copyMsg').onclick = () => copy($('msg').value, 'تم نسخ الرسالة ✓');
+function waLink(x) {
+  const ph = String(x.phone || '').replace(/[^0-9]/g, '');
+  return 'https://wa.me/' + ph + '?text=' + encodeURIComponent(buildMsg(x));
+}
+$('wa').onclick = () => { if (!last) return; if (!String(last.phone || '').replace(/\D/g, '')) { copy($('msg').value, 'لا يوجد هاتف — تم نسخ الرسالة، الصقها في واتساب'); return; } window.open(waLink(last), '_blank'); };
+function download(name, text) { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text], { type: 'text/plain;charset=utf-8' })); a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000); }
+$('dl').onclick = () => { if (last) download('license-' + last.id + '.txt', last.key + '\n'); };
+
+/* log */
+async function loadLog() {
+  issued = await api('/api/issued');
+  const st = issued.map(status);
+  $('sAll').textContent = issued.length;
+  $('sAct').textContent = st.filter((s) => s === 'active').length;
+  $('sSoon').textContent = st.filter((s) => s === 'soon').length;
+  $('sExp').textContent = st.filter((s) => s === 'expired').length;
+  renderLog();
+}
+function renderLog() {
+  const q = $('q').value.trim().toLowerCase(), fs = $('fStatus').value, ft = $('fType').value;
+  const rows = issued.filter((x) => {
+    if (fs && status(x) !== fs) return false;
+    if (ft && x.type !== ft) return false;
+    if (q && ![x.id, x.customer, x.phone, x.machine, x.note].join(' ').toLowerCase().includes(q)) return false;
+    return true;
+  });
+  $('list').innerHTML = rows.map((x) => {
+    const s = status(x);
+    return '<tr><td class="mono">' + esc(x.id) + '</td>' +
+      '<td><b>' + esc(x.customer) + '</b>' + (x.phone ? '<div class="note mono">' + esc(x.phone) + '</div>' : '') + (x.note ? '<div class="note">' + esc(x.note) + '</div>' : '') + '</td>' +
+      '<td><span class="badge">' + TYPE[x.type] + '</span></td>' +
+      '<td><span class="badge ' + STATUS_CLS[s] + '">' + STATUS_LBL[s] + '</span></td>' +
+      '<td class="mono" style="font-size:11.5px">' + esc(x.machine) + '</td>' +
+      '<td>' + esc(x.issued) + '</td><td>' + (x.expires ? esc(x.expires) : 'دائم') + '</td>' +
+      '<td><div class="acts" data-id="' + esc(x.id) + '">' +
+      (x.key ? '<button class="sm sec" data-a="key">المفتاح</button><button class="sm sec" data-a="msg">رسالة</button>' : '') +
+      '<button class="sm sec" data-a="renew">تجديد</button><button class="sm sec" data-a="note">ملاحظة</button><button class="sm dng" data-a="del">حذف</button></div></td></tr>';
+  }).join('') || '<tr><td colspan="8" class="empty">' + (issued.length ? 'لا نتائج مطابقة' : 'لا توجد تراخيص بعد') + '</td></tr>';
+}
+['q', 'fStatus', 'fType'].forEach((i) => $(i).addEventListener('input', renderLog));
+$('list').onclick = async (e) => {
+  const a = e.target.dataset.a; if (!a) return;
+  const id = e.target.closest('.acts').dataset.id, x = issued.find((r) => r.id === id); if (!x) return;
+  if (a === 'key') copy(x.key, 'تم نسخ المفتاح ✓');
+  if (a === 'msg') copy(buildMsg(x), 'تم نسخ الرسالة ✓');
+  if (a === 'renew') {
+    goTab('issue'); $('clear').click();
+    $('machine').value = x.machine; checkMachine(); $('customer').value = x.customer; $('phone').value = x.phone || ''; $('note').value = 'تجديد للترخيص ' + x.id;
+    setType(x.type === 'full' ? 'annual' : x.type); toast('تم تعبئة بيانات العميل — اختر المدة ثم اضغط توليد');
+  }
+  if (a === 'note') {
+    const n = prompt('ملاحظة داخلية للعميل «' + x.customer + '»:', x.note || ''); if (n === null) return;
+    const p = prompt('رقم الهاتف:', x.phone || ''); if (p === null) return;
+    try { await api('/api/update', { id, note: n, phone: p }); loadLog(); toast('تم الحفظ ✓'); } catch (er) { toast(er.message); }
+  }
+  if (a === 'del') {
+    if (!confirm('حذف السجل «' + x.customer + '» من القائمة؟\nملاحظة: المفتاح الذي أُرسل للعميل يبقى صالحاً — الحذف من السجل فقط.')) return;
+    try { await api('/api/delete', { id }); loadLog(); } catch (er) { toast(er.message); }
+  }
+};
+
+/* verify */
+$('vgo').onclick = async () => {
+  $('verr').style.display = 'none'; $('vres').innerHTML = '';
+  try {
+    const r = await api('/api/verify', { key: $('vkey').value });
+    const p = r.payload, exp = p.expires && p.expires < today();
+    const badge = !r.valid ? '<span class="badge bad">توقيع غير صالح — مفتاح مزوّر أو من مفتاح خاص آخر</span>'
+      : exp ? '<span class="badge bad">توقيع صحيح لكن الترخيص منتهٍ</span>' : '<span class="badge ok">مفتاح صحيح وساري ✓</span>';
+    $('vres').innerHTML = badge + '<div class="kv" style="margin-top:14px"><div>رقم الترخيص</div><div class="mono">' + esc(p.id) + '</div><div>المنشأة</div><div>' + esc(p.customer) + '</div><div>النوع</div><div>' + esc(TYPE[p.type] || p.type) + '</div><div>الجهاز</div><div class="mono">' + esc(p.machine) + '</div><div>تاريخ الإصدار</div><div>' + esc(p.issued) + '</div><div>ينتهي</div><div>' + (p.expires ? esc(p.expires) : 'دائم') + '</div></div>';
+  } catch (e) { $('verr').textContent = e.message; $('verr').style.display = 'block'; }
+};
+
+/* tools */
+$('quit').onclick = async () => { if (!confirm('إيقاف الأداة؟')) return; try { await api('/api/shutdown', {}); } catch (e) { /* closing */ } document.body.innerHTML = '<div style="color:#fff;text-align:center;padding:80px 20px;font-size:18px">تم إيقاف الأداة. يمكنك إغلاق هذه النافذة.</div>'; setTimeout(() => window.close(), 600); };
+
+/* boot */
+(async () => {
+  try {
+    const s = await api('/api/state');
+    $('fp').textContent = s.fingerprint || 'لا توجد مفاتيح'; $('fp2').textContent = s.fingerprint || '—';
+    if (!s.hasKeys) { $('err').textContent = 'لا توجد مفاتيح توقيع بعد. شغّل الأمر: node keygen.js init'; $('err').style.display = 'block'; }
+  } catch (e) { /* ignore */ }
+  setType('full'); checkMachine();
+  setInterval(() => api('/api/ping', {}).catch(() => {}), 5000); api('/api/ping', {}).catch(() => {});
+})();
+</script>
+</body>
+</html>
