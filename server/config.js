@@ -11,7 +11,7 @@ const isDev = process.env.NOVA_MODE ? process.env.NOVA_MODE === 'dev' : (process
 
 function defaultInstalledDir() {
   const base = process.env.ProgramData || process.env.PROGRAMDATA;
-  return base ? path.join(base, 'NovaAlJamal') : path.join(ROOT, 'data');
+  return base ? path.join(base, 'NovaBeauty') : path.join(ROOT, 'data');
 }
 
 const HOME_DIR = process.env.NOVA_HOME_DIR || (isDev ? ROOT : defaultInstalledDir());
@@ -34,7 +34,7 @@ module.exports = {
   enforceLicense: !isDev,
   host: process.env.NOVA_HOST || (isDev ? '' : '127.0.0.1'),
   supervised: process.env.NOVA_SUPERVISED === '1',
-  productName: 'نوفا الجمال',
-  productNameEn: 'Nova Al-Jamal',
+  productName: 'نوفا للتجميل',
+  productNameEn: 'Nova Beauty',
   version: '1.0.0'
 };

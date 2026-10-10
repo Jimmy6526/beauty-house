@@ -1,4 +1,4 @@
-/* Nova Al-Jamal — shared theme polish.
+/* Nova Beauty — shared theme polish.
    Loaded after each page's inline tokens (plum + berry-rose + gold, matching the logo). */
 
 /* ---------- Typography: Cairo (bundled, works offline) ---------- */
@@ -206,3 +206,8 @@ tbody tr:hover td { background: color-mix(in srgb, var(--color-primary-tint) 60%
 .bh-theme-pill button { font: inherit; font-size: 12px; font-weight: 700; border: 0; background: transparent; color: var(--color-text-secondary); padding: 5px 12px; border-radius: 999px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; }
 .bh-theme-pill button svg { width: 14px; height: 14px; }
 .bh-theme-pill button.on { background: linear-gradient(135deg, var(--color-primary), var(--color-accent)); color: #fff; }
+
+/* ---------- Brand mark in the sidebar ---------- */
+.sb-brand .brand-mark { width: 38px; height: 38px; flex: none; border-radius: 50%; object-fit: cover; background: #fff; box-shadow: 0 0 0 2px rgba(231,194,120,.55); }
+.sb-brand .name { font-family: var(--font-body) !important; direction: rtl !important; text-align: right !important; font-weight: 800 !important; font-size: 15px !important; }
+.watermark { filter: grayscale(1) brightness(2); }

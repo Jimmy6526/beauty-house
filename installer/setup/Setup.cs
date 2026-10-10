@@ -1,5 +1,5 @@
-﻿// نوفا الجمال — Nova Al-Jamal : custom installer / uninstaller (WPF, compiled with the csc.exe that ships with Windows).
-//   Setup build:      defines nothing, embeds payload.zip           -> NovaAlJamal-Setup-x.y.z.exe
+﻿// نوفا للتجميل — Nova Beauty : custom installer / uninstaller (WPF, compiled with the csc.exe that ships with Windows).
+//   Setup build:      defines nothing, embeds payload.zip           -> NovaBeauty-Setup-x.y.z.exe
 //   Uninstaller:      /define:UNINSTALLER (no payload)              -> uninstall.exe (shipped inside the payload)
 // Command line (setup):  --silent  [--user] [--dir "path"] [--port N] [--no-desktop] [--no-startmenu] [--no-autostart]
 // Developer helpers:     --snapshot <screen> <out.png> [dark]   renders a screen to PNG without installing anything.
@@ -42,12 +42,12 @@ namespace NovaSetup
 
     public static class Core
     {
-        public const string Id = "NovaAlJamal";
+        public const string Id = "NovaBeauty";
         public const string Version = "1.0.0";
         public const string Publisher = "المهندس محمد جمال الدين";
-        public const string NameAr = "نوفا الجمال";
-        public const string NameEn = "Nova Al-Jamal";
-        public const string UninstallKey = @"Software\Microsoft\Windows\CurrentVersion\Uninstall\NovaAlJamal";
+        public const string NameAr = "نوفا للتجميل";
+        public const string NameEn = "Nova Beauty";
+        public const string UninstallKey = @"Software\Microsoft\Windows\CurrentVersion\Uninstall\NovaBeauty";
         public static readonly string LogFile = IOPath.Combine(IOPath.GetTempPath(), "NovaSetup.log");
 
         public static void L(string s)
@@ -63,14 +63,14 @@ namespace NovaSetup
 
         public static string DefaultDir(bool all)
         {
-            if (all) return IOPath.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "NovaAlJamal");
-            return IOPath.Combine(IOPath.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Programs"), "NovaAlJamal");
+            if (all) return IOPath.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "NovaBeauty");
+            return IOPath.Combine(IOPath.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Programs"), "NovaBeauty");
         }
 
         public static string HomeDir(bool all)
         {
-            if (all) return IOPath.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "NovaAlJamal");
-            return IOPath.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "NovaAlJamal");
+            if (all) return IOPath.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "NovaBeauty");
+            return IOPath.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "NovaBeauty");
         }
 
         public static Stream Res(string name) { return Assembly.GetExecutingAssembly().GetManifestResourceStream(name); }
@@ -157,7 +157,7 @@ namespace NovaSetup
 
         public static void StopUserHost(string dir)
         {
-            try { EventWaitHandle ev = EventWaitHandle.OpenExisting("Nova.AlJamal.User.Stop"); ev.Set(); Thread.Sleep(1500); }
+            try { EventWaitHandle ev = EventWaitHandle.OpenExisting("Nova.Beauty.User.Stop"); ev.Set(); Thread.Sleep(1500); }
             catch (Exception) { }
             KillIn(dir);
         }
@@ -237,8 +237,8 @@ namespace NovaSetup
         {
             return IOPath.Combine(Environment.GetFolderPath(all ? Environment.SpecialFolder.CommonPrograms : Environment.SpecialFolder.Programs), NameEn);
         }
-        public const string LnkApp = "نوفا الجمال.lnk";
-        public const string LnkLic = "نوفا الجمال - إدارة الترخيص.lnk";
+        public const string LnkApp = "نوفا للتجميل.lnk";
+        public const string LnkLic = "نوفا للتجميل - إدارة الترخيص.lnk";
 
         static void SafeDelete(string f) { try { if (File.Exists(f)) File.Delete(f); } catch (Exception) { } }
 
@@ -336,9 +336,9 @@ namespace NovaSetup
                 report(86, "جارٍ تثبيت خدمة ويندوز الخلفية…");
                 string bin = "\\\"" + IOPath.Combine(dir, "NovaService.exe") + "\\\"";
                 string start = o.AutoStart ? "auto" : "demand";
-                if (!ServiceExists()) Exec(Sc, "create " + Id + " binPath= \"" + bin + "\" start= " + start + " DisplayName= \"Nova Al-Jamal Service\"", 20000);
+                if (!ServiceExists()) Exec(Sc, "create " + Id + " binPath= \"" + bin + "\" start= " + start + " DisplayName= \"Nova Beauty Service\"", 20000);
                 else Exec(Sc, "config " + Id + " binPath= \"" + bin + "\" start= " + start, 20000);
-                Exec(Sc, "description " + Id + " \"Nova Al-Jamal salon management server\"", 15000);
+                Exec(Sc, "description " + Id + " \"Nova Beauty salon management server\"", 15000);
                 Exec(Sc, "failure " + Id + " reset= 86400 actions= restart/5000/restart/5000/restart/30000", 15000);
                 Exec(Sc, "start " + Id, 30000);
             }
@@ -362,16 +362,16 @@ namespace NovaSetup
             {
                 if (o.Desktop)
                 {
-                    AppShortcut(IOPath.Combine(DesktopDir(o.AllUsers), LnkApp), o.Port, "", iconForLinks, "نظام نوفا الجمال لإدارة الصالونات ومحلات التجميل", dir);
-                    AppShortcut(IOPath.Combine(DesktopDir(o.AllUsers), LnkLic), o.Port, "activate.html", iconForLinks, "إدارة ترخيص وتفعيل نظام نوفا الجمال", dir);
+                    AppShortcut(IOPath.Combine(DesktopDir(o.AllUsers), LnkApp), o.Port, "", iconForLinks, "نظام نوفا للتجميل لإدارة الصالونات ومحلات التجميل", dir);
+                    AppShortcut(IOPath.Combine(DesktopDir(o.AllUsers), LnkLic), o.Port, "activate.html", iconForLinks, "إدارة ترخيص وتفعيل نظام نوفا للتجميل", dir);
                 }
                 if (o.StartMenu)
                 {
                     string sm = StartMenuDir(o.AllUsers);
                     Directory.CreateDirectory(sm);
-                    AppShortcut(IOPath.Combine(sm, LnkApp), o.Port, "", iconForLinks, "نظام نوفا الجمال", dir);
+                    AppShortcut(IOPath.Combine(sm, LnkApp), o.Port, "", iconForLinks, "نظام نوفا للتجميل", dir);
                     AppShortcut(IOPath.Combine(sm, LnkLic), o.Port, "activate.html", iconForLinks, "إدارة الترخيص", dir);
-                    MakeLink(IOPath.Combine(sm, "إلغاء تثبيت نوفا الجمال.lnk"), IOPath.Combine(dir, "uninstall.exe"), "", ico, "إلغاء تثبيت نوفا الجمال", dir);
+                    MakeLink(IOPath.Combine(sm, "إلغاء تثبيت نوفا للتجميل.lnk"), IOPath.Combine(dir, "uninstall.exe"), "", ico, "إلغاء تثبيت نوفا للتجميل", dir);
                 }
             }
             catch (Exception ex) { L("shortcuts: " + ex.Message); }
@@ -578,7 +578,7 @@ namespace NovaSetup
                 <Border.Effect><DropShadowEffect Color='#000000' BlurRadius='20' ShadowDepth='5' Opacity='.35'/></Border.Effect>
                 <Image x:Name='Logo' Margin='2' RenderOptions.BitmapScalingMode='HighQuality'/>
               </Border>
-              <TextBlock x:Name='BannerTitle' Text='نظام نوفا الجمال' Foreground='White' FontSize='24' FontWeight='Bold' HorizontalAlignment='Center' Margin='0,8,0,0'/>
+              <TextBlock x:Name='BannerTitle' Text='نظام نوفا للتجميل' Foreground='White' FontSize='24' FontWeight='Bold' HorizontalAlignment='Center' Margin='0,8,0,0'/>
               <TextBlock x:Name='BannerSub' Text='لإدارة الصالونات ومحلات التجميل · الإصدار 1.0.0' Foreground='#EBD3E1' FontSize='13' HorizontalAlignment='Center'/>
             </StackPanel>
           </Grid>
@@ -658,7 +658,7 @@ namespace NovaSetup
           <Grid x:Name='ScreenProgress' Margin='56,24,56,20' Visibility='Collapsed'>
             <Grid.RowDefinitions><RowDefinition Height='Auto'/><RowDefinition Height='Auto'/><RowDefinition Height='Auto'/><RowDefinition Height='*'/><RowDefinition Height='Auto'/></Grid.RowDefinitions>
             <Grid Grid.Row='0'>
-              <TextBlock x:Name='ProgTitle' Text='جارٍ تثبيت نوفا الجمال' FontSize='19' FontWeight='Bold' Foreground='{DynamicResource Text}' HorizontalAlignment='Right'/>
+              <TextBlock x:Name='ProgTitle' Text='جارٍ تثبيت نوفا للتجميل' FontSize='19' FontWeight='Bold' Foreground='{DynamicResource Text}' HorizontalAlignment='Right'/>
               <TextBlock x:Name='ProgPct' Text='0%' FontSize='30' FontWeight='Bold' Foreground='{DynamicResource Accent}' HorizontalAlignment='Left' FlowDirection='LeftToRight'/>
             </Grid>
             <ProgressBar x:Name='Bar' Grid.Row='1' Style='{StaticResource Bar}' Margin='0,10,0,0'/>
@@ -681,7 +681,7 @@ namespace NovaSetup
               </Grid>
               <TextBlock x:Name='DoneTitle' Text='اكتمل التثبيت بنجاح' FontSize='24' FontWeight='Bold' Foreground='{DynamicResource Text}' HorizontalAlignment='Center' Margin='0,16,0,0'/>
               <TextBlock x:Name='DoneSub' TextAlignment='Center' TextWrapping='Wrap' MaxWidth='520' FontSize='14' LineHeight='24' Foreground='{DynamicResource Text2}' Margin='0,8,0,0'
-                         Text='نظام نوفا الجمال جاهز للعمل. لديك فترة تجريبية كاملة لمدة 14 يوماً، ويمكنك تفعيل الترخيص في أي وقت من أيقونة «إدارة الترخيص».'/>
+                         Text='نظام نوفا للتجميل جاهز للعمل. لديك فترة تجريبية كاملة لمدة 14 يوماً، ويمكنك تفعيل الترخيص في أي وقت من أيقونة «إدارة الترخيص».'/>
               <Button x:Name='BtnLaunch' Style='{StaticResource BtnPrimary}' Content='تشغيل التطبيق الآن' MinWidth='300' Margin='0,26,0,0'/>
               <Button x:Name='BtnFinish' Style='{StaticResource BtnLink}' Content='إغلاق' HorizontalAlignment='Center' Margin='0,10,0,0'/>
             </StackPanel>
@@ -703,7 +703,7 @@ namespace NovaSetup
           <!-- UNINSTALL CONFIRM -->
           <Grid x:Name='ScreenUninstall' Margin='56,22,56,20' Visibility='Collapsed'>
             <StackPanel VerticalAlignment='Center'>
-              <TextBlock Text='إلغاء تثبيت نوفا الجمال' FontSize='22' FontWeight='Bold' Foreground='{DynamicResource Text}' HorizontalAlignment='Center'/>
+              <TextBlock Text='إلغاء تثبيت نوفا للتجميل' FontSize='22' FontWeight='Bold' Foreground='{DynamicResource Text}' HorizontalAlignment='Center'/>
               <TextBlock x:Name='UnText' TextAlignment='Center' TextWrapping='Wrap' FontSize='14' LineHeight='24' Foreground='{DynamicResource Text2}' Margin='0,8,0,0'
                          Text='سيتم إيقاف النظام وحذف ملفات البرنامج والاختصارات من هذا الجهاز.'/>
               <Border CornerRadius='16' Background='{DynamicResource Tint}' Padding='18,14' Margin='0,18,0,0'>
@@ -831,7 +831,7 @@ namespace NovaSetup
             w = (Window)XamlReader.Parse(Ui.Xaml);
             Ui.LoadFont(w);
             dark = args.ContainsKey("dark");
-            try { using (RegistryKey k = Registry.CurrentUser.CreateSubKey(@"Software\NovaAlJamal\Setup")) { if (!args.ContainsKey("light") && !args.ContainsKey("dark") && k != null) dark = Convert.ToString(k.GetValue("theme")) == "dark"; } } catch (Exception) { }
+            try { using (RegistryKey k = Registry.CurrentUser.CreateSubKey(@"Software\NovaBeauty\Setup")) { if (!args.ContainsKey("light") && !args.ContainsKey("dark") && k != null) dark = Convert.ToString(k.GetValue("theme")) == "dark"; } } catch (Exception) { }
             Ui.ApplyTheme(w, dark);
             BitmapImage logo = Ui.LogoImage();
             if (logo != null) { Get<Image>("Logo").Source = logo; w.Icon = logo; }
@@ -871,7 +871,7 @@ namespace NovaSetup
             Get<Button>("BtnTheme").Click += delegate
             {
                 dark = !dark; Ui.ApplyTheme(w, dark); UpdateThemeGlyph();
-                try { using (RegistryKey k = Registry.CurrentUser.CreateSubKey(@"Software\NovaAlJamal\Setup")) { k.SetValue("theme", dark ? "dark" : "light"); } } catch (Exception) { }
+                try { using (RegistryKey k = Registry.CurrentUser.CreateSubKey(@"Software\NovaBeauty\Setup")) { k.SetValue("theme", dark ? "dark" : "light"); } } catch (Exception) { }
             };
             w.Closing += delegate(object s, CancelEventArgs e) { if (busy) e.Cancel = true; };
 
@@ -890,11 +890,11 @@ namespace NovaSetup
             {
                 using (System.Windows.Forms.FolderBrowserDialog d = new System.Windows.Forms.FolderBrowserDialog())
                 {
-                    d.Description = "اختر المجلد الذي سيُثبَّت فيه نوفا الجمال";
+                    d.Description = "اختر المجلد الذي سيُثبَّت فيه نوفا للتجميل";
                     if (d.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     {
                         string p = d.SelectedPath;
-                        if (!p.EndsWith("NovaAlJamal", StringComparison.OrdinalIgnoreCase)) p = IOPath.Combine(p, "NovaAlJamal");
+                        if (!p.EndsWith("NovaBeauty", StringComparison.OrdinalIgnoreCase)) p = IOPath.Combine(p, "NovaBeauty");
                         Get<TextBox>("TxtDir").Text = p; dirEdited = true;
                     }
                 }
@@ -1017,7 +1017,7 @@ namespace NovaSetup
         public void RunInstall(Opts o)
         {
             opts = o; busy = true;
-            Get<TextBlock>("ProgTitle").Text = "جارٍ تثبيت نوفا الجمال";
+            Get<TextBlock>("ProgTitle").Text = "جارٍ تثبيت نوفا للتجميل";
             Show("progress"); SetProgress(0, "جارٍ التحضير…"); StartTips();
             Thread th = new Thread(delegate()
             {
@@ -1065,7 +1065,7 @@ namespace NovaSetup
                     Process.Start(psi);
                     w.Close();
                 }
-                catch (Win32Exception) { MessageBox.Show("لم تتم الموافقة على صلاحية المدير. اختر «للمستخدم الحالي فقط» لتثبيت بدون صلاحيات، أو أعد المحاولة.", "نوفا الجمال", MessageBoxButton.OK, MessageBoxImage.Information); }
+                catch (Win32Exception) { MessageBox.Show("لم تتم الموافقة على صلاحية المدير. اختر «للمستخدم الحالي فقط» لتثبيت بدون صلاحيات، أو أعد المحاولة.", "نوفا للتجميل", MessageBoxButton.OK, MessageBoxImage.Information); }
                 return;
             }
             RunInstall(o);
@@ -1075,7 +1075,7 @@ namespace NovaSetup
         public void ShowUninstall(Core.InstallInfo info)
         {
             uninstallMode = true; uninfo = info;
-            Get<TextBlock>("BannerTitle").Text = "إلغاء تثبيت نوفا الجمال";
+            Get<TextBlock>("BannerTitle").Text = "إلغاء تثبيت نوفا للتجميل";
             Get<TextBlock>("BannerSub").Text = "الإصدار " + Core.Version;
             Show("uninstall");
         }
@@ -1237,7 +1237,7 @@ namespace NovaSetup
             }
 
 #if UNINSTALLER
-            if (info == null) { MessageBox.Show("لم يتم العثور على تثبيت لنوفا الجمال على هذا الجهاز.", "نوفا الجمال"); return 0; }
+            if (info == null) { MessageBox.Show("لم يتم العثور على تثبيت لنوفا للتجميل على هذا الجهاز.", "نوفا للتجميل"); return 0; }
             ui.ShowUninstall(info);
             app.Run(ui.Win);
             if (a.ContainsKey("tmp"))

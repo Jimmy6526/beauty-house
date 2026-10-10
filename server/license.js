@@ -1,4 +1,4 @@
-// Nova Al-Jamal licensing: hardware-bound, offline, asymmetric (Ed25519).
+// Nova Beauty licensing: hardware-bound, offline, asymmetric (Ed25519).
 // The developer signs a license with a PRIVATE key (never shipped); the app only holds the PUBLIC key
 // and can verify but never forge a license. Honest limitation: any local check can be patched out by a
 // determined attacker with full machine access; this stops casual copying and key sharing.

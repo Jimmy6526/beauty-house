@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <script src="theme-init.js"></script>
-<title>نوفا الجمال — لوحة التحكم</title>
+<title>نوفا للتجميل — لوحة التحكم</title>
 </head>
 <body>
 <style>
@@ -383,18 +383,8 @@
 
   <aside class="sidebar">
     <div class="sb-brand">
-      <svg viewBox="0 0 48 48" aria-hidden="true">
-        <defs><linearGradient id="pgSb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6E2A55"/><stop offset="1" stop-color="#C03A72"/></linearGradient></defs>
-        <g transform="translate(24,24)">
-          <g><ellipse cx="0" cy="-13" rx="7" ry="11" fill="url(#pgSb)"/></g>
-          <g transform="rotate(72)"><ellipse cx="0" cy="-13" rx="7" ry="11" fill="url(#pgSb)" opacity=".9"/></g>
-          <g transform="rotate(144)"><ellipse cx="0" cy="-13" rx="7" ry="11" fill="url(#pgSb)" opacity=".82"/></g>
-          <g transform="rotate(216)"><ellipse cx="0" cy="-13" rx="7" ry="11" fill="url(#pgSb)" opacity=".74"/></g>
-          <g transform="rotate(288)"><ellipse cx="0" cy="-13" rx="7" ry="11" fill="url(#pgSb)" opacity=".66"/></g>
-          <circle r="6" fill="#AB7400"/>
-        </g>
-      </svg>
-      <span class="name"><b>Beauty</b> House</span>
+      <img class="brand-mark" src="/branding/icon-64.png" alt="">
+      <span class="name">نوفا للتجميل</span>
     </div>
     <div class="sb-branch"><span class="dot"></span> الفرع الرئيسي — متصل</div>
 
@@ -742,7 +732,7 @@
       ];
       var doneCount = steps.filter(function (x) { return x.done; }).length;
       if (steps[3].done) return; // already in use — no checklist
-      box.innerHTML = '<div class="onboard"><div class="onboard-head"><div><h3>ابدئي رحلتك مع نوفا الجمال 🌸</h3><p>خطوات سريعة لتجهيز منشأتك — ' + doneCount + ' من ' + steps.length + ' مكتملة</p></div>' +
+      box.innerHTML = '<div class="onboard"><div class="onboard-head"><div><h3>ابدئي رحلتك مع نوفا للتجميل 🌸</h3><p>خطوات سريعة لتجهيز منشأتك — ' + doneCount + ' من ' + steps.length + ' مكتملة</p></div>' +
         '<button class="x" id="obClose" title="إخفاء">×</button></div><div class="ob-bar"><i style="width:' + Math.round(doneCount / steps.length * 100) + '%"></i></div><div class="ob-steps">' +
         steps.map(function (x) { return '<a class="ob-step' + (x.done ? ' done' : '') + '" href="' + x.href + '"><span class="c">' + (x.done ? '✓' : '') + '</span><span>' + x.t + '<small>' + x.d + '</small></span></a>'; }).join('') + '</div></div>';
       document.getElementById('obClose').addEventListener('click', function () { try { localStorage.setItem('bh_onboard_off', '1'); } catch (e) {} box.innerHTML = ''; });

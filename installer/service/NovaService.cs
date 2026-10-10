@@ -1,4 +1,4 @@
-// Nova Al-Jamal — real Windows Service host.
+// Nova Beauty — real Windows Service host.
 // Starts the bundled Node.js server, restarts it if it exits, and logs its output.
 // Build:  installer\build-service.bat     Debug run (no service):  NovaService.exe --console
 using System;
@@ -18,7 +18,7 @@ public class NovaService : ServiceBase
 
     public NovaService()
     {
-        ServiceName = "NovaAlJamal";
+        ServiceName = "NovaBeauty";
         CanStop = true;
         AutoLog = true;
         string env = Environment.GetEnvironmentVariable("NOVA_APP_DIR");
@@ -26,9 +26,9 @@ public class NovaService : ServiceBase
         string home = Environment.GetEnvironmentVariable("NOVA_HOME_DIR");
         if (string.IsNullOrEmpty(home))
 #if USERMODE
-            home = Path.Combine(Environment.GetEnvironmentVariable("LocalAppData") ?? Path.GetTempPath(), "NovaAlJamal");
+            home = Path.Combine(Environment.GetEnvironmentVariable("LocalAppData") ?? Path.GetTempPath(), "NovaBeauty");
 #else
-            home = Path.Combine(Environment.GetEnvironmentVariable("ProgramData") ?? @"C:\ProgramData", "NovaAlJamal");
+            home = Path.Combine(Environment.GetEnvironmentVariable("ProgramData") ?? @"C:\ProgramData", "NovaBeauty");
 #endif
         homeDir = home;
         logFile = Path.Combine(homeDir, "logs", "service.log");
@@ -39,10 +39,10 @@ public class NovaService : ServiceBase
     {
         // Per-user host (no admin, no Windows service): runs the server hidden while the user is logged in.
         bool first;
-        using (Mutex mx = new Mutex(true, "Nova.AlJamal.User.Host", out first))
+        using (Mutex mx = new Mutex(true, "Nova.Beauty.User.Host", out first))
         {
             if (!first) return;
-            EventWaitHandle stop = new EventWaitHandle(false, EventResetMode.ManualReset, "Nova.AlJamal.User.Stop");
+            EventWaitHandle stop = new EventWaitHandle(false, EventResetMode.ManualReset, "Nova.Beauty.User.Stop");
             NovaService s = new NovaService();
             s.Begin();
             stop.WaitOne();
@@ -56,7 +56,7 @@ public class NovaService : ServiceBase
         {
             NovaService s = new NovaService();
             s.Begin();
-            Console.WriteLine("Nova Al-Jamal is running (console mode). Press Enter to stop.");
+            Console.WriteLine("Nova Beauty is running (console mode). Press Enter to stop.");
             Console.ReadLine();
             s.End();
         }

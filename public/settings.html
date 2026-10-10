@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <script src="theme-init.js"></script>
-<title>نوفا الجمال — الإعدادات</title>
+<title>نوفا للتجميل — الإعدادات</title>
 </head>
 <body>
 <style>
@@ -339,18 +339,8 @@
 
   <aside class="sidebar">
     <a class="sb-brand" href="dashboard.html">
-      <svg viewBox="0 0 48 48" aria-hidden="true">
-        <defs><linearGradient id="pgSb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6E2A55"/><stop offset="1" stop-color="#C03A72"/></linearGradient></defs>
-        <g transform="translate(24,24)">
-          <g><ellipse cx="0" cy="-13" rx="7" ry="11" fill="url(#pgSb)"/></g>
-          <g transform="rotate(72)"><ellipse cx="0" cy="-13" rx="7" ry="11" fill="url(#pgSb)" opacity=".9"/></g>
-          <g transform="rotate(144)"><ellipse cx="0" cy="-13" rx="7" ry="11" fill="url(#pgSb)" opacity=".82"/></g>
-          <g transform="rotate(216)"><ellipse cx="0" cy="-13" rx="7" ry="11" fill="url(#pgSb)" opacity=".74"/></g>
-          <g transform="rotate(288)"><ellipse cx="0" cy="-13" rx="7" ry="11" fill="url(#pgSb)" opacity=".66"/></g>
-          <circle r="6" fill="#AB7400"/>
-        </g>
-      </svg>
-      <span class="name"><b>Beauty</b> House</span>
+      <img class="brand-mark" src="/branding/icon-64.png" alt="">
+      <span class="name">نوفا للتجميل</span>
     </a>
     <div class="sb-branch"><span class="dot"></span> الفرع الرئيسي — متصل</div>
 
@@ -612,7 +602,7 @@
         <!-- BACKUP -->
         <section class="settings-section" id="tab-backup">
           <div class="card panel-card">
-            <div class="p-head"><h2>الترخيص والنسخة</h2><p>معلومات ترخيص نظام نوفا الجمال على هذا الجهاز.</p></div>
+            <div class="p-head"><h2>الترخيص والنسخة</h2><p>معلومات ترخيص نظام نوفا للتجميل على هذا الجهاز.</p></div>
             <div id="licInfo" style="font-size:13.5px;line-height:2;">جارٍ التحميل…</div>
             <div class="panel-foot" style="padding-top:8px;border-top:none;"><a class="btn btn-outline" href="activate.html">إدارة الترخيص والتفعيل</a></div>
           </div>
@@ -814,7 +804,7 @@
       await BH.api('/api/settings', { method: 'PUT', body: { logo: '' } });
       await BH.getSettings(true);
       try { await BH.syncBrandIcons(null); } catch (e) { /* ignore */ }
-      showToast('تمت إزالة الشعار — عادت أيقونة نوفا الجمال');
+      showToast('تمت إزالة الشعار — عادت أيقونة نوفا للتجميل');
     });
 
     document.getElementById('saveInfoBtn').addEventListener('click', async function () {

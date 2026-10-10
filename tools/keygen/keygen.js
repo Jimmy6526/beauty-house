@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Nova Al-Jamal — License Key Generator (DEVELOPER ONLY, never ship this folder to customers).
+// Nova Beauty — License Key Generator (DEVELOPER ONLY, never ship this folder to customers).
 //   node keygen.js            -> opens the local web UI on http://127.0.0.1:47199
 //   node keygen.js init       -> create the signing key pair (once)
 //   node keygen.js issue --machine XXXXX-XXXXX-XXXXX-XXXXX --customer "اسم المنشأة" --type full|annual|trial [--days 365 | --expires 2027-01-31]

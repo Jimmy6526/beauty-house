@@ -57,7 +57,7 @@ var BH = (function () {
     var back = document.createElement('div');
     back.className = 'bh-about-back'; back.id = 'bhAbout';
     back.innerHTML = '<div class="bh-about" role="dialog" aria-modal="true" aria-label="حول النظام">' +
-      '<img src="/branding/icon-256.png" alt=""><h3>نظام نوفا الجمال</h3><div class="sub">لإدارة الصالونات ومحلات التجميل · الإصدار 1.0.0</div>' +
+      '<img src="/branding/icon-256.png" alt=""><h3>نظام نوفا للتجميل</h3><div class="sub">لإدارة الصالونات ومحلات التجميل · الإصدار 1.0.0</div>' +
       '<div class="who">تصميم وتطوير</div><div class="name">المهندس محمد جمال الدين</div>' +
       '<div class="lines"><a href="tel:' + CREDIT.phone + '">' + CREDIT.phone + '</a><a href="mailto:' + CREDIT.email + '">' + CREDIT.email + '</a></div>' +
       '<button type="button" class="close">إغلاق</button></div>';
@@ -157,6 +157,7 @@ var BH = (function () {
       el.textContent = name;
     });
     if (logo) {
+      document.querySelectorAll('.sb-brand img.brand-mark, .mobile-brand img.logo-img, .brand-lockup img.logo-img').forEach(function (img) { img.src = logo; img.style.objectFit = 'cover'; img.style.borderRadius = '50%'; });
       document.querySelectorAll('.sb-brand svg, .mobile-brand svg, .brand-lockup svg').forEach(function (el) {
         var img = document.createElement('img');
         img.src = logo;

@@ -15,7 +15,7 @@ static class LicenseTool
 {
     const int PORT = 47199;
     const string TITLE = "أداة ترخيص محلات التجميل";
-    const string AUMID = "Nova.AlJamal.LicenseTool";
+    const string AUMID = "Nova.Beauty.LicenseTool";
 
     [DllImport("user32.dll")] static extern bool EnumWindows(EnumProc cb, IntPtr p);
     delegate bool EnumProc(IntPtr h, IntPtr p);
@@ -48,7 +48,7 @@ static class LicenseTool
     static void Main()
     {
         bool first;
-        using (var mx = new Mutex(true, "Nova.AlJamal.LicenseTool.Launcher", out first))
+        using (var mx = new Mutex(true, "Nova.Beauty.LicenseTool.Launcher", out first))
         {
             if (!first) { FocusExisting(); return; }
             dir = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\');

@@ -77,11 +77,11 @@ $ErrorActionPreference = 'SilentlyContinue'
 $ico = '${ico.replace(/'/g, "''")}'
 $dirs = @()
 $dirs += [Environment]::GetFolderPath('CommonDesktopDirectory')
-$dirs += (Join-Path ([Environment]::GetFolderPath('CommonPrograms')) 'Nova Al-Jamal')
+$dirs += (Join-Path ([Environment]::GetFolderPath('CommonPrograms')) 'Nova Beauty')
 Get-ChildItem 'C:\\Users' -Directory | ForEach-Object {
   $dirs += (Join-Path $_.FullName 'Desktop')
   $dirs += (Join-Path $_.FullName 'OneDrive\\Desktop')
-  $dirs += (Join-Path $_.FullName 'AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Nova Al-Jamal')
+  $dirs += (Join-Path $_.FullName 'AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Nova Beauty')
   $dirs += (Join-Path $_.FullName 'AppData\\Roaming\\Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\TaskBar')
 }
 $sh = New-Object -ComObject WScript.Shell
@@ -89,7 +89,7 @@ foreach ($d in $dirs) {
   if (-not (Test-Path $d)) { continue }
   Get-ChildItem $d -Filter *.lnk | ForEach-Object {
     $l = $sh.CreateShortcut($_.FullName)
-    if ($_.BaseName -like '*نوفا الجمال*' -or $_.BaseName -like '*Nova Al-Jamal*') { $l.IconLocation = "$ico,0"; $l.Save() }
+    if ($_.BaseName -like '*نوفا للتجميل*' -or $_.BaseName -like '*Nova Beauty*') { $l.IconLocation = "$ico,0"; $l.Save() }
   }
 }
 & "$env:SystemRoot\\System32\\ie4uinit.exe" -show
