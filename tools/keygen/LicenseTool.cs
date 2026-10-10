@@ -87,11 +87,12 @@ static class LicenseTool
             if (browser == null) { Process.Start(url); return; }
             string profile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "NovaLicenseTool", "profile");
             Process.Start(new ProcessStartInfo(browser,
-                "--app=" + url + " --user-data-dir=\"" + profile + "\" --no-first-run --no-default-browser-check --window-size=1180,860") { UseShellExecute = false });
+                "--app=" + url + " --user-data-dir=\"" + profile + "\" --no-first-run --no-default-browser-check --start-maximized") { UseShellExecute = false });
             for (int i = 0; i < 120 && h == IntPtr.Zero; i++) { Thread.Sleep(250); h = FindWindow(); }
         }
         if (h == IntPtr.Zero) return;
 
+        ShowWindow(h, 3); // SW_MAXIMIZE: fill the whole screen
         LoadIcons();
         // keep stamping while the window lives (the browser may reset its icon when the page title/favicon changes)
         while (IsWindow(h))

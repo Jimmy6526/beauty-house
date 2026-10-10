@@ -25,11 +25,31 @@ public class NovaService : ServiceBase
         appDir = !string.IsNullOrEmpty(env) ? env : AppDomain.CurrentDomain.BaseDirectory;
         string home = Environment.GetEnvironmentVariable("NOVA_HOME_DIR");
         if (string.IsNullOrEmpty(home))
+#if USERMODE
+            home = Path.Combine(Environment.GetEnvironmentVariable("LocalAppData") ?? Path.GetTempPath(), "NovaAlJamal");
+#else
             home = Path.Combine(Environment.GetEnvironmentVariable("ProgramData") ?? @"C:\ProgramData", "NovaAlJamal");
+#endif
         homeDir = home;
         logFile = Path.Combine(homeDir, "logs", "service.log");
     }
 
+#if USERMODE
+    static void Main(string[] args)
+    {
+        // Per-user host (no admin, no Windows service): runs the server hidden while the user is logged in.
+        bool first;
+        using (Mutex mx = new Mutex(true, "Nova.AlJamal.User.Host", out first))
+        {
+            if (!first) return;
+            EventWaitHandle stop = new EventWaitHandle(false, EventResetMode.ManualReset, "Nova.AlJamal.User.Stop");
+            NovaService s = new NovaService();
+            s.Begin();
+            stop.WaitOne();
+            s.End();
+        }
+    }
+#else
     static void Main(string[] args)
     {
         if (args.Length > 0 && args[0] == "--console")
@@ -45,6 +65,7 @@ public class NovaService : ServiceBase
             ServiceBase.Run(new NovaService());
         }
     }
+#endif
 
     protected override void OnStart(string[] args) { Begin(); }
     protected override void OnStop() { End(); }
@@ -99,6 +120,12 @@ public class NovaService : ServiceBase
                 SetDefault(psi, "NOVA_HOME_DIR", homeDir);
                 SetDefault(psi, "NOVA_DATA_DIR", Path.Combine(homeDir, "data"));
                 psi.EnvironmentVariables["NOVA_SUPERVISED"] = "1";
+                try
+                {
+                    string pf = Path.Combine(homeDir, "port.txt");
+                    if (File.Exists(pf)) { string pt = File.ReadAllText(pf).Trim(); if (pt.Length > 0 && pt.Length <= 5) psi.EnvironmentVariables["PORT"] = pt; }
+                }
+                catch (Exception) { }
 
                 node = Process.Start(psi);
                 node.OutputDataReceived += delegate(object s, DataReceivedEventArgs e) { Append(e.Data); };

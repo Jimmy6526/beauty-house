@@ -3,119 +3,287 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="theme-init.js"></script>
 <title>نوفا الجمال — الإعداد الأولي</title>
 <style>
   :root {
-    --font-body: "Segoe UI", Tahoma, "Segoe UI Arabic", Arial, sans-serif;
-    --color-primary: #6E2A55; --color-primary-tint: #F6E8F0; --color-accent: #C03A72; --color-gold: #A8741A;
+    --font-body: 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
+    --color-primary: #6E2A55; --color-primary-hover: #561F42; --color-primary-tint: #F6E8F0; --color-primary-tint-strong: #EAD0E0;
+    --color-accent: #C03A72; --color-accent-hover: #A22E5E; --color-gold: #A8741A;
     --color-bg-page: #FAF5F7; --color-surface: #FFFFFF; --color-surface-2: #FCF8FA; --color-border: #F0E2E9; --color-border-strong: #E0C9D4;
-    --color-text: #2B1B26; --color-text-secondary: #77626F; --color-text-muted: #A691A0; --color-danger: #C0362C; --color-danger-tint: #FCE8E6;
-    --shadow-lg: 0 24px 54px -18px rgba(110,42,85,.38), 0 6px 14px rgba(110,42,85,.08);
+    --color-text: #2B1B26; --color-text-secondary: #77626F; --color-text-muted: #A691A0;
+    --color-success: #1F8A5B; --color-danger: #C0362C; --color-danger-tint: #FCE8E6;
+    --shadow-lg: 0 24px 60px rgba(110,42,85,.16), 0 6px 14px rgba(110,42,85,.07);
   }
-  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-    --color-primary: #E6A9CB; --color-primary-tint: #35202F; --color-accent: #F0719F; --color-gold: #E5BC62;
-    --color-bg-page: #150E14; --color-surface: #1F161E; --color-surface-2: #281D27; --color-border: #3A2B39; --color-border-strong: #4C3949;
-    --color-text: #F8EEF3; --color-text-secondary: #CDB6C4; --color-text-muted: #988294; --color-danger: #F1786D; --color-danger-tint: #3A1512;
-  } }
   :root[data-theme="dark"] {
-    --color-primary: #E6A9CB; --color-primary-tint: #35202F; --color-accent: #F0719F; --color-gold: #E5BC62;
+    --color-primary: #E6A9CB; --color-primary-hover: #F0BEDA; --color-primary-tint: #35202F; --color-primary-tint-strong: #46293D;
+    --color-accent: #F0719F; --color-accent-hover: #F58DB2; --color-gold: #E5BC62;
     --color-bg-page: #150E14; --color-surface: #1F161E; --color-surface-2: #281D27; --color-border: #3A2B39; --color-border-strong: #4C3949;
-    --color-text: #F8EEF3; --color-text-secondary: #CDB6C4; --color-text-muted: #988294; --color-danger: #F1786D; --color-danger-tint: #3A1512;
+    --color-text: #F8EEF3; --color-text-secondary: #CDB6C4; --color-text-muted: #988294;
+    --color-success: #4ADE80; --color-danger: #F1786D; --color-danger-tint: #3A1512;
+    --shadow-lg: 0 24px 60px rgba(0,0,0,.55);
   }
   * { box-sizing: border-box; }
-  body { margin: 0; min-height: 100vh; font-family: var(--font-body); color: var(--color-text); direction: rtl; line-height: 1.6;
-    background: radial-gradient(900px 420px at 100% 0%, color-mix(in srgb, var(--color-accent) 10%, transparent), transparent 70%),
-                radial-gradient(760px 380px at 0% 100%, color-mix(in srgb, var(--color-gold) 10%, transparent), transparent 70%), var(--color-bg-page);
-    display: flex; flex-direction: column; align-items: center; padding: 30px 16px; }
-  .brand { text-align: center; margin-bottom: 18px; }
-  .brand img { width: 84px; height: 84px; border-radius: 50%; box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-gold) 55%, transparent), var(--shadow-lg); background: #fff; }
-  .brand h1 { margin: 12px 0 2px; font-size: 24px; font-weight: 800; }
-  .brand p { margin: 0; color: var(--color-text-secondary); font-size: 13.5px; }
-  .card { width: 100%; max-width: 640px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 18px; padding: 24px; box-shadow: var(--shadow-lg); }
-  h2 { margin: 22px 0 10px; font-size: 15px; font-weight: 800; }
-  h2:first-of-type { margin-top: 0; }
-  h2::before { content: ''; display: inline-block; width: 4px; height: 15px; margin-inline-end: 9px; vertical-align: -2px; border-radius: 3px; background: linear-gradient(180deg, #E7C278, var(--color-accent)); }
+  html, body { min-height: 100%; }
+  body { margin: 0; font-family: var(--font-body); color: var(--color-text); background: var(--color-bg-page); direction: rtl; line-height: 1.6; }
+  .shell { display: flex; min-height: 100vh; }
+
+  /* ---- brand pane (fixed deep-plum identity in both themes) ---- */
+  .brand-pane { flex: 0 0 38%; max-width: 520px; position: relative; overflow: hidden; color: #FFF4F9; padding: 48px 44px;
+    background: linear-gradient(160deg, #5E2250 0%, #3B1535 48%, #1C0B1A 100%); display: flex; flex-direction: column; justify-content: space-between; }
+  .blob { position: absolute; border-radius: 50%; filter: blur(60px); pointer-events: none; }
+  .blob.b1 { width: 320px; height: 320px; background: radial-gradient(circle, rgba(224,86,140,.42), transparent 70%); top: -70px; left: -70px; }
+  .blob.b2 { width: 300px; height: 300px; background: radial-gradient(circle, rgba(231,194,120,.34), transparent 70%); bottom: -50px; right: -30px; }
+  .brand-top, .brand-mid, .brand-bot { position: relative; z-index: 2; }
+  .lockup { display: flex; align-items: center; gap: 12px; }
+  .lockup img { width: 52px; height: 52px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 3px rgba(231,194,120,.7); }
+  .lockup b { font-size: 21px; font-weight: 800; }
+  .lockup span { display: block; font-size: 12px; color: #E9CFE0; font-weight: 400; }
+  .brand-mid h1 { margin: 0 0 12px; font-size: 32px; line-height: 1.4; font-weight: 800; }
+  .brand-mid h1 em { font-style: normal; background: linear-gradient(90deg, #fff, #F6D98F); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .brand-mid p { margin: 0 0 30px; color: #EBD3E1; font-size: 14.5px; line-height: 1.9; max-width: 380px; }
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+  .steps li { display: flex; align-items: center; gap: 14px; padding: 12px 14px; border-radius: 14px; color: rgba(255,244,249,.6); transition: background .25s, color .25s; }
+  .steps .n { width: 34px; height: 34px; flex: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px;
+    border: 1.5px solid rgba(255,255,255,.28); transition: all .25s; }
+  .steps .t b { display: block; font-size: 14.5px; }
+  .steps .t small { font-size: 12px; opacity: .8; }
+  .steps li.on { background: rgba(255,255,255,.1); color: #fff; }
+  .steps li.on .n { background: linear-gradient(135deg, #F3D182, #C99A2E); border-color: transparent; color: #3B1535; }
+  .steps li.done { color: #fff; }
+  .steps li.done .n { background: #6BCB86; border-color: transparent; color: #0E3B1F; font-size: 0; }
+  .steps li.done .n::after { content: '✓'; font-size: 16px; }
+  .brand-bot { font-size: 12px; color: #D9B8CB; display: flex; align-items: center; gap: 8px; }
+  .brand-bot i { width: 6px; height: 6px; border-radius: 50%; background: #6BCB86; display: inline-block; }
+
+  /* ---- form pane ---- */
+  .form-pane { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 28px 56px; min-width: 0;
+    background: radial-gradient(800px 380px at 100% 0%, color-mix(in srgb, var(--color-accent) 7%, transparent), transparent 70%),
+                radial-gradient(700px 360px at 0% 100%, color-mix(in srgb, var(--color-gold) 8%, transparent), transparent 70%), var(--color-bg-page); }
+  .wizard { width: 100%; max-width: 520px; }
+  .m-head { display: none; text-align: center; margin-bottom: 20px; }
+  .m-head img { width: 64px; height: 64px; border-radius: 50%; box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-gold) 55%, transparent); background: #fff; }
+  .m-head h1 { margin: 8px 0 0; font-size: 20px; }
+  .progress { height: 5px; border-radius: 99px; background: var(--color-primary-tint); overflow: hidden; margin-bottom: 22px; }
+  .progress i { display: block; height: 100%; width: 33%; border-radius: 99px; background: linear-gradient(90deg, #E7C278, var(--color-accent)); transition: width .45s cubic-bezier(.2,.8,.2,1); }
+  .panel { display: none; animation: slideIn .4s cubic-bezier(.2,.8,.2,1) both; }
+  .panel.on { display: block; }
+  @keyframes slideIn { from { opacity: 0; transform: translateX(-18px); } to { opacity: 1; transform: none; } }
+  .eyebrow { font-size: 12.5px; font-weight: 700; color: var(--color-accent); letter-spacing: .3px; }
+  .panel h2 { margin: 4px 0 6px; font-size: 26px; font-weight: 800; }
+  .panel .sub { margin: 0 0 24px; color: var(--color-text-secondary); font-size: 14px; }
+  .field { margin-bottom: 16px; }
   .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  .field { margin-bottom: 12px; }
-  label { display: block; font-size: 12.5px; font-weight: 700; margin-bottom: 6px; }
-  input, select { width: 100%; font: inherit; font-size: 13.5px; padding: 11px 13px; border: 1px solid var(--color-border-strong); border-radius: 12px; background: var(--color-surface); color: var(--color-text); }
-  input:focus, select:focus { outline: none; border-color: var(--color-accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 20%, transparent); }
+  label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 7px; }
+  label .req { color: var(--color-accent); }
+  .ctl { position: relative; }
+  input, select { width: 100%; font: inherit; font-size: 14.5px; padding: 12px 14px; border: 1.5px solid var(--color-border-strong); border-radius: 13px; background: var(--color-surface); color: var(--color-text); transition: border-color .15s, box-shadow .15s; }
+  input:focus, select:focus { outline: none; border-color: var(--color-accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-accent) 16%, transparent); }
+  input.bad { border-color: var(--color-danger); }
   .ltr { direction: ltr; text-align: left; }
-  .hint { font-size: 11.5px; color: var(--color-text-muted); margin-top: 4px; }
-  .err { display: none; margin: 8px 0; padding: 11px 13px; border-radius: 12px; background: var(--color-danger-tint); color: var(--color-danger); font-size: 13px; font-weight: 700; }
-  .btn { width: 100%; margin-top: 10px; font: inherit; font-weight: 800; font-size: 15px; border: 0; cursor: pointer; border-radius: 12px; padding: 13px; color: #fff; background: linear-gradient(135deg, color-mix(in srgb, var(--color-accent) 90%, #fff), var(--color-accent)); box-shadow: 0 12px 24px -12px var(--color-accent); }
+  .eye { position: absolute; left: 7px; top: 50%; transform: translateY(-50%); width: 34px; height: 34px; border: 0; background: none; color: var(--color-text-muted); cursor: pointer; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+  .eye:hover { background: var(--color-surface-2); color: var(--color-text); }
+  .eye svg { width: 18px; height: 18px; }
+  .has-eye { padding-left: 46px; padding-right: 14px; }
+  .hint { font-size: 12px; color: var(--color-text-muted); margin-top: 5px; }
+  .fe { font-size: 12px; color: var(--color-danger); margin-top: 5px; display: none; font-weight: 600; }
+  .fe.show { display: block; }
+  .meter { display: flex; gap: 5px; margin-top: 8px; align-items: center; }
+  .meter i { flex: 1; height: 5px; border-radius: 99px; background: var(--color-border-strong); transition: background .2s; }
+  .meter small { font-size: 11.5px; min-width: 52px; text-align: end; color: var(--color-text-muted); font-weight: 700; }
+  .meter.s1 i:nth-child(1) { background: #E5484D; } .meter.s2 i:nth-child(-n+2) { background: #F0A92E; } .meter.s3 i { background: #2FB36F; }
+  .tip { display: flex; gap: 10px; align-items: flex-start; background: var(--color-primary-tint); color: var(--color-primary); border-radius: 14px; padding: 12px 14px; font-size: 13px; line-height: 1.8; margin-bottom: 18px; }
+  .tip svg { width: 18px; height: 18px; flex: none; margin-top: 4px; }
+  .err { display: none; margin: 4px 0 14px; padding: 11px 14px; border-radius: 12px; background: var(--color-danger-tint); color: var(--color-danger); font-size: 13px; font-weight: 700; }
+  .nav { display: flex; gap: 10px; margin-top: 24px; }
+  .btn { font: inherit; font-weight: 800; font-size: 15px; border: 0; cursor: pointer; border-radius: 13px; padding: 13px 22px; transition: transform .1s, filter .15s, opacity .15s; }
+  .btn:active { transform: translateY(1px); }
+  .btn.pri { flex: 1; color: #fff; background: linear-gradient(135deg, color-mix(in srgb, var(--color-accent) 88%, #fff), var(--color-accent)); box-shadow: 0 14px 26px -14px var(--color-accent); }
+  .btn.pri:hover { filter: brightness(1.06); }
+  .btn.sec { background: transparent; color: var(--color-text-secondary); border: 1.5px solid var(--color-border-strong); }
+  .btn.sec:hover { color: var(--color-text); border-color: var(--color-text-muted); }
   .btn[disabled] { opacity: .6; cursor: progress; }
-  @media (max-width: 620px) { .row { grid-template-columns: 1fr; } }
+  .foot-note { margin-top: 22px; text-align: center; font-size: 12px; color: var(--color-text-muted); }
+
+  /* ---- finishing overlay ---- */
+  .fin { position: fixed; inset: 0; z-index: 100; display: none; align-items: center; justify-content: center; flex-direction: column; gap: 14px; text-align: center; padding: 20px;
+    background: color-mix(in srgb, var(--color-bg-page) 94%, transparent); backdrop-filter: blur(6px); }
+  .fin.on { display: flex; animation: fade .3s ease; }
+  @keyframes fade { from { opacity: 0 } to { opacity: 1 } }
+  .fin svg { width: 110px; height: 110px; }
+  .fin .ring { fill: none; stroke: var(--color-success); stroke-width: 5; stroke-dasharray: 302; stroke-dashoffset: 302; animation: draw .6s .1s ease forwards; transform: rotate(-90deg); transform-origin: 50% 50%; }
+  .fin .tick { fill: none; stroke: var(--color-success); stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 60; stroke-dashoffset: 60; animation: draw .45s .65s ease forwards; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  .fin h3 { margin: 0; font-size: 24px; font-weight: 800; }
+  .fin p { margin: 0; color: var(--color-text-secondary); font-size: 14px; }
+  .spin { width: 22px; height: 22px; border-radius: 50%; border: 3px solid var(--color-border-strong); border-top-color: var(--color-accent); animation: sp .8s linear infinite; }
+  @keyframes sp { to { transform: rotate(360deg); } }
+
+  @media (max-width: 900px) { .brand-pane { display: none; } .m-head { display: block; } .row { grid-template-columns: 1fr; gap: 0; } .form-pane { padding-top: 70px; } }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } .fin .ring, .fin .tick { stroke-dashoffset: 0; } }
 </style>
 <link rel="stylesheet" href="theme.css">
 </head>
 <body>
-  <div class="brand">
-    <img src="/branding/icon-256.png" alt="">
-    <h1>أهلاً بكِ في نوفا الجمال</h1>
-    <p>أدخلي بيانات منشأتك وحساب المديرة لبدء استخدام النظام</p>
-  </div>
-  <div class="card">
-    <h2>بيانات المنشأة</h2>
-    <div class="row">
-      <div class="field"><label for="shop">اسم المنشأة *</label><input id="shop" placeholder="مثال: صالون ..." autocomplete="off"></div>
-      <div class="field"><label for="phone">رقم الهاتف</label><input id="phone" class="ltr" placeholder="09XXXXXXXX"></div>
+<div class="shell">
+  <aside class="brand-pane">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="brand-top">
+      <div class="lockup"><img src="/branding/icon-256.png" alt=""><div><b>نوفا الجمال</b><span>Nova Al-Jamal</span></div></div>
     </div>
-    <div class="row">
-      <div class="field"><label for="cur">العملة</label>
-        <select id="cur">
-          <option value="SDG|ج.س">جنيه سوداني (ج.س)</option><option value="SAR|ر.س">ريال سعودي (ر.س)</option>
-          <option value="EGP|ج.م">جنيه مصري (ج.م)</option><option value="AED|د.إ">درهم إماراتي (د.إ)</option>
-          <option value="QAR|ر.ق">ريال قطري (ر.ق)</option><option value="KWD|د.ك">دينار كويتي (د.ك)</option>
-          <option value="USD|$">دولار أمريكي ($)</option><option value="EUR|€">يورو (€)</option>
-        </select></div>
-      <div></div>
+    <div class="brand-mid">
+      <h1>أهلاً بكِ في <em>نظام نوفا الجمال</em></h1>
+      <p>ثلاث خطوات سريعة لتجهيز نظامك: بيانات المنشأة، حساب المديرة، ثم سؤال الأمان. لن يستغرق الأمر أكثر من دقيقتين.</p>
+      <ol class="steps" id="steps">
+        <li class="on"><span class="n">1</span><span class="t"><b>بيانات المنشأة</b><small>الاسم والهاتف والعملة</small></span></li>
+        <li><span class="n">2</span><span class="t"><b>حساب المديرة</b><small>بيانات الدخول إلى النظام</small></span></li>
+        <li><span class="n">3</span><span class="t"><b>الحماية</b><small>سؤال لاستعادة كلمة المرور</small></span></li>
+      </ol>
     </div>
+    <div class="brand-bot"><i></i> بياناتك محفوظة على هذا الجهاز وحده</div>
+  </aside>
 
-    <h2>حساب المديرة</h2>
-    <div class="row">
-      <div class="field"><label for="name">الاسم الكامل *</label><input id="name" autocomplete="off"></div>
-      <div class="field"><label for="user">اسم المستخدم * (للدخول)</label><input id="user" class="ltr" autocomplete="off" placeholder="admin"><div class="hint">حروف إنجليزية وأرقام فقط</div></div>
-    </div>
-    <div class="row">
-      <div class="field"><label for="pass">كلمة المرور * (8 أحرف على الأقل)</label><input id="pass" type="password" class="ltr" autocomplete="new-password"></div>
-      <div class="field"><label for="pass2">تأكيد كلمة المرور *</label><input id="pass2" type="password" class="ltr" autocomplete="new-password"></div>
-    </div>
+  <main class="form-pane">
+    <div class="wizard">
+      <div class="m-head"><img src="/branding/icon-256.png" alt=""><h1>نظام نوفا الجمال</h1></div>
+      <div class="progress"><i id="bar"></i></div>
 
-    <h2>سؤال الأمان (لاستعادة كلمة المرور)</h2>
-    <div class="row">
-      <div class="field"><label for="q">السؤال</label>
-        <select id="q"><option>اسم أول محل عملتِ فيه؟</option><option>ما اسم أفضل صديقة لك في الطفولة؟</option><option>ما هو لونك المفضل؟</option><option>ما اسم مدينة ميلادك؟</option><option>ما اسم حيوانك الأليف الأول؟</option></select></div>
-      <div class="field"><label for="a">الإجابة</label><input id="a" autocomplete="off"></div>
-    </div>
+      <section class="panel on" data-step="0">
+        <div class="eyebrow">الخطوة 1 من 3</div>
+        <h2>عرّفينا بمنشأتك</h2>
+        <p class="sub">يظهر اسم المنشأة في الفواتير والتقارير وشاشة الدخول، ويمكنك تعديله لاحقاً من الإعدادات.</p>
+        <div class="field"><label for="shop">اسم المنشأة <span class="req">*</span></label><div class="ctl"><input id="shop" placeholder="مثال: صالون بيت الجمال" autocomplete="off"></div><div class="fe" id="e-shop"></div></div>
+        <div class="row">
+          <div class="field"><label for="phone">رقم الهاتف</label><input id="phone" class="ltr" placeholder="+249 9X XXX XXXX" inputmode="tel" autocomplete="off"></div>
+          <div class="field"><label for="cur">العملة</label>
+            <select id="cur">
+              <option value="SDG|ج.س">جنيه سوداني (ج.س)</option><option value="SAR|ر.س">ريال سعودي (ر.س)</option>
+              <option value="EGP|ج.م">جنيه مصري (ج.م)</option><option value="AED|د.إ">درهم إماراتي (د.إ)</option>
+              <option value="QAR|ر.ق">ريال قطري (ر.ق)</option><option value="KWD|د.ك">دينار كويتي (د.ك)</option>
+              <option value="USD|$">دولار أمريكي ($)</option><option value="EUR|€">يورو (€)</option>
+            </select></div>
+        </div>
+      </section>
 
-    <div class="err" id="err"></div>
-    <button class="btn" id="go" type="button">إنشاء الحساب والبدء</button>
-  </div>
+      <section class="panel" data-step="1">
+        <div class="eyebrow">الخطوة 2 من 3</div>
+        <h2>حساب المديرة</h2>
+        <p class="sub">هذا الحساب يملك كل الصلاحيات، ويمكنك لاحقاً إضافة الموظفات وتحديد صلاحية كل واحدة.</p>
+        <div class="row">
+          <div class="field"><label for="name">الاسم الكامل <span class="req">*</span></label><input id="name" autocomplete="off"><div class="fe" id="e-name"></div></div>
+          <div class="field"><label for="user">اسم المستخدم <span class="req">*</span></label><input id="user" class="ltr" autocomplete="off" placeholder="admin"><div class="fe" id="e-user"></div><div class="hint">حروف إنجليزية وأرقام فقط</div></div>
+        </div>
+        <div class="field"><label for="pass">كلمة المرور <span class="req">*</span></label>
+          <div class="ctl"><input id="pass" type="password" class="ltr has-eye" autocomplete="new-password"><button class="eye" type="button" data-for="pass" aria-label="إظهار كلمة المرور"></button></div>
+          <div class="meter" id="meter"><i></i><i></i><i></i><small id="mtxt"></small></div><div class="fe" id="e-pass"></div></div>
+        <div class="field"><label for="pass2">تأكيد كلمة المرور <span class="req">*</span></label>
+          <div class="ctl"><input id="pass2" type="password" class="ltr has-eye" autocomplete="new-password"><button class="eye" type="button" data-for="pass2" aria-label="إظهار كلمة المرور"></button></div><div class="fe" id="e-pass2"></div></div>
+      </section>
+
+      <section class="panel" data-step="2">
+        <div class="eyebrow">الخطوة 3 من 3</div>
+        <h2>حماية الحساب</h2>
+        <p class="sub">اختاري سؤالاً تعرفين إجابته وحدك؛ يُستخدم لاستعادة كلمة المرور إن نسيتِها.</p>
+        <div class="field"><label for="q">السؤال</label>
+          <select id="q"><option>اسم أول محل عملتِ فيه؟</option><option>ما اسم أفضل صديقة لك في الطفولة؟</option><option>ما هو لونك المفضل؟</option><option>ما اسم مدينة ميلادك؟</option><option>ما اسم حيوانك الأليف الأول؟</option></select></div>
+        <div class="field"><label for="a">الإجابة</label><input id="a" autocomplete="off"></div>
+        <div class="tip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l8 3v6c0 5-3.4 9.3-8 11-4.6-1.7-8-6-8-11V5l8-3z"/><path d="M9 12l2 2 4-4"/></svg><span>نصيحة: بعد الدخول افتحي «الإعدادات ← النسخ الاحتياطي» واحفظي نسخة من بياناتك على وسيط خارجي بشكل دوري.</span></div>
+      </section>
+
+      <div class="err" id="err"></div>
+      <div class="nav"><button class="btn sec" id="back" type="button" style="display:none">السابق</button><button class="btn pri" id="next" type="button">التالي</button></div>
+      <div class="foot-note">لن تحتاجي لهذه الشاشة مرة أخرى بعد إتمام الإعداد.</div>
+    </div>
+  </main>
+</div>
+
+<div class="fin" id="fin">
+  <div><svg viewBox="0 0 110 110"><circle class="ring" cx="55" cy="55" r="48"/><path class="tick" d="M33 57l15 15 30-33"/></svg></div>
+  <h3>تم تجهيز النظام بنجاح</h3><p>جارٍ تحويلك إلى لوحة التحكم…</p><div class="spin"></div>
+</div>
+
 <script src="shared.js"></script>
 <script>
   (function () {
     var $ = function (id) { return document.getElementById(id); };
-    function fail(m) { $('err').textContent = m; $('err').style.display = 'block'; }
-    $('go').addEventListener('click', async function () {
-      var btn = this; $('err').style.display = 'none';
-      var shop = $('shop').value.trim(), name = $('name').value.trim(), user = $('user').value.trim(), p1 = $('pass').value, p2 = $('pass2').value;
-      if (!shop || !name || !user) return fail('أكملي الحقول المطلوبة (*)');
-      if (!/^[A-Za-z0-9_.-]{3,30}$/.test(user)) return fail('اسم المستخدم: 3 إلى 30 حرفاً إنجليزياً أو أرقاماً');
-      if (p1.length < 8) return fail('كلمة المرور يجب ألا تقل عن 8 أحرف');
-      if (p1 !== p2) return fail('كلمتا المرور غير متطابقتين');
-      var cur = $('cur').value.split('|');
-      btn.setAttribute('disabled', 'true');
+    var step = 0, TOTAL = 3, busy = false;
+    var EYE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>';
+    var EYE_OFF = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3l18 18M10.6 5.1A10 10 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3.2 4M6.6 6.6C3.9 8.4 2 12 2 12s3.6 7 10 7a9.8 9.8 0 0 0 4.4-1M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>';
+    document.querySelectorAll('.eye').forEach(function (b) {
+      b.innerHTML = EYE;
+      b.addEventListener('click', function () {
+        var i = $(b.getAttribute('data-for')), show = i.type === 'password';
+        i.type = show ? 'text' : 'password'; b.innerHTML = show ? EYE_OFF : EYE;
+      });
+    });
+
+    function setErr(id, msg) {
+      var e = $('e-' + id), inp = $(id);
+      if (e) { e.textContent = msg || ''; e.classList.toggle('show', !!msg); }
+      if (inp) inp.classList.toggle('bad', !!msg);
+      return !msg;
+    }
+    function fail(m) { $('err').textContent = m; $('err').style.display = m ? 'block' : 'none'; }
+
+    function strength(p) {
+      var s = 0;
+      if (p.length >= 8) s++;
+      if (p.length >= 11 && /[A-Za-z]/.test(p) && /\d/.test(p)) s++;
+      if (p.length >= 8 && /[A-Z]/.test(p) && /[a-z]/.test(p) && /\d/.test(p) && /[^A-Za-z0-9]/.test(p)) s++;
+      return p.length ? Math.max(1, s) : 0;
+    }
+    $('pass').addEventListener('input', function () {
+      var s = strength(this.value), m = $('meter');
+      m.className = 'meter' + (s ? ' s' + s : '');
+      $('mtxt').textContent = ['', 'ضعيفة', 'جيدة', 'قوية'][s];
+    });
+
+    function validate(n) {
+      fail('');
+      if (n === 0) return setErr('shop', $('shop').value.trim() ? '' : 'اسم المنشأة مطلوب');
+      if (n === 1) {
+        var ok = true, user = $('user').value.trim(), p1 = $('pass').value, p2 = $('pass2').value;
+        ok = setErr('name', $('name').value.trim() ? '' : 'الاسم مطلوب') && ok;
+        ok = setErr('user', /^[A-Za-z0-9_.-]{3,30}$/.test(user) ? '' : '3 إلى 30 حرفاً إنجليزياً أو أرقاماً') && ok;
+        ok = setErr('pass', p1.length >= 8 ? '' : 'يجب ألا تقل عن 8 أحرف') && ok;
+        ok = setErr('pass2', p1 === p2 ? '' : 'كلمتا المرور غير متطابقتين') && ok;
+        return ok;
+      }
+      return true;
+    }
+
+    function show(n) {
+      step = n;
+      document.querySelectorAll('.panel').forEach(function (p) { p.classList.toggle('on', Number(p.getAttribute('data-step')) === n); });
+      document.querySelectorAll('#steps li').forEach(function (li, i) { li.className = i < n ? 'done' : i === n ? 'on' : ''; });
+      $('bar').style.width = ((n + 1) / TOTAL * 100) + '%';
+      $('back').style.display = n ? '' : 'none';
+      $('next').textContent = n === TOTAL - 1 ? 'إنشاء الحساب وبدء الاستخدام' : 'التالي';
+      var f = document.querySelector('.panel.on input, .panel.on select'); if (f) setTimeout(function () { f.focus(); }, 60);
+    }
+
+    async function finish() {
+      var cur = $('cur').value.split('|'), btn = $('next');
+      btn.setAttribute('disabled', 'true'); busy = true;
       try {
         await BH.api('/api/setup', { method: 'POST', body: {
-          shop_name: shop, phone: $('phone').value.trim(), currency_code: cur[0], currency_label: cur[1],
-          name: name, username: user, password: p1,
+          shop_name: $('shop').value.trim(), phone: $('phone').value.trim(), currency_code: cur[0], currency_label: cur[1],
+          name: $('name').value.trim(), username: $('user').value.trim(), password: $('pass').value,
           security_question: $('q').value, security_answer: $('a').value.trim()
         } });
-        await BH.api('/api/auth/login', { method: 'POST', body: { username: user, password: p1 } });
-        window.location.href = 'dashboard.html';
-      } catch (e) { fail(e.message); btn.removeAttribute('disabled'); }
+        await BH.api('/api/auth/login', { method: 'POST', body: { username: $('user').value.trim(), password: $('pass').value } });
+        $('fin').classList.add('on');
+        setTimeout(function () { window.location.href = 'dashboard.html'; }, 2200);
+      } catch (e) { fail(e.message); btn.removeAttribute('disabled'); busy = false; }
+    }
+
+    $('next').addEventListener('click', function () {
+      if (busy || !validate(step)) return;
+      if (step < TOTAL - 1) show(step + 1); else finish();
     });
+    $('back').addEventListener('click', function () { if (!busy && step > 0) { fail(''); show(step - 1); } });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Enter' && e.target.tagName !== 'BUTTON') { e.preventDefault(); $('next').click(); } });
+    show(0);
   })();
 </script>
 </body>

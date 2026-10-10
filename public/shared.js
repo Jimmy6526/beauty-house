@@ -1,55 +1,85 @@
 var BH = (function () {
   /* ---------------- Theme (applied immediately to avoid flash) ---------------- */
   var THEME_KEY = 'bh_theme';
+  /* Light ("نهاري") is the default everywhere; dark ("ليلي") is an explicit choice saved on this device. */
   function getStoredTheme() { try { return localStorage.getItem(THEME_KEY); } catch (e) { return null; } }
   function applyTheme(mode) {
-    var root = document.documentElement;
-    if (mode === 'light') root.setAttribute('data-theme', 'light');
-    else if (mode === 'dark') root.setAttribute('data-theme', 'dark');
-    else root.removeAttribute('data-theme');
+    document.documentElement.setAttribute('data-theme', mode === 'dark' ? 'dark' : 'light');
   }
   (function initThemeEarly() {
     applyTheme(getStoredTheme());
   })();
 
-  function currentTheme() {
-    var stored = getStoredTheme();
-    if (stored) return stored;
-    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  }
+  function currentTheme() { return getStoredTheme() === 'dark' ? 'dark' : 'light'; }
 
+  var themeListeners = [];
   function setTheme(mode) {
-    try {
-      if (mode) localStorage.setItem(THEME_KEY, mode);
-      else localStorage.removeItem(THEME_KEY);
-    } catch (e) {}
+    mode = mode === 'dark' ? 'dark' : 'light';
+    try { localStorage.setItem(THEME_KEY, mode); } catch (e) {}
     applyTheme(mode);
+    themeListeners.forEach(function (fn) { try { fn(mode); } catch (e) {} });
   }
 
-  function themeToggleIcon(mode) {
-    if (mode === 'dark') {
-      return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>';
-    }
-    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2M12 19.5v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2.5 12h2M19.5 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>';
-  }
+  var SVG_MOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>';
+  var SVG_SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2M12 19.5v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2.5 12h2M19.5 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>';
+  function themeToggleIcon(mode) { return mode === 'dark' ? SVG_MOON : SVG_SUN; }
 
   function initThemeToggle(btnId) {
     var btn = document.getElementById(btnId);
     if (!btn) return;
     function render() {
-      var stored = getStoredTheme();
-      var effective = currentTheme();
-      btn.innerHTML = themeToggleIcon(effective);
-      btn.title = stored ? (stored === 'dark' ? 'الوضع الداكن — اضغطي للتبديل' : 'الوضع الفاتح — اضغطي للتبديل') : 'يتبع النظام — اضغطي للتبديل';
+      var m = currentTheme();
+      btn.innerHTML = themeToggleIcon(m);
+      btn.title = m === 'dark' ? 'الوضع الليلي — اضغط للتحويل إلى النهاري' : 'الوضع النهاري — اضغط للتحويل إلى الليلي';
+      btn.setAttribute('aria-label', btn.title);
     }
-    btn.addEventListener('click', function () {
-      var stored = getStoredTheme();
-      var next = stored === 'light' ? 'dark' : stored === 'dark' ? null : 'light';
-      setTheme(next);
-      render();
-    });
+    btn.addEventListener('click', function () { setTheme(currentTheme() === 'dark' ? 'light' : 'dark'); });
+    themeListeners.push(render);
     render();
   }
+
+  /* Labeled day/night switch for pages without a sidebar (login, setup, activation). */
+  function mountThemePill() {
+    if (document.getElementById('bhThemePill') || document.querySelector('.sidebar')) return;
+    var pill = document.createElement('div');
+    pill.className = 'bh-theme-pill'; pill.id = 'bhThemePill'; pill.setAttribute('role', 'group'); pill.setAttribute('aria-label', 'المظهر');
+    pill.innerHTML = '<button type="button" data-m="light">' + SVG_SUN + 'نهاري</button><button type="button" data-m="dark">' + SVG_MOON + 'ليلي</button>';
+    function render() { var m = currentTheme(); Array.prototype.forEach.call(pill.children, function (b) { b.classList.toggle('on', b.getAttribute('data-m') === m); }); }
+    pill.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) setTheme(b.getAttribute('data-m')); });
+    themeListeners.push(render); render();
+    document.body.appendChild(pill);
+  }
+
+  /* ---------------- Designer credit (quiet) + About dialog ---------------- */
+  var CREDIT = { name: 'م. محمد جمال الدين', phone: '+249965269898', email: 'jamalmohamed942@gmail.com' };
+  function showAbout() {
+    if (document.getElementById('bhAbout')) return;
+    var back = document.createElement('div');
+    back.className = 'bh-about-back'; back.id = 'bhAbout';
+    back.innerHTML = '<div class="bh-about" role="dialog" aria-modal="true" aria-label="حول النظام">' +
+      '<img src="/branding/icon-256.png" alt=""><h3>نظام نوفا الجمال</h3><div class="sub">لإدارة الصالونات ومحلات التجميل · الإصدار 1.0.0</div>' +
+      '<div class="who">تصميم وتطوير</div><div class="name">المهندس محمد جمال الدين</div>' +
+      '<div class="lines"><a href="tel:' + CREDIT.phone + '">' + CREDIT.phone + '</a><a href="mailto:' + CREDIT.email + '">' + CREDIT.email + '</a></div>' +
+      '<button type="button" class="close">إغلاق</button></div>';
+    function close() { back.remove(); document.removeEventListener('keydown', onKey); }
+    function onKey(e) { if (e.key === 'Escape') close(); }
+    back.addEventListener('click', function (e) { if (e.target === back || e.target.classList.contains('close')) close(); });
+    document.addEventListener('keydown', onKey);
+    document.body.appendChild(back);
+  }
+  function mountCredit() {
+    if (document.getElementById('bhCredit') || document.querySelector('.credit, .credit-line')) return;
+    var btn = document.createElement('button');
+    btn.type = 'button'; btn.id = 'bhCredit'; btn.className = 'bh-credit';
+    btn.title = 'تصميم وتطوير: المهندس محمد جمال الدين — ' + CREDIT.phone;
+    btn.textContent = 'تصميم وتطوير · ' + CREDIT.name;
+    btn.addEventListener('click', showAbout);
+    var sb = document.querySelector('.sidebar');
+    if (sb) sb.appendChild(btn); else { btn.className += ' bh-credit-fixed'; document.body.appendChild(btn); }
+  }
+  function mountChrome() { mountThemePill(); mountCredit(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mountChrome);
+  else mountChrome();
 
   /* ---------------- Live clock ---------------- */
   var WEEKDAY_AR = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
@@ -507,6 +537,7 @@ var BH = (function () {
     relTime: relTime,
     applyBranding: applyBranding,
     initThemeToggle: initThemeToggle,
+    showAbout: showAbout,
     setTheme: setTheme,
     currentTheme: currentTheme,
     startClock: startClock,

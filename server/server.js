@@ -49,7 +49,10 @@ const MIME = {
   '.jpeg': 'image/jpeg',
   '.webp': 'image/webp',
   '.gif': 'image/gif',
-  '.ico': 'image/x-icon'
+  '.ico': 'image/x-icon',
+  '.woff2': 'font/woff2',
+  '.woff': 'font/woff',
+  '.ttf': 'font/ttf'
 };
 
 function parseCookies(header) {
@@ -153,6 +156,7 @@ function serveStatic(req, res, pathname) {
     const ext = path.extname(filePath).toLowerCase();
     const headers = { 'Content-Type': MIME[ext] || 'application/octet-stream' };
     if (pathname.startsWith('/branding/')) headers['Cache-Control'] = 'no-cache';
+    else if (ext === '.woff2') headers['Cache-Control'] = 'public, max-age=31536000, immutable';
     res.writeHead(200, headers);
     res.end(content);
   });

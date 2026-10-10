@@ -98,6 +98,8 @@ function startUi(autoExit) {
     const url = req.url.split('?')[0];
     if (req.method === 'GET') {
       if (url === '/') { res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' }); return res.end(fs.readFileSync(UI_PATH)); }
+      const fm = /^\/fonts\/(cairo-(?:arabic|latin)-\d{3}\.woff2)$/.exec(url);
+      if (fm) { res.writeHead(200, { 'Content-Type': 'font/woff2', 'Cache-Control': 'max-age=86400' }); return res.end(fs.readFileSync(path.join(__dirname, 'fonts', fm[1]))); }
       if (url === '/favicon.png' || url === '/icon.png') { res.writeHead(200, { 'Content-Type': 'image/png' }); return res.end(fs.readFileSync(path.join(__dirname, 'keygen-256.png'))); }
       if (url === '/favicon.ico') { res.writeHead(200, { 'Content-Type': 'image/x-icon' }); return res.end(fs.readFileSync(path.join(__dirname, 'keygen.ico'))); }
       if (url === '/api/state') return json(200, { hasKeys: fs.existsSync(PRIVATE_PATH), fingerprint: fingerprint() });

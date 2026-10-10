@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="theme-init.js"></script>
 <title>نوفا الجمال — لوحة التحكم</title>
 </head>
 <body>
@@ -356,6 +357,25 @@
     .sidebar { position: static; height: auto; }
     .app-shell { flex-direction: column; }
   }
+
+  /* ---------- First-run checklist ---------- */
+  .onboard { position: relative; overflow: hidden; margin-bottom: 20px; padding: 22px 24px; border-radius: 20px; color: #FFF4F9;
+    background: linear-gradient(135deg, #5E2250 0%, #3B1535 60%, #28112A 100%); box-shadow: var(--shadow-md); }
+  .onboard::after { content: ''; position: absolute; width: 280px; height: 280px; border-radius: 50%; left: -80px; top: -110px; background: radial-gradient(circle, rgba(231,194,120,.28), transparent 70%); pointer-events: none; }
+  .onboard-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; position: relative; z-index: 1; }
+  .onboard h3 { margin: 0 0 4px; font-size: 18px; font-weight: 800; }
+  .onboard p { margin: 0; font-size: 13px; color: #EBD3E1; }
+  .onboard .x { border: 0; background: rgba(255,255,255,.12); color: #fff; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 16px; line-height: 1; }
+  .onboard .x:hover { background: rgba(255,255,255,.22); }
+  .ob-bar { height: 6px; border-radius: 99px; background: rgba(255,255,255,.15); margin: 14px 0 16px; overflow: hidden; position: relative; z-index: 1; }
+  .ob-bar i { display: block; height: 100%; border-radius: 99px; background: linear-gradient(90deg, #F3D182, #F07AA6); transition: width .5s; }
+  .ob-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; position: relative; z-index: 1; }
+  .ob-step { display: flex; align-items: center; gap: 10px; padding: 11px 13px; border-radius: 14px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12); color: #fff; text-decoration: none; font-size: 13px; font-weight: 700; transition: background .15s, transform .15s; }
+  .ob-step:hover { background: rgba(255,255,255,.16); transform: translateY(-2px); }
+  .ob-step .c { width: 24px; height: 24px; border-radius: 50%; border: 2px solid rgba(255,255,255,.4); flex: none; display: flex; align-items: center; justify-content: center; font-size: 13px; }
+  .ob-step.done { opacity: .72; }
+  .ob-step.done .c { background: #6BCB86; border-color: #6BCB86; color: #0E3B1F; }
+  .ob-step small { display: block; font-weight: 400; font-size: 11.5px; color: #E3C3D6; }
 </style>
 <link rel="stylesheet" href="theme.css">
 
@@ -434,6 +454,8 @@
           <div class="sub" id="pageDate">—</div>
         </div>
       </div>
+
+      <div id="onboard"></div>
 
       <!-- KPI ROW -->
       <div class="kpi-grid">
@@ -704,6 +726,28 @@
 
     var ROLE_LABELS = { owner: 'المديرة', staff: 'موظفة' };
 
+    async function renderOnboarding(user) {
+      var box = document.getElementById('onboard');
+      try { if (localStorage.getItem('bh_onboard_off') === '1') return; } catch (e) {}
+      if (!user || user.role !== 'owner') return;
+      var r = await Promise.all([BH.api('/api/items').catch(function () { return []; }), BH.api('/api/staff').catch(function () { return []; }),
+        BH.api('/api/customers').catch(function () { return []; }), BH.api('/api/sales').catch(function () { return []; })]);
+      var list = function (x) { return Array.isArray(x) ? x : (x && (x.items || x.rows || x.data)) || []; };
+      var steps = [
+        { done: list(r[0]).length > 0, href: 'inventory.html', t: 'أضيفي الخدمات والمنتجات', d: 'قائمة الأسعار التي تبيعين بها' },
+        { done: list(r[1]).length > 1, href: 'settings.html', t: 'أضيفي الموظفات', d: 'حسابات وصلاحيات الفريق' },
+        { done: list(r[2]).length > 0, href: 'customers.html', t: 'سجّلي أول عميلة', d: 'لمتابعة الزيارات والمشتريات' },
+        { done: list(r[3]).length > 0, href: 'pos.html', t: 'أجري أول عملية بيع', d: 'من نقطة البيع بضغطات قليلة' },
+        { done: false, href: 'settings.html', t: 'ارفعي شعار منشأتك', d: 'يتحول تلقائياً إلى أيقونة النظام' }
+      ];
+      var doneCount = steps.filter(function (x) { return x.done; }).length;
+      if (steps[3].done) return; // already in use — no checklist
+      box.innerHTML = '<div class="onboard"><div class="onboard-head"><div><h3>ابدئي رحلتك مع نوفا الجمال 🌸</h3><p>خطوات سريعة لتجهيز منشأتك — ' + doneCount + ' من ' + steps.length + ' مكتملة</p></div>' +
+        '<button class="x" id="obClose" title="إخفاء">×</button></div><div class="ob-bar"><i style="width:' + Math.round(doneCount / steps.length * 100) + '%"></i></div><div class="ob-steps">' +
+        steps.map(function (x) { return '<a class="ob-step' + (x.done ? ' done' : '') + '" href="' + x.href + '"><span class="c">' + (x.done ? '✓' : '') + '</span><span>' + x.t + '<small>' + x.d + '</small></span></a>'; }).join('') + '</div></div>';
+      document.getElementById('obClose').addEventListener('click', function () { try { localStorage.setItem('bh_onboard_off', '1'); } catch (e) {} box.innerHTML = ''; });
+    }
+
     (async function init() {
       var user = await BH.requireAuth();
       BH.initThemeToggle('themeToggleBtn');
@@ -717,6 +761,7 @@
       var now = new Date();
       document.getElementById('pageDate').textContent = WEEKDAY_FULL_AR[now.getDay()] + '، ' + now.getDate() + ' ' + MONTH_AR[now.getMonth()] + ' ' + now.getFullYear() + ' — إليك ملخص أداء الفرع اليوم';
 
+      renderOnboarding(user);
       var s = await BH.api('/api/dashboard/summary');
 
       document.getElementById('kpiRevenue').textContent = BH.money(s.revenueToday);
