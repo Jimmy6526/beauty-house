@@ -410,7 +410,7 @@
             </div>
 
             <div class="field-grid">
-              <div class="field"><label>اسم المحل</label><input class="input" id="f_shop_name" /></div>
+              <div class="field"><label>اسم المحل</label><input class="input" id="f_shop_name" /><div id="shopLockNote" style="display:none;font-size:12px;color:var(--color-text-secondary);margin-top:6px;">🔒 مرتبط بالترخيص — لتغييره اطلبي ترخيصاً جديداً من مزوّد النظام.</div></div>
               <div class="field"><label>اسم الفرع</label><input class="input" id="f_branch_name" /></div>
               <div class="field"><label>رقم الجوال</label><input class="input" id="f_phone" style="direction:ltr;text-align:right;" /></div>
               <div class="field"><label>البريد الإلكتروني</label><input class="input" id="f_email" style="direction:ltr;text-align:right;" /></div>
@@ -746,6 +746,9 @@
     /* ---------------- Shop info ---------------- */
     function fillInfoForm(s) {
       document.getElementById('f_shop_name').value = s.shop_name || '';
+      var locked = s.shop_name_locked === '1';
+      document.getElementById('f_shop_name').disabled = locked;
+      document.getElementById('shopLockNote').style.display = locked ? 'block' : 'none';
       document.getElementById('f_branch_name').value = s.branch_name || '';
       document.getElementById('f_phone').value = s.phone || '';
       document.getElementById('f_email').value = s.email || '';

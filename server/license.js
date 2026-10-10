@@ -149,6 +149,12 @@ function status(force) {
   return cache;
 }
 
+// Identity lock: when a valid license is active the business name is the one printed inside the signed key.
+function licensedName() {
+  const st = status();
+  return st.state === 'licensed' && st.customer ? st.customer : null;
+}
+
 function activate(keyText, customerName) {
   const v = verifyKey(keyText);
   if (!v.ok) return { ok: false, error: v.error };
@@ -160,4 +166,4 @@ function activate(keyText, customerName) {
   return { ok: true, status: status(true) };
 }
 
-module.exports = { status, activate, verifyKey, getMachineId, normName, PRODUCT, TRIAL_DAYS, KEY_PREFIX };
+module.exports = { status, activate, licensedName, verifyKey, getMachineId, normName, PRODUCT, TRIAL_DAYS, KEY_PREFIX };
